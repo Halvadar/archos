@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/archos/static/css/main.8daeca2d.chunk.css",
+    "main.js": "/archos/static/js/main.6282cd0f.chunk.js",
+    "main.js.map": "/archos/static/js/main.6282cd0f.chunk.js.map",
+    "runtime-main.js": "/archos/static/js/runtime-main.450ff823.js",
+    "runtime-main.js.map": "/archos/static/js/runtime-main.450ff823.js.map",
+    "static/css/2.510409cd.chunk.css": "/archos/static/css/2.510409cd.chunk.css",
+    "static/js/2.644c11ae.chunk.js": "/archos/static/js/2.644c11ae.chunk.js",
+    "static/js/2.644c11ae.chunk.js.map": "/archos/static/js/2.644c11ae.chunk.js.map",
+    "index.html": "/archos/index.html",
+    "precache-manifest.0029b92c0a57d453b983df50ce8d882a.js": "/archos/precache-manifest.0029b92c0a57d453b983df50ce8d882a.js",
+    "service-worker.js": "/archos/service-worker.js",
+    "static/css/2.510409cd.chunk.css.map": "/archos/static/css/2.510409cd.chunk.css.map",
+    "static/css/main.8daeca2d.chunk.css.map": "/archos/static/css/main.8daeca2d.chunk.css.map",
+    "static/media/hamburger.svg": "/archos/static/media/hamburger.86595150.svg",
+    "static/media/logo.svg": "/archos/static/media/logo.3eecde31.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.450ff823.js",
+    "static/css/2.510409cd.chunk.css",
+    "static/js/2.644c11ae.chunk.js",
+    "static/css/main.8daeca2d.chunk.css",
+    "static/js/main.6282cd0f.chunk.js"
+  ]
+}
