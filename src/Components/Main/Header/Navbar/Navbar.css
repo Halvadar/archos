@@ -1,0 +1,58 @@
+.img-sm {
+  width: 15%;
+}
+.shadow {
+  height: 0.3rem;
+  background: rgba(8, 7, 37, 0.322);
+  align-self: center;
+  border-radius: 5%;
+}
+
+.custnavbar {
+  padding: 0rem 1rem !important;
+  display: flex;
+  position: relative;
+  background-image: linear-gradient(to right, #00b4db, #0083b0);
+}
+.links {
+  background: rgba(113, 191, 211, 0.411);
+}
+
+.custnavitem {
+  padding: 0.3rem;
+  border-radius: 5%;
+  text-shadow: 1px 1px 3px black;
+  color: rgb(204, 203, 203);
+  align-self: center;
+  font-size: 1.3rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+}
+.custnavitem:hover {
+  color: rgb(255, 255, 255);
+  background: rgb(7, 7, 102);
+}
+.custnavitemcont {
+  margin-left: 1.8rem;
+  margin-right: 1.8rem;
+  display: flex;
+  flex-direction: column;
+}
+.custdropdown {
+  background: rgba(113, 191, 211, 0.411);
+}
+
+@media only screen and (min-width: 768px) {
+  .img-md {
+    width: 10%;
+  }
+}
+.custnavitemcont:hover {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 992px) {
+  .img-l {
+    width: 5%;
+  }
+}
