@@ -12,12 +12,20 @@ class Navbar extends Component {
       registerOnMouseEnter: false,
       loginAnimation: 0,
       registerAnimation: 0,
-      hamburgerheight: "auto",
-      hamburgerwidth: "auto",
-      hamburgertop: null
+      hamburgerheight: 0,
+      hamburgerwidth: 0,
+      hamburgertop: 30,
+      registertop: 0,
+      logintop: 0,
+      hamburgeranimationstatus: false,
+      hamburgeranimationstate: "notexpanded",
+      hamburgeranimationindex: 0,
+      sm: null,
+      hamburgerimagewidth: undefined
     };
     this.hamburgerref = React.createRef(this.hamburgerref);
     this.r = React.createRef(this.r);
+    this.hambimgref = React.createRef(this.hambimgref);
   }
 
   aaa = q => {
@@ -27,23 +35,22 @@ class Navbar extends Component {
   componentWillUpdate() {}
   componentDidUpdate() {}
   componentDidMount() {
-    console.log(
-      window.getComputedStyle(this.hamburgerref).getPropertyValue("top")
-    );
-
-    /* var a = 0;
-    var abc = setInterval(() => {
-      a++;
-      if (a < 100) {
-        console.log(
-          window.getComputedStyle(this.hamburgerref).getPropertyValue("top")
-        );
-      } else {
-        clearInterval(abc);
-      }
-    }, 1); */
+    window.addEventListener("resize", this.resizefunc);
+    console.log(window.getComputedStyle(this.r).getPropertyValue("width"));
+    this.setState({
+      hamburgerimagewidth:
+        window.getComputedStyle(this.hambimgref).getPropertyValue("width") * 2
+    });
   }
-
+  resizefunc = () => {
+    console.log("resize");
+    if (window.innerWidth < 768) {
+      console.log("<768");
+      this.setState({ sm: true });
+    } else {
+      this.setState({ sm: false });
+    }
+  };
   onMouseEnterFunc = arg => {
     console.log();
     if (arg === 0) {
@@ -97,18 +104,74 @@ class Navbar extends Component {
     }, 10);
   };
 
-  hamburgerclick = () => {
-    console.log(
-      window.getComputedStyle(this.hamburgerref).getPropertyValue("top")
-    );
-    this.setState({ hamburgerheight: 100, hamburgerwidth: 20 }, () => {
-      console.log(
-        window.getComputedStyle(this.hamburgerref).getPropertyValue("top")
-      );
-    });
-    console.log(
-      window.getComputedStyle(this.hamburgerref).getPropertyValue("top")
-    );
+  hamburgerclick = e => {
+    e.preventDefault();
+    console.log("event triggered!");
+    if (!this.state.hamburgeranimationstatus) {
+      console.log("went thourgh status");
+      if (this.state.hamburgeranimationstate === "notexpanded") {
+        console.log("went through state!");
+        var a = this.state.hamburgerwidth;
+        var b = this.state.hamburgerheight;
+        var interval = setInterval(() => {
+          console.log("aaa");
+          if (a < 100) {
+            a++;
+            this.setState({
+              hamburgerwidth: a,
+              hamburgeranimationindex: a,
+              hamburgeranimationstatus: true
+            });
+          } else if (a === 100 && b < 100) {
+            b++;
+            this.setState({
+              logintop: b,
+              registertop: b * 2,
+              hamburgerheight: b,
+              hamburgeranimationstatus: true
+            });
+          } else {
+            this.setState({
+              hamburgeranimationstate: "expanded",
+              hamburgeranimationstatus: false
+            });
+            clearInterval(interval);
+          }
+        }, 5);
+      }
+      if (this.state.hamburgeranimationstate === "expanded") {
+        console.log("went through state1");
+        var a = this.state.hamburgerwidth;
+        var b = this.state.hamburgerheight;
+        console.log(a);
+        var interval = setInterval(() => {
+          if (b > 0) {
+            b = b - 1;
+            console.log(a);
+            this.setState({
+              hamburgerheight: b,
+              logintop: b,
+              registertop: b * 2,
+              hamburgeranimationindex: a,
+              hamburgeranimationstatus: true
+            });
+          } else if (b === 0 && a > 0) {
+            a = a - 1;
+            this.setState({
+              hamburgerwidth: a,
+              hamburgeranimationindex: a,
+              hamburgeranimationstatus: true
+            });
+          } else {
+            this.setState({
+              hamburgeranimationstate: "notexpanded",
+              hamburgeranimationstatus: false
+            });
+            clearInterval(interval);
+          }
+        }, 5);
+      }
+    }
   };
 
   style = () => {
@@ -117,7 +180,7 @@ class Navbar extends Component {
   };
 
   render() {
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 768 || this.state.sm === false) {
       return (
         <div style={{}} className="navbar justify-content-between custnavbar">
           <img src={logo} alt="Archos" className=" mt-2 img-l img-sm img-md" />
@@ -170,10 +233,7 @@ class Navbar extends Component {
       );
     } else {
       return (
-        <div
-          style={{ display: "flex", position: "relative" }}
-          className=" d-flex custnavbar justify-content-between "
-        >
+        <div className="w-100  custnavbar justify-content-between ">
           <div className=" mt-2 img-l img-sm img-md">
             <img
               ref={r => (this.r = r)}
@@ -185,25 +245,68 @@ class Navbar extends Component {
           </div>
           <div
             style={{
-              width: "100%",
+              marginRight: "5%",
+              width: "25%",
               position: "relative",
               display: "flex",
               alignItems: "center"
             }}
-            className=""
           >
             <div
               ref={q => this.aaa(q)}
               style={{
                 position: "absolute",
-                right: "5%",
-                width: this.state.hamburgerwidth,
-                height: this.state.hamburgerheight
+                zIndex: 10,
+                right: "0px",
+                width: this.state.hamburgerwidth + "%",
+                height: this.state.hamburgerheight + "%",
+                top: this.state.hamburgertop + "%"
               }}
             >
-              <div onClick={this.hamburgerclick} style={{}}>
-                <div>
-                  <img src={hamburger} width="100%"></img>
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 100,
+                  background: "white"
+                }}
+              >
+                <div
+                  onClick={e => this.hamburgerclick(e)}
+                  style={{
+                    zIndex: 1,
+                    position: "relative",
+                    background: "white"
+                  }}
+                >
+                  <img
+                    ref={a => (this.hambimgref = a)}
+                    src={hamburger}
+                    style={{
+                      width: `${
+                        this.state.hamburgerimagewidth
+                          ? this.state.hamburgerimagewidth
+                          : null
+                      }+px`
+                    }}
+                  ></img>
+                </div>
+                <div
+                  className="hamburgeritems"
+                  style={{
+                    zIndex: -1,
+                    top: this.state.logintop + "%"
+                  }}
+                >
+                  {this.state.hamburgerwidth < 100 ? "" : "Log in"}
+                </div>
+                <div
+                  className="hamburgeritems"
+                  style={{
+                    zIndex: -2,
+                    top: this.state.registertop + "%"
+                  }}
+                >
+                  {this.state.hamburgerwidth < 100 ? "" : "Register"}
                 </div>
               </div>
             </div>
