@@ -44,7 +44,7 @@
   text-shadow: 1px 1px 3px black;
   color: rgb(204, 203, 203);
   align-self: center;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-family: "Oswald", sans-serif;
   font-weight: 700;
 }
@@ -73,6 +73,12 @@
 
 @media only screen and (min-width: 992px) {
   .img-l {
+    width: 6%;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .img-xl {
     width: 5%;
   }
 }

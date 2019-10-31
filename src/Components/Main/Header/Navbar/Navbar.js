@@ -36,26 +36,25 @@ class Navbar extends Component {
   componentDidUpdate() {}
   componentDidMount() {
     window.addEventListener("resize", this.resizefunc);
-    console.log(window.getComputedStyle(this.r).getPropertyValue("width"));
-    this.setState({
-      hamburgerimagewidth:
-        window.getComputedStyle(this.hambimgref).getPropertyValue("width") * 2
-    });
+
+    if (this.state.sm) {
+      this.setState({
+        hamburgerimagewidth:
+          window.getComputedStyle(this.hambimgref).getPropertyValue("width") * 2
+      });
+    }
   }
   resizefunc = () => {
-    console.log("resize");
     if (window.innerWidth < 768) {
-      console.log("<768");
       this.setState({ sm: true });
     } else {
       this.setState({ sm: false });
     }
   };
   onMouseEnterFunc = arg => {
-    console.log();
     if (arg === 0) {
       this.setState({ loginOnMouseEnter: true });
-      console.log(this.state.loginOnMouseEnter);
+
       this.onmousenteranimation();
     } else {
       this.setState({ registerOnMouseEnter: true });
@@ -69,13 +68,11 @@ class Navbar extends Component {
   };
 
   onmousenteranimation = () => {
-    console.log(this.state.loginAnimation);
     var bot = 0;
     var interval = setInterval(() => {
       if (bot < 10 && this.state.loginOnMouseEnter === true) {
         bot++;
         this.setState({ loginAnimation: bot });
-        console.log(this.state.loginOnMouseEnter);
       } else if (bot > 0 && this.state.loginOnMouseEnter === false) {
         bot = bot - 1;
         this.setState({ loginAnimation: bot });
@@ -87,7 +84,6 @@ class Navbar extends Component {
   };
 
   onmouseenteranimation1 = () => {
-    console.log(this.state.registerAnimation);
     var bot = 0;
     var interval = setInterval(() => {
       if (bot < 10 && this.state.registerOnMouseEnter === true) {
@@ -140,14 +136,13 @@ class Navbar extends Component {
         }, 5);
       }
       if (this.state.hamburgeranimationstate === "expanded") {
-        console.log("went through state1");
         var a = this.state.hamburgerwidth;
         var b = this.state.hamburgerheight;
-        console.log(a);
+
         var interval = setInterval(() => {
           if (b > 0) {
             b = b - 1;
-            console.log(a);
+
             this.setState({
               hamburgerheight: b,
               logintop: b,
@@ -175,7 +170,6 @@ class Navbar extends Component {
   };
 
   style = () => {
-    console.log("asd");
     return this.state.hamburgerwidth;
   };
 
@@ -185,7 +179,7 @@ class Navbar extends Component {
         <div style={{}} className="navbar justify-content-between custnavbar">
           <img src={logo} alt="Archos" className=" mt-2 img-l img-sm img-md" />
 
-          <div className="row links">
+          <div className="row links rounded-left">
             <div
               className="custnavitemcont"
               onMouseEnter={() => this.onMouseEnterFunc(0)}
@@ -234,7 +228,7 @@ class Navbar extends Component {
     } else {
       return (
         <div className="w-100  custnavbar justify-content-between ">
-          <div className=" mt-2 img-l img-sm img-md">
+          <div className=" mt-2 img-l img-sm img-md img-xl">
             <img
               ref={r => (this.r = r)}
               src={logo}
