@@ -27,17 +27,19 @@ export default class Headerbackground extends Component {
 
   render() {
     return (
-      <div
-        ref={q => (this.backgroundref = q)}
-        className="mainheaderbackgrounddiv"
-        style={{
-          backgroundImage: `url(${background})`
-        }}
-      >
-        <Searchboxanimation
-          backgroundheight={this.state.backgroundheight}
-        ></Searchboxanimation>
-      </div>
+      <React.Fragment>
+        <div
+          ref={q => (this.backgroundref = q)}
+          className="mainheaderbackgrounddiv"
+          style={{
+            backgroundImage: `url(${background})`
+          }}
+        >
+          <Searchboxanimation
+            backgroundheight={this.state.backgroundheight}
+          ></Searchboxanimation>
+        </div>
+      </React.Fragment>
     );
   }
 }
