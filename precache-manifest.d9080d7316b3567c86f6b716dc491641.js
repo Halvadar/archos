@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ba66db9600b8e7b0d40e24ecbf8e2716",
+    "revision": "e9f7d9bfff9fee7c3711817bd4e8cb75",
     "url": "/archos/index.html"
   },
   {
-    "revision": "703a1f8b138d88acf6a4",
+    "revision": "0654b547e59f8c2a0e06",
     "url": "/archos/static/css/2.510409cd.chunk.css"
   },
   {
-    "revision": "675442fc63e4c6b62772",
-    "url": "/archos/static/css/main.4f0125bd.chunk.css"
+    "revision": "651cf522dcc6392e17af",
+    "url": "/archos/static/css/main.92572a35.chunk.css"
   },
   {
-    "revision": "703a1f8b138d88acf6a4",
-    "url": "/archos/static/js/2.9ebecf34.chunk.js"
+    "revision": "0654b547e59f8c2a0e06",
+    "url": "/archos/static/js/2.a3e428ed.chunk.js"
   },
   {
-    "revision": "675442fc63e4c6b62772",
-    "url": "/archos/static/js/main.239288de.chunk.js"
+    "revision": "651cf522dcc6392e17af",
+    "url": "/archos/static/js/main.52e731ca.chunk.js"
   },
   {
     "revision": "92f5ad2ee1d7e6e0bbf0",
