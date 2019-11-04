@@ -1,28 +1,36 @@
 {
   "files": {
-    "main.css": "/archos/static/css/main.92572a35.chunk.css",
-    "main.js": "/archos/static/js/main.52e731ca.chunk.js",
-    "main.js.map": "/archos/static/js/main.52e731ca.chunk.js.map",
+    "main.css": "/archos/static/css/main.f91bb48e.chunk.css",
+    "main.js": "/archos/static/js/main.fe123a6f.chunk.js",
+    "main.js.map": "/archos/static/js/main.fe123a6f.chunk.js.map",
     "runtime-main.js": "/archos/static/js/runtime-main.450ff823.js",
     "runtime-main.js.map": "/archos/static/js/runtime-main.450ff823.js.map",
     "static/css/2.510409cd.chunk.css": "/archos/static/css/2.510409cd.chunk.css",
-    "static/js/2.a3e428ed.chunk.js": "/archos/static/js/2.a3e428ed.chunk.js",
-    "static/js/2.a3e428ed.chunk.js.map": "/archos/static/js/2.a3e428ed.chunk.js.map",
+    "static/js/2.15f171d5.chunk.js": "/archos/static/js/2.15f171d5.chunk.js",
+    "static/js/2.15f171d5.chunk.js.map": "/archos/static/js/2.15f171d5.chunk.js.map",
     "index.html": "/archos/index.html",
-    "precache-manifest.d9080d7316b3567c86f6b716dc491641.js": "/archos/precache-manifest.d9080d7316b3567c86f6b716dc491641.js",
+    "precache-manifest.efc0d2cf6c49d35de43b67210ace9494.js": "/archos/precache-manifest.efc0d2cf6c49d35de43b67210ace9494.js",
     "service-worker.js": "/archos/service-worker.js",
     "static/css/2.510409cd.chunk.css.map": "/archos/static/css/2.510409cd.chunk.css.map",
-    "static/css/main.92572a35.chunk.css.map": "/archos/static/css/main.92572a35.chunk.css.map",
+    "static/css/main.f91bb48e.chunk.css.map": "/archos/static/css/main.f91bb48e.chunk.css.map",
     "static/media/background.jpg": "/archos/static/media/background.3384ea3b.jpg",
+    "static/media/broom.svg": "/archos/static/media/broom.fafccd11.svg",
+    "static/media/build.svg": "/archos/static/media/build.2c83879f.svg",
+    "static/media/carpenter.svg": "/archos/static/media/carpenter.3aff910a.svg",
+    "static/media/dots.svg": "/archos/static/media/dots.37809195.svg",
+    "static/media/electro.svg": "/archos/static/media/electro.e1db293f.svg",
     "static/media/hamburger.svg": "/archos/static/media/hamburger.86595150.svg",
+    "static/media/krani.svg": "/archos/static/media/krani.16589c06.svg",
     "static/media/logo.svg": "/archos/static/media/logo.a2283118.svg",
+    "static/media/moving.svg": "/archos/static/media/moving.eff08534.svg",
+    "static/media/pc.svg": "/archos/static/media/pc.dc37e752.svg",
     "static/media/searchicon.svg": "/archos/static/media/searchicon.3bf4485e.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.450ff823.js",
     "static/css/2.510409cd.chunk.css",
-    "static/js/2.a3e428ed.chunk.js",
-    "static/css/main.92572a35.chunk.css",
-    "static/js/main.52e731ca.chunk.js"
+    "static/js/2.15f171d5.chunk.js",
+    "static/css/main.f91bb48e.chunk.css",
+    "static/js/main.fe123a6f.chunk.js"
   ]
 }
