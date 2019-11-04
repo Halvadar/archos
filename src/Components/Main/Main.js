@@ -37,6 +37,7 @@ class Main extends Component {
         <Headerbackground />
         <Categories />
         <div
+          ref={this.divref}
           style={{
             background: "blue",
             position: "relative",

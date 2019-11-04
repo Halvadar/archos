@@ -11,30 +11,25 @@ class Searchboxanimation extends Component {
       searchboxbottomdistance: 0,
       searchboxwidth: 0,
       searchinputborder: null,
-      searchboxposition: "absolute"
+      searchboxposition: "absolute",
+      searchboxfromtop: undefined,
+      fixedsearchboxfromtop: undefined
     };
-    this.searchbox = React.createRef(this.searchbox);
+    this.searchbox = React.createRef();
   }
   componentDidMount() {
     this.props.changescreensize(window.innerWidth);
     this.searchboxanimation();
+    this.searchboxtopinit();
     window.addEventListener("resize", this.resizewidthsetter);
-    /* window.addEventListener("scroll", this.searchboxposition); */
-    console.log(
-      window.getComputedStyle(this.searchbox).getPropertyValue("offsettop")
-    );
+    window.addEventListener("scroll", this.searchboxfixed);
   }
   componentDidUpdate() {}
-
-  searchboxposition = () => {
-    console.log(window.getComputedStyle(this.searchbox));
-    if (
-      window.getComputedStyle(this.searchbox).getPropertyValue("offsetTop") > 10
-    ) {
-      this.setState({ searchboxposition: "absolute" });
-    } else {
-      this.setState({ searchboxposition: "sticky" });
-    }
+  searchboxtopinit = () => {
+    this.setState({
+      searchboxfromtop:
+        this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
+    });
   };
 
   searchboxanimation = async () => {
@@ -42,8 +37,24 @@ class Searchboxanimation extends Component {
     await this.searchboxstretchanimation();
     this.setState({
       searchinputborder: "1px solid rgb(200,200,200)",
-      animationstate: "done"
+      animationstate: "done",
+      searchboxfromtop:
+        this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
     });
+  };
+
+  searchboxfixed = () => {
+    if (this.state.animationstate === "done") {
+      console.log(this.state.searchboxfromtop - window.scrollY);
+      if (this.state.searchboxfromtop - window.scrollY <= 10) {
+        this.setState({
+          searchboxposition: "fixed",
+          fixedsearchboxfromtop: 10
+        });
+      } else {
+        this.setState({ searchboxposition: "absolute" });
+      }
+    }
   };
 
   resizefunc = (
@@ -125,8 +136,11 @@ class Searchboxanimation extends Component {
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
-          } else if (this.props.screensize >= 1920 && this.state.width <= 10) {
-            width = width + 0;
+          } else if (
+            this.props.screensize >= 1920 &&
+            this.state.searchboxwidth <= 10
+          ) {
+            width = width + 0.2;
             this.setState({ searchboxwidth: width });
           } else {
             this.setState({ animationstate: "stretchended" });
@@ -139,15 +153,27 @@ class Searchboxanimation extends Component {
       }
     });
   };
+  searchboxdistance = () => {
+    return this.state.searchboxposition === "absolute"
+      ? { bottom: this.state.searchboxbottomdistance + "%" }
+      : { top: this.state.fixedsearchboxfromtop + "px" };
+  };
 
   render() {
     return (
       <React.Fragment>
         <div
           style={{
-            bottom: this.state.searchboxbottomdistance + "%",
             width: this.state.searchboxwidth + "%",
-            position: this.state.searchboxposition
+            position: this.state.searchboxposition,
+            bottom:
+              this.state.searchboxposition === "absolute"
+                ? this.state.searchboxbottomdistance + "%"
+                : "",
+            top:
+              this.state.searchboxposition === "fixed"
+                ? this.state.fixedsearchboxfromtop + "px"
+                : ""
           }}
           className="searchbox"
           ref={a => (this.searchbox = a)}
