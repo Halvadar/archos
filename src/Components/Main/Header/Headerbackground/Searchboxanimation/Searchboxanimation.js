@@ -10,23 +10,62 @@ class Searchboxanimation extends Component {
       animationstate: undefined,
       searchboxbottomdistance: 0,
       searchboxwidth: 0,
-      searchinputborder: null
+      searchinputborder: null,
+      searchboxposition: "absolute"
     };
     this.searchbox = React.createRef(this.searchbox);
   }
   componentDidMount() {
     this.props.changescreensize(window.innerWidth);
     this.searchboxanimation();
+    window.addEventListener("resize", this.resizewidthsetter);
+    /* window.addEventListener("scroll", this.searchboxposition); */
+    console.log(
+      window.getComputedStyle(this.searchbox).getPropertyValue("offsettop")
+    );
   }
-  componentDidUpdate() {
-    console.log(this.props.screensize);
-    console.log(this.state.searchboxwidth);
-  }
+  componentDidUpdate() {}
+
+  searchboxposition = () => {
+    console.log(window.getComputedStyle(this.searchbox));
+    if (
+      window.getComputedStyle(this.searchbox).getPropertyValue("offsetTop") > 10
+    ) {
+      this.setState({ searchboxposition: "absolute" });
+    } else {
+      this.setState({ searchboxposition: "sticky" });
+    }
+  };
 
   searchboxanimation = async () => {
     await this.bottomupanimation();
     await this.searchboxstretchanimation();
-    this.setState({ searchinputborder: "1px solid rgb(200,200,200)" });
+    this.setState({
+      searchinputborder: "1px solid rgb(200,200,200)",
+      animationstate: "done"
+    });
+  };
+
+  resizefunc = (
+    screensizes = [500, 768, 1024, 1366, 1920],
+    widths = [40, 35, 25, 20, 15, 10],
+    screensize = this.props.screensize
+  ) => {
+    for (const element of screensizes) {
+      if (screensize < element) {
+        return this.setState({
+          searchboxwidth: widths[screensizes.indexOf(element)]
+        });
+      } else if (screensize >= 1920) {
+        this.setState({ searchboxwidth: 10 });
+      }
+    }
+  };
+
+  resizewidthsetter = () => {
+    if (this.state.animationstate === "done") {
+      this.resizefunc();
+    }
   };
 
   bottomupanimation = () => {
@@ -59,26 +98,35 @@ class Searchboxanimation extends Component {
       let width = this.state.searchboxwidth;
       if (this.state.animationstate === "liftended") {
         let interval = setInterval(() => {
-          if (this.props.screensize <= 500 && this.state.searchboxwidth <= 40) {
+          if (this.props.screensize < 500 && this.state.searchboxwidth <= 40) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
           } else if (
-            this.props.screensize <= 768 &&
+            this.props.screensize < 768 &&
             this.state.searchboxwidth <= 35
           ) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
           } else if (
-            this.props.screensize <= 1024 &&
+            this.props.screensize < 1024 &&
+            this.state.searchboxwidth <= 25
+          ) {
+            width = width + 0.2;
+            this.setState({ searchboxwidth: width });
+          } else if (
+            this.props.screensize < 1366 &&
             this.state.searchboxwidth <= 20
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
           } else if (
-            this.props.screensize > 1024 &&
-            this.state.searchboxwidth <= 10
+            this.props.screensize < 1920 &&
+            this.state.searchboxwidth <= 15
           ) {
             width = width + 0.2;
+            this.setState({ searchboxwidth: width });
+          } else if (this.props.screensize >= 1920 && this.state.width <= 10) {
+            width = width + 0;
             this.setState({ searchboxwidth: width });
           } else {
             this.setState({ animationstate: "stretchended" });
@@ -98,7 +146,8 @@ class Searchboxanimation extends Component {
         <div
           style={{
             bottom: this.state.searchboxbottomdistance + "%",
-            width: this.state.searchboxwidth + "%"
+            width: this.state.searchboxwidth + "%",
+            position: this.state.searchboxposition
           }}
           className="searchbox"
           ref={a => (this.searchbox = a)}
@@ -121,7 +170,8 @@ class Searchboxanimation extends Component {
 }
 
 const mapStateToProps = state => ({
-  screensize: state.changescreensize.screensize
+  screensize: state.screen.screensize,
+  scroll: state.screen.scroll
 });
 const mapDispatchToProps = dispatch => ({
   changescreensize: e => dispatch(changescreensize(e))

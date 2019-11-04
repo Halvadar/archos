@@ -5,6 +5,7 @@ import Headerbackground from "./Header/Headerbackground/Headerbackground";
 import { connect } from "react-redux";
 import { changescreensize } from "../../Actions/Actions";
 import Categories from "./Header/Categories/Categories";
+import { scroll } from "../../Actions/Actions";
 
 class Main extends Component {
   constructor(props) {
@@ -12,18 +13,20 @@ class Main extends Component {
     this.state = {};
     this.burgerref = React.createRef(this.burgerref);
   }
-  componentDidUpdate() {
-    console.log(this.props.screensize);
-  }
+  componentDidUpdate() {}
   componentDidMount() {
     window.addEventListener(
       "resize",
       this.props.changescreensize(this.windowwidth)
     );
+    window.addEventListener("scroll", this.props.scrollprop(this.scroll));
   }
 
   windowwidth = () => {
     return window.innerWidth;
+  };
+  scroll = () => {
+    return window.scrollY || window.pageYOffset || document.body.scrollTop;
   };
 
   render() {
@@ -33,6 +36,15 @@ class Main extends Component {
         {/* <Sandbox></Sandbox> */}
         <Headerbackground />
         <Categories />
+        <div
+          style={{
+            background: "blue",
+            position: "relative",
+            left: "50%",
+            width: "100px",
+            height: "1000px"
+          }}
+        ></div>
       </React.Fragment>
     );
   }
@@ -44,6 +56,11 @@ const mapDispatchToProps = dispatch => ({
     return () => {
       console.log(e());
       dispatch(changescreensize(e()));
+    };
+  },
+  scrollprop: e => {
+    return () => {
+      dispatch(scroll(e()));
     };
   }
 });

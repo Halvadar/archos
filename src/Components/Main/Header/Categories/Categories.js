@@ -228,7 +228,7 @@ class Categories extends Component {
 }
 
 const mapStateToProps = state => ({
-  screensize: state.changescreensize.screensize
+  screensize: state.screen.screensize
 });
 
 export default connect(mapStateToProps)(Categories);
