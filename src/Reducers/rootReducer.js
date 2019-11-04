@@ -1,12 +1,16 @@
-const click = (state = {}, action) => {
-  switch (action.type) {
-    case "CLICK":
-      console.log("asasd");
-      return Object.assign({}, state, action.info);
+import { combineReducers } from "redux";
 
+const screenstate = {
+  screensize: undefined
+};
+
+const changescreensize = (state = screenstate, action) => {
+  switch (action.type) {
+    case "CHANGE_SCREEN_SIZE":
+      return { ...state, screensize: action.prop };
     default:
       return state;
   }
 };
 
-export default click;
+export default combineReducers({ changescreensize });

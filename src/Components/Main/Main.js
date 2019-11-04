@@ -1,36 +1,57 @@
 import React, { Component } from "react";
-
 import Navbar from "./Header/Navbar/Navbar";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
-import click from "../../Reducers/rootReducer";
 import Sandbox from "./Sandbox";
 import Headerbackground from "./Header/Headerbackground/Headerbackground";
-
-const store = createStore(click);
+import { connect } from "react-redux";
+import { changescreensize } from "../../Actions/Actions";
+import Categories from "./Header/Categories/Categories";
 
 class Main extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
     this.burgerref = React.createRef(this.burgerref);
   }
   componentDidUpdate() {
-    console.log(
-      window.getComputedStyle(this.burgerref).getPropertyValue("top")
+    console.log(this.props.screensize);
+  }
+  componentDidMount() {
+    window.addEventListener(
+      "resize",
+      this.props.changescreensize(this.windowwidth)
     );
   }
 
-  componentDidMount() {}
+  windowwidth = () => {
+    return window.innerWidth;
+  };
+
   render() {
     return (
-      <Provider store={store}>
+      <React.Fragment>
         <Navbar refref={q => (this.burgerref = q)} click1 />
         {/* <Sandbox></Sandbox> */}
-        <Headerbackground></Headerbackground>
-      </Provider>
+        <Headerbackground />
+        <Categories />
+      </React.Fragment>
     );
   }
 }
 
-export default Main;
+const mapDispatchToProps = dispatch => ({
+  changescreensize: e => {
+    console.log(e());
+    return () => {
+      console.log(e());
+      dispatch(changescreensize(e()));
+    };
+  }
+});
+const mapStateToProps = state => ({
+  screensize: state
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Main);
