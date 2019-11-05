@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 import { changescreensize } from "../../Actions/Actions";
 import Categories from "./Header/Categories/Categories";
 import { scroll } from "../../Actions/Actions";
+import Jumbotron from "./Body/Jumbotron/Jumbotron";
+import Cards from "./Body/Cards/Cards";
+import Sandbox1 from "./Sandbox1";
 
 class Main extends Component {
   constructor(props) {
@@ -36,16 +39,9 @@ class Main extends Component {
         {/* <Sandbox></Sandbox> */}
         <Headerbackground />
         <Categories />
-        <div
-          ref={this.divref}
-          style={{
-            background: "blue",
-            position: "relative",
-            left: "50%",
-            width: "100px",
-            height: "1000px"
-          }}
-        ></div>
+        <Jumbotron />
+        <Cards />
+        <Sandbox1 />
       </React.Fragment>
     );
   }

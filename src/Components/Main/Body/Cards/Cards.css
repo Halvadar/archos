@@ -1,0 +1,50 @@
+.cards {
+  width: 80%;
+  grid-gap: 5%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(25rem, auto);
+}
+
+.custcard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  border-radius: 5%/7%;
+  z-index: 100;
+  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+}
+.imgcontainer {
+  min-height: 50%;
+  flex-basis: 50%;
+  height: 50%;
+  width: 100%;
+  background-size: cover;
+}
+.cardimg {
+  width: 100%;
+}
+
+.cardscont {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+}
+
+.cardtext {
+  flex-shrink: 1;
+  padding: 5%;
+  text-align: center;
+  color: rgb(141, 138, 138);
+}
+.title {
+  flex-shrink: 1;
+  font-size: 2rem;
+  text-align: center;
+  color: rgb(51, 50, 50);
+  width: 90%;
+  border-bottom: 1px solid black;
+  margin-bottom: 10%;
+}

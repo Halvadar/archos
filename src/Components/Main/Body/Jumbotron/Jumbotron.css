@@ -1,0 +1,76 @@
+.jumbsm {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  background-size: cover;
+  background-position-y: center;
+}
+
+@media only screen and (min-width: 500px) {
+  .jumbmd {
+    grid-template-columns: 10fr 1fr 10fr;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .jumblg {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
+.rodcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rod {
+  height: 90%;
+  width: 1px;
+  background: rgb(75, 74, 74);
+  border-radius: 1px;
+}
+.review {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10%;
+  justify-content: space-between;
+  padding: 5% 0;
+  text-align: center;
+  height: 100%;
+}
+.speech {
+  color: rgb(236, 232, 232);
+  font-size: 0.85rem;
+
+  text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1),
+    0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+.reviewimg {
+  width: 25%;
+  border-radius: 50%;
+}
+
+.author {
+  align-self: flex-end;
+  font-size: 1rem;
+  color: rgb(255, 255, 255);
+}
+.centerimage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 30%;
+}
+.textwrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(129, 129, 129, 0.596);
+  border-radius: 10px;
+  padding: 5%;
+  margin-top: 5%;
+  background: rgba(139, 139, 139, 0.445);
+}
