@@ -8,7 +8,7 @@ import Categories from "./Header/Categories/Categories";
 import { scroll } from "../../Actions/Actions";
 import Jumbotron from "./Body/Jumbotron/Jumbotron";
 import Cards from "./Body/Cards/Cards";
-import Sandbox1 from "./Sandbox1";
+import Footer from "./Footer/Footer";
 
 class Main extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class Main extends Component {
         <Categories />
         <Jumbotron />
         <Cards />
-        <Sandbox1 />
+        <Footer />
       </React.Fragment>
     );
   }

@@ -8,7 +8,7 @@ class Cards extends Component {
   render() {
     return (
       <div className="cardscont">
-        <div className="cards">
+        <div className="cards cardslg cardsmd ">
           <div className="custcard">
             <div
               className="imgcontainer"
@@ -22,29 +22,27 @@ class Cards extends Component {
             </div>
           </div>
           <div className="custcard">
-            <div className="imgcontainer"></div>
+            <div
+              className="imgcontainer"
+              style={{ backgroundImage: `url(${lawyer})` }}
+            ></div>
 
             <div className="title">Chad Longstool</div>
             <div className="cardtext">
               I've saved quite a lot of suspected murderers in my time. No
               prosecutor can Match with this convincing lying face.
-              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaa
             </div>
           </div>
           <div className="custcard">
-            <div className="imgcontainer"></div>
+            <div
+              className="imgcontainer"
+              style={{ backgroundImage: `url(${locksmith})` }}
+            ></div>
 
-            <p className="title">Chad Longstool</p>
+            <p className="title">Johan Mcfertilizer</p>
             <p className="cardtext">
-              I've saved quite a lot of suspected murderers in my time. No
-              prosecutor can Match with this convincing lying face.
+              Been to jail 7 times. 7 out of 7 times i got out. my expertize
+              counts 20 years. no lock stands in my way.
             </p>
           </div>
         </div>

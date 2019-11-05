@@ -2,8 +2,20 @@
   width: 80%;
   grid-gap: 5%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
+
   grid-auto-rows: minmax(25rem, auto);
+}
+
+@media only screen and (min-width: 768px) {
+  .cardsmd {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (min-width: 1266px) {
+  .cardslg {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .custcard {
@@ -17,9 +29,7 @@
   justify-content: flex-start;
 }
 .imgcontainer {
-  min-height: 50%;
-  flex-basis: 50%;
-  height: 50%;
+  height: 15rem;
   width: 100%;
   background-size: cover;
 }
