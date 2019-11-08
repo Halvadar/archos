@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import rootreducer from "./Reducers/rootReducer";
-import Main from "./Components/Main/Main";
+import App from "./Components/App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -14,7 +14,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Main />
+    <App />
   </Provider>,
   document.getElementById("root")
 );

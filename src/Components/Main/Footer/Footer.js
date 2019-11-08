@@ -8,35 +8,51 @@ import copyright from "./copyright.svg";
 class Footer extends Component {
   render() {
     return (
-      <div className="custfooter custfootermd custfooterlg">
-        <div className="footergriditem">
-          <div className="contactscont">
-            <div style={{ paddingLeft: "10%" }}>Contact us</div>
-            <div className="contactitem">
-              <img className="contactitemimg" src={facebook}></img>
-              Facebook/Archos
+      <div className="custfooter">
+        <div className="custfootersm custfootermd custfooterlg">
+          <div className="footergriditem">
+            <div className="contactcontact">Contact us</div>
+            <div className="contactscont">
+              <div className="contactitem">
+                <img className="contactitemimg" src={facebook}></img>
+                <div>Facebook/Archos</div>
+              </div>
+              <div className="contactitem">
+                <img className="contactitemimg" src={twitter}></img>
+
+                <div>twitter/archos</div>
+              </div>
+              <div className="contactitem">
+                <img className="contactitemimg" src={gmail}></img>
+                <div>Archos@gmail.com</div>
+              </div>
             </div>
-            <div className="contactitem">
-              <img className="contactitemimg" src={twitter}></img>
-              twitter/archos
+          </div>
+          {window.innerWidth >= 768 ? (
+            <div className="footergriditem">
+              <div className="copyright">
+                <img src={copyright} />
+                2019 Archos
+              </div>
             </div>
-            <div className="contactitem">
-              <img className="contactitemimg" src={gmail}></img>
-              Archos@gmail.com
+          ) : null}
+
+          <div className="footergriditem">
+            <div className="aboutcont">
+              <div className="aboutitem">Terms</div>
+              <div className="aboutitem">Advertise</div>
+              <div className="aboutitem">About</div>
             </div>
           </div>
         </div>
-        <div className="footergriditem">
-          <div>Terms</div>
-          <div>Advertise</div>
-          <div>About</div>
-        </div>
-        <div className="footergriditem">
-          <div className="copyright">
-            <img src={copyright} />
-            2019 Archos
+        {window.innerWidth < 768 ? (
+          <div className="footergriditem">
+            <div className="copyright">
+              <img src={copyright} />
+              2019 Archos
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     );
   }

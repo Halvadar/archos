@@ -178,11 +178,13 @@ class Searchboxanimation extends Component {
           className="searchbox"
           ref={a => (this.searchbox = a)}
         >
-          <input
-            className="searchboxinput"
-            type="text"
-            style={{ border: this.state.searchinputborder }}
-          />
+          <div className="searchboxinputcont">
+            <input
+              className="searchboxinput"
+              type="text"
+              style={{ border: this.state.searchinputborder }}
+            />
+          </div>
 
           <div className="searchbuttoncontainer">
             <div className="searchbutton">

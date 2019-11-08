@@ -1,0 +1,13 @@
+.categoriespagecategories {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin: 2rem 0 0 2rem;
+}
+
+.subcategories {
+  display: flex;
+  align-self: center;
+}
