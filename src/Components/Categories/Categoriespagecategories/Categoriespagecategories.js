@@ -134,22 +134,31 @@ export class Categoriespagecategories extends Component {
 
   categoryitemheight = () => {
     return window
-      .getComputedStyle(this.categ.children[0])
+      .getComputedStyle(this.subcatheightref)
       .getPropertyValue("height");
   };
 
   subcategoryextensionheightsetter = () => {
+    console.log(this.categoryitemheight());
     this.setState(prevState => {
-      console.log(prevState.animation.length);
       for (var i = 0; i < prevState.animation.length; i++) {
-        console.log(i);
-
-        prevState.animation[i].subcategoryextensionheight = parseInt(
-          this.categoryitemheight().slice(
-            0,
-            this.categoryitemheight().length - 2
-          )
-        );
+        if (prevState.animation[i].animationtopdistance === 0) {
+          prevState.animation[i].subcategoryextensionheight = parseInt(
+            this.categoryitemheight().slice(
+              0,
+              this.categoryitemheight().length - 2
+            )
+          );
+        } else {
+          prevState.animation[i].subcategoryextensionheight =
+            parseInt(
+              this.categoryitemheight().slice(
+                0,
+                this.categoryitemheight().length - 2
+              )
+            ) *
+            (services[i].children.length + 1);
+        }
       }
       return {
         animation: prevState.animation,
@@ -165,13 +174,13 @@ export class Categoriespagecategories extends Component {
 
   categoryitemresetter = () => {
     for (var i = 0; i < this.state.animation.length; i++) {
-      if (this.state.animation[i].animationstate) {
+      if (this.state.animation[i].animationstate === "not going") {
         continue;
       } else {
-        return;
+        return console.log("not passed");
       }
     }
-
+    console.log("passed");
     this.subcategoryextensionheightsetter();
   };
 
@@ -183,7 +192,10 @@ export class Categoriespagecategories extends Component {
   }
   render() {
     return (
-      <div className="categoriespagecategories" ref={e => (this.categ = e)}>
+      <div
+        className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl categoriespagecategoriesxxl "
+        ref={e => (this.categ = e)}
+      >
         {services.map((a, b) => {
           return (
             <div
@@ -196,6 +208,7 @@ export class Categoriespagecategories extends Component {
                 <div
                   className="subcategoriesname"
                   onClick={this.subcatanimation(b)}
+                  ref={b === 0 ? e => (this.subcatheightref = e) : null}
                 >
                   {a.name}
                 </div>
