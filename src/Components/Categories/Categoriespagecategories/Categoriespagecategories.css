@@ -5,9 +5,38 @@
   grid-column-start: 1;
   grid-column-end: 3;
   margin: 2rem 0 0 2rem;
+  position: relative;
 }
 
 .subcategories {
   display: flex;
-  align-self: center;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border: 1px solid black;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+
+.subcategories:hover {
+  cursor: pointer;
+}
+.subsubcategories {
+  position: absolute;
+  z-index: -1;
+  align-self: stretch;
+  background: red;
+}
+.subcategoriesname {
+  position: relative;
+  z-index: 1;
+  background: white;
+}
+
+.subcategoriesextention {
+  display: flex;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border: 1px solid black;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
 }
