@@ -111,7 +111,7 @@ export class Categoriespagecategories extends Component {
             this.setState({ animation: animationcopy });
             clearInterval(interval);
           }
-        }, 10);
+        }, 5);
       }
     };
   };
@@ -143,7 +143,7 @@ export class Categoriespagecategories extends Component {
     this.setState(prevState => {
       for (var i = 0; i < prevState.animation.length; i++) {
         if (prevState.animation[i].animationtopdistance === 0) {
-          prevState.animation[i].subcategoryextensionheight = parseInt(
+          prevState.animation[i].subcategoryextensionheight = parseFloat(
             this.categoryitemheight().slice(
               0,
               this.categoryitemheight().length - 2
@@ -151,7 +151,7 @@ export class Categoriespagecategories extends Component {
           );
         } else {
           prevState.animation[i].subcategoryextensionheight =
-            parseInt(
+            parseFloat(
               this.categoryitemheight().slice(
                 0,
                 this.categoryitemheight().length - 2
@@ -162,7 +162,7 @@ export class Categoriespagecategories extends Component {
       }
       return {
         animation: prevState.animation,
-        heightreference: parseInt(
+        heightreference: parseFloat(
           this.categoryitemheight().slice(
             0,
             this.categoryitemheight().length - 2
@@ -193,12 +193,13 @@ export class Categoriespagecategories extends Component {
   render() {
     return (
       <div
-        className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl categoriespagecategoriesxxl "
+        className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl  "
         ref={e => (this.categ = e)}
       >
-        {services.map((a, b) => {
+        {services.map((a, b, arr) => {
           return (
             <div
+              className="categoriescont"
               style={{
                 height:
                   this.state.animation[b].subcategoryextensionheight + "px"
@@ -206,6 +207,12 @@ export class Categoriespagecategories extends Component {
             >
               <div className="subcategories">
                 <div
+                  style={
+                    arr.length - b < 1 &&
+                    this.state.animation[b].animationtopdistance === 0
+                      ? { paddingBottom: "1px" }
+                      : {}
+                  }
                   className="subcategoriesname"
                   onClick={this.subcatanimation(b)}
                   ref={b === 0 ? e => (this.subcatheightref = e) : null}
