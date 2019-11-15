@@ -4,6 +4,10 @@ const screenstate = {
   screensize: undefined,
   scroll: undefined
 };
+const getcardsstate = {
+  isfetching: false,
+  cards: []
+};
 
 const screen = (state = screenstate, action) => {
   switch (action.type) {
@@ -16,4 +20,15 @@ const screen = (state = screenstate, action) => {
   }
 };
 
-export default combineReducers({ screen });
+const getcards = (state = getcardsstate, action) => {
+  switch (action.type) {
+    case "GET_CARDS":
+      return { ...state, isfetching: true };
+    case "SET_CARDS":
+      return { ...state, isfetching: false, cards: action.cards };
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ screen, getcards });

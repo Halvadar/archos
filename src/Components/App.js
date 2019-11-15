@@ -40,15 +40,22 @@ class App extends Component {
         <React.Fragment>
           <Navbar refref={q => (this.burgerref = q)} click1 />
           <Switch>
-            <Route path="/categories">
-              <Categoriespage />
-            </Route>
-            <Route path="/">
-              <Headerbackground />
-              <Categories />
-              <Jumbotron />
-              <Cards />
-            </Route>
+            <Route
+              path="/categories"
+              render={props => <Categoriespage {...props}></Categoriespage>}
+            />
+
+            <Route
+              path="/"
+              render={() => (
+                <React.Fragment>
+                  <Headerbackground />
+                  <Categories />
+                  <Jumbotron />
+                  <Cards />
+                </React.Fragment>
+              )}
+            ></Route>
           </Switch>
           <Footer />
         </React.Fragment>
@@ -75,7 +82,4 @@ const mapStateToProps = state => ({
   screensize: state
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink, useRouteMatch } from "react-router-dom";
 import "./Categoriespagecategories.css";
 // CR=categrenderer
 const cr = (categname, ...args) => {
@@ -185,10 +186,12 @@ export class Categoriespagecategories extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props.location);
     console.log(window.getComputedStyle(this.categ));
     console.log(this.categoryitemheight());
     this.subcategoryextensionheightsetter();
     window.addEventListener("resize", this.categoryitemresetter);
+    console.log(this.props.location);
   }
   render() {
     return (
@@ -217,7 +220,9 @@ export class Categoriespagecategories extends Component {
                   onClick={this.subcatanimation(b)}
                   ref={b === 0 ? e => (this.subcatheightref = e) : null}
                 >
-                  {a.name}
+                  <NavLink to={`${this.props.location.pathname}/${a.name}`}>
+                    {a.name}
+                  </NavLink>
                 </div>
                 {a.children.map((c, d, ttt) => {
                   return (

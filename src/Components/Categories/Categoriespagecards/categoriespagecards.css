@@ -1,0 +1,11 @@
+.categoriespagecards {
+  grid-column: 4 / span 6;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.categoriespagecard {
+  display: flex;
+  flex-direction: column;
+  grid-column: span 4;
+}

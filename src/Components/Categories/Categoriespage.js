@@ -4,11 +4,19 @@ import Categoriespagecards from "./Categoriespagecards/Categoriespagecards";
 import "./Categoriespage.css";
 
 class Categoriespage extends Component {
+  componentDidMount() {
+    console.log(this.props.location);
+  }
   render() {
+    console.log(this.props.location);
     return (
       <div className="categoriespage">
-        <Categoriespagecategories></Categoriespagecategories>
-        {/* <Categoriespagecards></Categoriespagecards> */}
+        <Categoriespagecategories
+          location={this.props.location}
+        ></Categoriespagecategories>
+        <Categoriespagecards
+          location={this.props.location}
+        ></Categoriespagecards>
       </div>
     );
   }
