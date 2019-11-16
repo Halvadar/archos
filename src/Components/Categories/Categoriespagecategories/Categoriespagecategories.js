@@ -116,9 +116,7 @@ export class Categoriespagecategories extends Component {
       }
     };
   };
-  componentDidUpdate() {
-    console.log(this.state.animation[0].subcategoryextensionheight);
-  }
+  componentDidUpdate() {}
 
   subcatindexchecker = (b, d) => {
     if (this.state.animation[b].animationstate !== "not going") {
@@ -140,7 +138,6 @@ export class Categoriespagecategories extends Component {
   };
 
   subcategoryextensionheightsetter = () => {
-    console.log(this.categoryitemheight());
     this.setState(prevState => {
       for (var i = 0; i < prevState.animation.length; i++) {
         if (prevState.animation[i].animationtopdistance === 0) {
@@ -181,17 +178,13 @@ export class Categoriespagecategories extends Component {
         return console.log("not passed");
       }
     }
-    console.log("passed");
+
     this.subcategoryextensionheightsetter();
   };
 
   componentDidMount() {
-    console.log(this.props.location);
-    console.log(window.getComputedStyle(this.categ));
-    console.log(this.categoryitemheight());
     this.subcategoryextensionheightsetter();
     window.addEventListener("resize", this.categoryitemresetter);
-    console.log(this.props.location);
   }
   render() {
     return (

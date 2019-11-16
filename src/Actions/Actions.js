@@ -32,7 +32,8 @@ export const fetchcards = prop => {
               title
               description
               image
-              score   
+              score
+              _id   
      }}`
       },
       headers: { "Content-Type": "application/json" }
