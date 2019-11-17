@@ -9,7 +9,7 @@ export class Categoriespagecards extends Component {
   }
   render() {
     return (
-      <div className="categoriespagecards">
+      <div className="categoriespagecards categoriespagecardsmd categoriespagecardslg categoriespagecardsxl">
         {this.props.cardsstate.isfetching ? (
           <h1>loading</h1>
         ) : (

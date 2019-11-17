@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import "./Categoriespagecategories.css";
+import dropdown from "./dropdown.svg";
 // CR=categrenderer
 const cr = (categname, ...args) => {
   return {
@@ -70,7 +71,9 @@ export class Categoriespagecategories extends Component {
     super();
     this.state = {
       animation: car(),
-      heightreference: undefined
+      heightreference: undefined,
+      dropdownanimationstate: "not going",
+      dropdowntopdistance: 0
     };
   }
   subcatanimation = e => {
@@ -181,58 +184,170 @@ export class Categoriespagecategories extends Component {
 
     this.subcategoryextensionheightsetter();
   };
+  categoriesdropdown = () => {
+    if (this.state.dropdownanimationstate !== "going") {
+      let i = this.state.dropdowntopdistance;
+      if (i === 0) {
+        this.setState({ dropdownanimationstate: "going" });
+        var newinterval = setInterval(() => {
+          if (i < 100) {
+            i++;
+            this.setState({ dropdowntopdistance: i });
+          } else {
+            clearInterval(newinterval);
+            this.setState({ dropdownanimationstate: "not going" });
+          }
+        }, 5);
+      } else if (i === 100) {
+        this.setState({ dropdownanimationstate: "going" });
+        var newinterval = setInterval(() => {
+          if (i > 0) {
+            i = i - 1;
+            this.setState({ dropdowntopdistance: i });
+          } else {
+            clearInterval(newinterval);
+            this.setState({ dropdownanimationstate: "not going" });
+          }
+        }, 5);
+      }
+    }
+  };
 
   componentDidMount() {
     this.subcategoryextensionheightsetter();
     window.addEventListener("resize", this.categoryitemresetter);
   }
   render() {
-    return (
-      <div
-        className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl  "
-        ref={e => (this.categ = e)}
-      >
-        {services.map((a, b, arr) => {
-          return (
-            <div
-              className="categoriescont"
-              style={{
-                height:
-                  this.state.animation[b].subcategoryextensionheight + "px"
-              }}
-            >
-              <div className="subcategories">
-                <div
-                  style={
-                    arr.length - b < 1 &&
-                    this.state.animation[b].animationtopdistance === 0
-                      ? { paddingBottom: "1px" }
-                      : {}
-                  }
-                  className="subcategoriesname"
-                  onClick={this.subcatanimation(b)}
-                  ref={b === 0 ? e => (this.subcatheightref = e) : null}
-                >
-                  <NavLink to={`${this.props.location.pathname}/${a.name}`}>
-                    {a.name}
-                  </NavLink>
+    if (window.innerWidth >= 768) {
+      return (
+        <div
+          className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl  "
+          ref={e => (this.categ = e)}
+        >
+          {services.map((a, b, arr) => {
+            return (
+              <div
+                className="categoriescont"
+                style={{
+                  height:
+                    this.state.animation[b].subcategoryextensionheight + "px"
+                }}
+              >
+                <div className="subcategories">
+                  <div
+                    style={
+                      arr.length - b < 1 &&
+                      this.state.animation[b].animationtopdistance === 0
+                        ? { paddingBottom: "1px" }
+                        : {}
+                    }
+                    className="subcategoriesname"
+                    onClick={this.subcatanimation(b)}
+                    ref={b === 0 ? e => (this.subcatheightref = e) : null}
+                  >
+                    <NavLink to={`${this.props.location.pathname}/${a.name}`}>
+                      {a.name}
+                    </NavLink>
+                  </div>
+                  {a.children.map((c, d, ttt) => {
+                    return (
+                      <div
+                        style={{
+                          top: this.subcatindexchecker(b, d) + "%",
+                          border:
+                            this.state.animation[d].animationstate ===
+                            "not going"
+                              ? "1px solid rgb(218, 247, 247)"
+                              : "1px solid rgb(181, 245, 245) ",
+                          borderWidth: "1px 0 1px 0"
+                        }}
+                        className="subsubcategories"
+                      >
+                        {c}
+                      </div>
+                    );
+                  })}
                 </div>
-                {a.children.map((c, d, ttt) => {
-                  return (
-                    <div
-                      style={{ top: this.subcatindexchecker(b, d) + "%" }}
-                      className="subsubcategories"
-                    >
-                      {c}
-                    </div>
-                  );
-                })}
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      return (
+        <div className="categoriespagecategoriessm">
+          <div
+            className="categoriespagecategoriescategoriescont"
+            style={{ height: this.state.heightreference + "px" }}
+          >
+            <div
+              onClick={this.categoriesdropdown}
+              className="categoriespagecategoriescategories"
+            >
+              Categories
+              <div>
+                <img src={dropdown} width="10px"></img>
               </div>
             </div>
-          );
-        })}
-      </div>
-    );
+            {services.map((a, b, arr) => {
+              return (
+                <div
+                  className="categoriescontsm"
+                  style={{
+                    height:
+                      this.state.animation[b].subcategoryextensionheight + "px",
+                    zIndex: -1 - b,
+                    top: this.state.dropdowntopdistance * (b + 1) + "%"
+                  }}
+                >
+                  <div className="subcategories">
+                    <div
+                      style={{
+                        border:
+                          this.state.dropdownanimationstate === "not going"
+                            ? "1px solid rgb(181, 245, 245)"
+                            : "1px solid rgb(218, 247, 247)",
+                        borderWidth: "1px 0 1px 0",
+                        paddingBottom:
+                          arr.length - b < 1 &&
+                          this.state.animation[b].animationtopdistance === 0
+                            ? "1px"
+                            : null
+                      }}
+                      className="subcategoriesname"
+                      onClick={this.subcatanimation(b)}
+                      ref={b === 0 ? e => (this.subcatheightref = e) : null}
+                    >
+                      <NavLink to={`${this.props.location.pathname}/${a.name}`}>
+                        {a.name}
+                      </NavLink>
+                    </div>
+                    {a.children.map((c, d, ttt) => {
+                      return (
+                        <div
+                          style={{
+                            top: this.subcatindexchecker(b, d) + "%",
+                            border:
+                              this.state.animation[d].animationstate ===
+                              "not going"
+                                ? "1px solid rgb(218, 247, 247)"
+                                : "1px solid rgb(181, 245, 245) ",
+                            borderWidth: "1px 0 1px 0"
+                          }}
+                          className="subsubcategories"
+                        >
+                          {c}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
   }
 }
 

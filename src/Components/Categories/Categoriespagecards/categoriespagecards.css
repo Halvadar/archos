@@ -1,17 +1,33 @@
 .categoriespagecards {
-  grid-column: 4 / span 6;
+  grid-column: 1 / span 10;
   display: flex;
   flex-flow: wrap;
   justify-content: center;
 }
 
+@media only screen and (min-width: 768px) {
+  .categoriespagecardsmd {
+    grid-column: 5 / span 6;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .categoriespagecardslg {
+    grid-column: 4 / span 7;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .categoriespagecardsxl {
+    grid-column: 3 / span 8;
+  }
+}
 .categoriespagecard {
   margin: 5%;
   width: 250px;
   height: 520px;
   display: flex;
   flex-direction: column;
-  grid-column: span 4;
+
   align-items: stretch;
 
   border-radius: 6%/3%;

@@ -250,7 +250,7 @@ class Navbar extends Component {
               ref={q => this.aaa(q)}
               style={{
                 position: "absolute",
-                zIndex: 10,
+                zIndex: 102,
                 right: "0px",
                 width: this.state.hamburgerwidth + "%",
                 height: this.state.hamburgerheight + "%",
