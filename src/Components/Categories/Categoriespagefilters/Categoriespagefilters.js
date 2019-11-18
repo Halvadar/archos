@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Categoriespagefilters.css";
 import dropdown from "../Categoriespagecategories/dropdown.svg";
+import searchicon from "./search.svg";
 
 export default class Categoriespagefilters extends Component {
   constructor() {
@@ -40,6 +41,24 @@ export default class Categoriespagefilters extends Component {
       if (i < 100) {
       }
     }
+  };
+  searchboxwidthsetter = () => {
+    let i = window.innerWidth;
+
+    if (i >= 1920) {
+      return "20%";
+    } else if (i >= 1660) {
+      return "25%";
+    } else if (i >= 1440) {
+      return "30%";
+    } else if (i >= 1024) {
+      return "35%";
+    } else if (i >= 768) {
+      return "50%";
+    } else if (i >= 500) {
+      return "40%";
+    }
+    return "200px";
   };
   render() {
     return (
@@ -82,9 +101,16 @@ export default class Categoriespagefilters extends Component {
             Alphabet Z-A
           </div>
         </div>
-        <div className="categoriespagesearchbox">
-          <div className="categoriespagesearchboxinput"></div>
-          <div className="categoriespagesearchboxbutton"></div>
+        <div
+          className="categoriespagesearchbox"
+          style={{ width: this.searchboxwidthsetter() }}
+        >
+          <div className="categoriespagesearchboxinputcont">
+            <input className="categoriespagesearchboxinput" type="text"></input>
+          </div>
+          <div className="categoriespagesearchboxbutton">
+            <img src={searchicon} width="75%"></img>
+          </div>
         </div>
       </div>
     );

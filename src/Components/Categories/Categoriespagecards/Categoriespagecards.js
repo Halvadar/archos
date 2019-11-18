@@ -5,7 +5,7 @@ import { fetchcards, setcards } from "../../../Actions/Actions";
 
 export class Categoriespagecards extends Component {
   componentDidMount() {
-    this.props.getcards();
+    this.props.getcards({ category: "asds", subcategory: "asd" });
   }
   render() {
     return (

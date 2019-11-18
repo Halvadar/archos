@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import "./Categoriespagecategories.css";
 import dropdown from "./dropdown.svg";
+import { fetchcards } from "../../../Actions/Actions";
+import { connect } from "react-redux";
 // CR=categrenderer
 const cr = (categname, ...args) => {
   return {
@@ -66,7 +68,7 @@ const car = () =>
     };
   });
 
-export class Categoriespagecategories extends Component {
+class Categoriespagecategories extends Component {
   constructor() {
     super();
     this.state = {
@@ -245,9 +247,7 @@ export class Categoriespagecategories extends Component {
                     onClick={this.subcatanimation(b)}
                     ref={b === 0 ? e => (this.subcatheightref = e) : null}
                   >
-                    <NavLink to={`${this.props.location.pathname}/${a.name}`}>
-                      {a.name}
-                    </NavLink>
+                    {a.name}
                   </div>
                   {a.children.map((c, d, ttt) => {
                     return (
@@ -261,6 +261,10 @@ export class Categoriespagecategories extends Component {
                               : "1px solid rgb(181, 245, 245) ",
                           borderWidth: "1px 0 1px 0"
                         }}
+                        onClick={this.props.getcards({
+                          subcategory: c,
+                          category: a.name
+                        })}
                         className="subsubcategories"
                       >
                         {c}
@@ -335,6 +339,10 @@ export class Categoriespagecategories extends Component {
                             borderWidth: "1px 0 1px 0"
                           }}
                           className="subsubcategories"
+                          onClick={this.props.getcards({
+                            subcategory: c,
+                            category: a
+                          })}
                         >
                           {c}
                         </div>
@@ -350,5 +358,10 @@ export class Categoriespagecategories extends Component {
     }
   }
 }
+const mapDispatchToProps = dispatch => ({
+  getcards: e => {
+    return () => dispatch(fetchcards(e));
+  }
+});
 
-export default Categoriespagecategories;
+export default connect(null, mapDispatchToProps)(Categoriespagecategories);

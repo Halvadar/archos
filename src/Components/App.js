@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
 import Navbar from "./Main/Header/Navbar/Navbar";
 import Sandbox from "./Main/Sandbox";
 import Headerbackground from "./Main/Header/Headerbackground/Headerbackground";
@@ -36,7 +36,30 @@ class App extends Component {
 
   render() {
     return (
-      <div style={{ width: "100px", height: "100px", background: "red" }}></div>
+      <Router>
+        <React.Fragment>
+          <Navbar refref={q => (this.burgerref = q)} click1 />
+          <Switch>
+            <Route
+              path="/categories"
+              render={props => <Categoriespage {...props}></Categoriespage>}
+            />
+
+            <Route
+              path="/"
+              render={() => (
+                <React.Fragment>
+                  <Headerbackground />
+                  <Categories />
+                  <Jumbotron />
+                  <Cards />
+                </React.Fragment>
+              )}
+            ></Route>
+          </Switch>
+          <Footer />
+        </React.Fragment>
+      </Router>
     );
   }
 }

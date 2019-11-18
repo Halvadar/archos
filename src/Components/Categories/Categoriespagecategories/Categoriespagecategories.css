@@ -64,11 +64,9 @@
   z-index: 101;
   position: relative;
   background: rgb(181, 245, 245);
+  height: fit-content;
 }
 
-.subcategories:hover {
-  cursor: pointer;
-}
 .subsubcategories {
   position: absolute;
   z-index: 1;
@@ -81,6 +79,9 @@
   font-size: 0.9em;
   font-weight: 600;
 }
+.subsubcategories:hover {
+  cursor: pointer;
+}
 .subcategoriesname {
   padding: 0.4rem 0 0.4rem 1rem;
   position: relative;
@@ -92,7 +93,9 @@
   color: rgb(54, 53, 53);
   font-weight: 650;
 }
-
+.subcategoriesname:hover {
+  cursor: pointer;
+}
 .subcategoriesextention {
   display: flex;
   padding: 0.2rem 0 0.2rem 1rem;

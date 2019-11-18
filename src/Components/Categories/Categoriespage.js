@@ -8,7 +8,7 @@ class Categoriespage extends Component {
   componentDidMount() {}
   render() {
     return (
-      <div className="categoriespage categoriespagemd">
+      <div className="categoriespage categoriespagemd categoriespagelg">
         <Categoriespagecategories
           location={this.props.location}
         ></Categoriespagecategories>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../Configs";
 
 export const changescreensize = prop => ({
   type: "CHANGE_SCREEN_SIZE",
@@ -20,21 +20,23 @@ export const setcards = cards => ({
   cards
 });
 
-export const fetchcards = prop => {
+export const fetchcards = props => {
   return dispatch => {
-    dispatch(requestcards(prop));
-    return axios({
-      url: "http://localhost:4000/graphql",
+    console.log(props.category);
+    dispatch(requestcards(props));
+    return axiosInstance({
       method: "POST",
       data: {
         query: `
-          query {getCards{
+          query inputtypes($category:String!, $subcategory:String!) {
+            getCards(Input:{category:$category, subcategory:$subcategory}){
               title
               description
               image
               score
               _id   
-     }}`
+     }}`,
+        variables: { category: props.category, subcategory: props.subcategory }
       },
       headers: { "Content-Type": "application/json" }
     })
