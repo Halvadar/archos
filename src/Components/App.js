@@ -36,30 +36,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <React.Fragment>
-          <Navbar refref={q => (this.burgerref = q)} click1 />
-          <Switch>
-            <Route
-              path="/categories"
-              render={props => <Categoriespage {...props}></Categoriespage>}
-            />
-
-            <Route
-              path="/"
-              render={() => (
-                <React.Fragment>
-                  <Headerbackground />
-                  <Categories />
-                  <Jumbotron />
-                  <Cards />
-                </React.Fragment>
-              )}
-            ></Route>
-          </Switch>
-          <Footer />
-        </React.Fragment>
-      </Router>
+      <div style={{ width: "100px", height: "100px", background: "red" }}></div>
     );
   }
 }
