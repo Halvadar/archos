@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/archos/static/css/main.3198023d.chunk.css",
-    "main.js": "/archos/static/js/main.0bbbc00b.chunk.js",
-    "main.js.map": "/archos/static/js/main.0bbbc00b.chunk.js.map",
+    "main.js": "/archos/static/js/main.c458b3c4.chunk.js",
+    "main.js.map": "/archos/static/js/main.c458b3c4.chunk.js.map",
     "runtime-main.js": "/archos/static/js/runtime-main.450ff823.js",
     "runtime-main.js.map": "/archos/static/js/runtime-main.450ff823.js.map",
     "static/css/2.510409cd.chunk.css": "/archos/static/css/2.510409cd.chunk.css",
     "static/js/2.fe475d72.chunk.js": "/archos/static/js/2.fe475d72.chunk.js",
     "static/js/2.fe475d72.chunk.js.map": "/archos/static/js/2.fe475d72.chunk.js.map",
     "index.html": "/archos/index.html",
-    "precache-manifest.6fefe7c0c65c0854794e56811cbe3426.js": "/archos/precache-manifest.6fefe7c0c65c0854794e56811cbe3426.js",
+    "precache-manifest.41a5fb234e6da5a6f197596a1c5e69bc.js": "/archos/precache-manifest.41a5fb234e6da5a6f197596a1c5e69bc.js",
     "service-worker.js": "/archos/service-worker.js",
     "static/css/2.510409cd.chunk.css.map": "/archos/static/css/2.510409cd.chunk.css.map",
     "static/css/main.3198023d.chunk.css.map": "/archos/static/css/main.3198023d.chunk.css.map",
@@ -42,6 +42,6 @@
     "static/css/2.510409cd.chunk.css",
     "static/js/2.fe475d72.chunk.js",
     "static/css/main.3198023d.chunk.css",
-    "static/js/main.0bbbc00b.chunk.js"
+    "static/js/main.c458b3c4.chunk.js"
   ]
 }
