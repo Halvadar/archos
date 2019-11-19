@@ -5,6 +5,9 @@ import Categoriespagefilters from "./Categoriespagefilters/Categoriespagefilters
 import "./Categoriespage.css";
 
 class Categoriespage extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {}
   render() {
     return (

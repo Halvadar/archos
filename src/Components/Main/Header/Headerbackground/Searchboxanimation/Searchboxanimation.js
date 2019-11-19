@@ -205,7 +205,4 @@ const mapDispatchToProps = dispatch => ({
   changescreensize: e => dispatch(changescreensize(e))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Searchboxanimation);
+export default connect(mapStateToProps, mapDispatchToProps)(Searchboxanimation);

@@ -9,6 +9,8 @@ import carpenter from "./carpenter.svg";
 import moving from "./moving.svg";
 import dots from "./dots.svg";
 import { connect } from "react-redux";
+import { fetchcards } from "../../../../Actions/Actions";
+import { NavLink } from "react-router-dom";
 
 class Categories extends Component {
   constructor(props) {
@@ -157,6 +159,13 @@ class Categories extends Component {
     }
   };
 
+  linkevent = e => {
+    return () => {
+      this.props.history.push("/categories");
+      this.props.getcards(e);
+    };
+  };
+
   render() {
     let sources = [krani, broom, electro, px, build, carpenter, moving];
     let text = [
@@ -192,6 +201,7 @@ class Categories extends Component {
                 key={t}
                 onMouseEnter={this.func(d)}
                 onMouseLeave={this.func1(d)}
+                onClick={this.linkevent({ subcategory: t[1] })}
               >
                 <img src={t[0]} />
                 {t[1]}
@@ -205,10 +215,10 @@ class Categories extends Component {
                     (d === 5 &&
                       this.props.screensize < 1024 &&
                       this.props.screensize >= 768) ||
-                    ((d === 3 &&
+                    (d === 3 &&
                       this.props.screensize < 768 &&
                       this.props.screensize >= 500) ||
-                      ((d === 5 || d === 2) && this.props.screensize < 500))
+                    ((d === 5 || d === 2) && this.props.screensize < 500)
                       ? null
                       : "white",
                   width: "1px"
@@ -230,5 +240,10 @@ class Categories extends Component {
 const mapStateToProps = state => ({
   screensize: state.screen.screensize
 });
+const mapDispatchToProps = dispatch => ({
+  getcards: e => {
+    return dispatch(fetchcards(e));
+  }
+});
 
-export default connect(mapStateToProps)(Categories);
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

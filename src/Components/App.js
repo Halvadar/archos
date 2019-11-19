@@ -47,10 +47,10 @@ class App extends Component {
 
             <Route
               path="/"
-              render={() => (
+              render={props => (
                 <React.Fragment>
                   <Headerbackground />
-                  <Categories />
+                  <Categories {...props} />
                   <Jumbotron />
                   <Cards />
                 </React.Fragment>

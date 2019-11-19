@@ -21,14 +21,15 @@ export const setcards = cards => ({
 });
 
 export const fetchcards = props => {
+  console.log("asd");
   return dispatch => {
-    console.log(props.category);
+    console.log(props);
     dispatch(requestcards(props));
     return axiosInstance({
       method: "POST",
       data: {
         query: `
-          query inputtypes($category:String!, $subcategory:String!) {
+          query inputtypes($category:String, $subcategory:String) {
             getCards(Input:{category:$category, subcategory:$subcategory}){
               title
               description

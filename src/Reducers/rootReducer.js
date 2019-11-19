@@ -6,13 +6,18 @@ const screenstate = {
 };
 const getcardsstate = {
   isfetching: false,
-  cards: []
+  cards: [],
+  category: "all",
+  subcategory: "all"
 };
 
 const screen = (state = screenstate, action) => {
   switch (action.type) {
     case "CHANGE_SCREEN_SIZE":
-      return { ...state, screensize: action.prop };
+      return {
+        ...state,
+        screensize: action.prop
+      };
     case "SCROLL":
       return { ...state, scroll: action.prop };
     default:
@@ -23,7 +28,12 @@ const screen = (state = screenstate, action) => {
 const getcards = (state = getcardsstate, action) => {
   switch (action.type) {
     case "GET_CARDS":
-      return { ...state, isfetching: true };
+      return {
+        ...state,
+        isfetching: true,
+        category: action.prop.category || undefined,
+        subcategory: action.prop.subcategory || undefined
+      };
     case "SET_CARDS":
       return { ...state, isfetching: false, cards: action.cards };
     default:

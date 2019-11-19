@@ -4,9 +4,7 @@ import { connect } from "react-redux";
 import { fetchcards, setcards } from "../../../Actions/Actions";
 
 export class Categoriespagecards extends Component {
-  componentDidMount() {
-    this.props.getcards({ category: "asds", subcategory: "asd" });
-  }
+  componentDidMount() {}
   render() {
     return (
       <div className="categoriespagecards categoriespagecardsmd categoriespagecardslg categoriespagecardsxl">
@@ -14,7 +12,6 @@ export class Categoriespagecards extends Component {
           <h1>loading</h1>
         ) : (
           this.props.cardsstate.cards.map((a, b) => {
-            console.log(a.score);
             return (
               <div className="categoriespagecard" key={a._id}>
                 <div

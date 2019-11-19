@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./Navbar.css";
 import { connect } from "react-redux";
 import hamburger from "./hamburger.svg";
+import { NavLink } from "react-router-dom";
 
 class Navbar extends Component {
   constructor(props) {
@@ -177,7 +178,9 @@ class Navbar extends Component {
     if (window.innerWidth >= 768 || this.state.sm === false) {
       return (
         <div style={{}} className="navbar justify-content-between custnavbar">
-          <img src={logo} alt="Archos" className=" mt-2 img-l img-sm img-md" />
+          <NavLink to="/" className=" mt-2 img-l img-sm img-md">
+            <img src={logo} alt="Archos" width="100%" />
+          </NavLink>
 
           <div className="row links rounded-left">
             <div

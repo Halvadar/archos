@@ -21,6 +21,7 @@ const services = [
     "Gutter Cleaning",
     "Floor Cleaning"
   ),
+
   cr(
     "Plumbing",
     "Piping",
@@ -29,6 +30,7 @@ const services = [
     "Water Purification"
   ),
   cr("Home Repair"),
+  cr("Construction Work"),
   cr("Painting", "Interior Painting", "House Painting"),
   cr("Electrician"),
   cr(
@@ -78,42 +80,46 @@ class Categoriespagecategories extends Component {
       dropdowntopdistance: 0
     };
   }
-  subcatanimation = e => {
+  subcatanimation = (b, a) => {
     return () => {
-      let animationtopdistance = this.state.animation[e].animationtopdistance;
+      console.log(this.props.cardsstate);
+      if (this.state.animation[b].animationtopdistance === 0) {
+        this.props.getcards({ category: a.name })();
+      }
+      let animationtopdistance = this.state.animation[b].animationtopdistance;
       let animationcopy = [...this.state.animation];
-      if (this.state.animation[e].animationstate === "not going") {
-        if (this.state.animation[e].animationtopdistance === 0) {
-          animationcopy[e].animationstate = "expanding";
+      if (this.state.animation[b].animationstate === "not going") {
+        if (this.state.animation[b].animationtopdistance === 0) {
+          animationcopy[b].animationstate = "expanding";
           this.setState({ animation: animationcopy });
         } else {
-          animationcopy[e].animationstate = "closing";
+          animationcopy[b].animationstate = "closing";
           this.setState({ animation: animationcopy });
         }
         let interval = setInterval(() => {
           if (
-            this.state.animation[e].animationstate === "expanding" &&
+            this.state.animation[b].animationstate === "expanding" &&
             animationtopdistance < 100
           ) {
-            animationcopy[e].subcategoryextensionheight =
-              animationcopy[e].subcategoryextensionheight +
-              this.categoryheightadder(e);
+            animationcopy[b].subcategoryextensionheight =
+              animationcopy[b].subcategoryextensionheight +
+              this.categoryheightadder(b);
             animationtopdistance++;
-            animationcopy[e].animationtopdistance = animationtopdistance;
+            animationcopy[b].animationtopdistance = animationtopdistance;
 
             this.setState({ animation: animationcopy });
           } else if (
-            this.state.animation[e].animationstate === "closing" &&
+            this.state.animation[b].animationstate === "closing" &&
             animationtopdistance > 0
           ) {
-            animationcopy[e].subcategoryextensionheight =
-              animationcopy[e].subcategoryextensionheight -
-              this.categoryheightadder(e);
+            animationcopy[b].subcategoryextensionheight =
+              animationcopy[b].subcategoryextensionheight -
+              this.categoryheightadder(b);
             animationtopdistance = animationtopdistance - 1;
-            animationcopy[e].animationtopdistance = animationtopdistance;
+            animationcopy[b].animationtopdistance = animationtopdistance;
             this.setState({ animation: animationcopy });
           } else {
-            animationcopy[e].animationstate = "not going";
+            animationcopy[b].animationstate = "not going";
             this.setState({ animation: animationcopy });
             clearInterval(interval);
           }
@@ -244,7 +250,7 @@ class Categoriespagecategories extends Component {
                         : {}
                     }
                     className="subcategoriesname"
-                    onClick={this.subcatanimation(b)}
+                    onClick={this.subcatanimation(b, a)}
                     ref={b === 0 ? e => (this.subcatheightref = e) : null}
                   >
                     {a.name}
@@ -341,7 +347,7 @@ class Categoriespagecategories extends Component {
                           className="subsubcategories"
                           onClick={this.props.getcards({
                             subcategory: c,
-                            category: a
+                            category: a.name
                           })}
                         >
                           {c}
@@ -363,5 +369,10 @@ const mapDispatchToProps = dispatch => ({
     return () => dispatch(fetchcards(e));
   }
 });
-
-export default connect(null, mapDispatchToProps)(Categoriespagecategories);
+const mapStateToProps = state => ({
+  cardsstate: state.getcards
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Categoriespagecategories);
