@@ -11,6 +11,7 @@ import Jumbotron from "./Main/Body/Jumbotron/Jumbotron";
 import Cards from "./Main/Body/Cards/Cards";
 import Footer from "./Main/Footer/Footer";
 import Categoriespage from "./Categories/Categoriespage";
+import Register from "./Authenticate/Register/Register";
 
 class App extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class App extends Component {
               path="/categories"
               render={props => <Categoriespage {...props}></Categoriespage>}
             />
+            <Route path="/register" render={props => <Register />}></Route>
 
             <Route
               path="/"

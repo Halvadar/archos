@@ -170,8 +170,8 @@ class Categories extends Component {
     let sources = [krani, broom, electro, px, build, carpenter, moving];
     let text = [
       "Plumbing",
-      "House Cleaning",
-      "Electrical",
+      "Cleaning",
+      "Electrician",
       "IT",
       "Construction Work",
       "Carpentry",
