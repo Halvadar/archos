@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class Facebookform extends Component {
   render() {
     return (
-      <div className="registerpageform">
+      <div style={{ left: this.props.left + "%" }} className="registerpageform">
         {["Username", "First Name", "Last Name", "Email", "Phone Number"].map(
           (a, b) => {
             return (
