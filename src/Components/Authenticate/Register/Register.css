@@ -22,6 +22,8 @@
   padding: 1rem;
 }
 .registerbutton {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
   padding: 0.1rem 0.5rem 0.1rem 0.5rem;
   background: rgb(63, 124, 255);
   color: rgb(236, 245, 255);
@@ -111,12 +113,13 @@
 }
 
 .registerpageform {
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 0rem 1rem;
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
   position: absolute;
+  background: rgb(230, 250, 243);
 }
 .facebookbutton {
   border-radius: 5px;
@@ -129,7 +132,26 @@
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 .facebookbutton:hover {
+  cursor: pointer;
+}
+.googlebutton {
+  border-radius: 5px;
+  background: rgb(255, 128, 128);
+  height: 4rem;
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.googlebutton:hover {
   cursor: pointer;
 }

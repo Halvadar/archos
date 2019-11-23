@@ -19,6 +19,45 @@ export const setcards = cards => ({
   type: "SET_CARDS",
   cards
 });
+export const initializefacebookuser = user => ({
+  type: "CREATE_FACEBOOK_USER",
+  user
+});
+export const initializegmailuser = user => ({
+  type: "CREATE_GMAIL_USER",
+  user
+});
+export const setcurrentuser = user => ({
+  type: "SET_CURRENT_USER",
+  user
+});
+export const createfacebookuser = props => {
+  return (dispatch, getState) => {
+    return axiosInstance({
+      method: "POST",
+      data: {
+        query: `
+          query inputtypes($name:String, $lastname:String,$username:String!, $email:String!, $token:String!, $facebookid:String!, $phone:Int ) {
+            createFacebookUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, token:$token, facebookid:$facebookid}){
+              name
+              username
+              lastname
+
+     }}`,
+        variables: {
+          name: props.name,
+          lastname: props.lastname,
+          username: props.username,
+          email: props.email,
+          token: getState().createuser.token,
+          facebookid: getState().createuser.facebookid
+        }
+      }
+    }).then(result => {
+      dispatch(setcurrentuser(result));
+    });
+  };
+};
 
 export const fetchcards = props => {
   console.log("asd");

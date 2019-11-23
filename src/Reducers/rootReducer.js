@@ -10,6 +10,23 @@ const getcardsstate = {
   category: "all",
   subcategory: "all"
 };
+const userstate = {
+  name: undefined,
+  username: undefined
+};
+
+const createuserstate = {
+  method: undefined,
+  token: undefined,
+  id: undefined,
+  email: undefined
+};
+const currentstate = {
+  usertype: undefined,
+  username: undefined,
+  name: undefined,
+  lastname: undefined
+};
 
 const screen = (state = screenstate, action) => {
   switch (action.type) {
@@ -41,4 +58,36 @@ const getcards = (state = getcardsstate, action) => {
   }
 };
 
-export default combineReducers({ screen, getcards });
+const createuser = (state = createuserstate, action) => {
+  switch (action.type) {
+    case "CREATE_FACEBOOK_USER":
+      return {
+        ...state,
+        id: action.user.id,
+        token: action.user.token,
+        method: action.user.method
+      };
+    case "CREATE_GMAIL_USER":
+      return {
+        ...state,
+        id: action.user.id,
+        token: action.user.token,
+        email: action.user.email,
+        method: action.user.method
+      };
+
+    default:
+      return state;
+  }
+};
+
+const currentuser = (state = currentuser, action) => {
+  switch (action.type) {
+    case "SET_CURRENT_USER":
+      return { ...state, ...action.user };
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ screen, getcards, createuser });
