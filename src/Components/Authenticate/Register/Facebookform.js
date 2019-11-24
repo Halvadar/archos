@@ -15,7 +15,23 @@ class Facebookform extends Component {
       method: "facebook"
     });
   };
-  componentDidMount() {}
+  componentDidUpdate() {
+    console.log(this["Username"].value);
+  }
+
+  registerbutton = () => {
+    this.props.createfacebookuser({
+      name: this["First Name"].value,
+      lastname: this["Last Name"].value,
+      username: this["Username"].value,
+      email: this["Email"].value,
+      phone:
+        this["Phone Number"].value !== ""
+          ? this["Phone Number"].value
+          : undefined
+    });
+  };
+
   render() {
     return (
       <div style={{ left: this.props.left + "%" }} className="registerpageform">
@@ -40,13 +56,19 @@ class Facebookform extends Component {
             ].map((a, b) => {
               return (
                 <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
-                  <input ref={a=>this.} className="formfieldinput" placeholder={a}></input>
+                  <input
+                    ref={e => (this[a] = e)}
+                    className="formfieldinput"
+                    placeholder={a}
+                  ></input>
                 </div>
               );
             })
           : null}
         {this.props.userstate.method === "facebook" ? (
-          <div className="registerbutton">Register</div>
+          <div onClick={this.registerbutton} className="registerbutton">
+            Register
+          </div>
         ) : null}
       </div>
     );
@@ -58,7 +80,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createfacebookuser: () => dispatch(createfacebookuser()),
+  createfacebookuser: e => dispatch(createfacebookuser(e)),
   initializefacebookuser: e => {
     dispatch(initializefacebookuser(e));
   }

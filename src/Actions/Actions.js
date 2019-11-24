@@ -32,28 +32,32 @@ export const setcurrentuser = user => ({
   user
 });
 export const createfacebookuser = props => {
+  console.log(props);
   return (dispatch, getState) => {
+    console.log(getState());
     return axiosInstance({
       method: "POST",
       data: {
         query: `
-          query inputtypes($name:String, $lastname:String,$username:String!, $email:String!, $token:String!, $facebookid:String!, $phone:Int ) {
-            createFacebookUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, token:$token, facebookid:$facebookid}){
+          mutation inputtypes($name:String!, $lastname:String!,$username:String!, $email:String!, $token:String!, $facebookid:String!, $phone:Int ) {
+            createFacebookUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, phone:$phone, token:$token, facebookid:$facebookid}){
               name
               username
-              lastname
+              
 
      }}`,
         variables: {
+          phone: parseInt(props.phone),
           name: props.name,
           lastname: props.lastname,
           username: props.username,
           email: props.email,
           token: getState().createuser.token,
-          facebookid: getState().createuser.facebookid
+          facebookid: getState().createuser.id
         }
       }
     }).then(result => {
+      console.log(result);
       dispatch(setcurrentuser(result));
     });
   };
