@@ -19,7 +19,9 @@ class App extends Component {
     this.state = {};
     this.burgerref = React.createRef(this.burgerref);
   }
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    console.log(this.props.currentuser);
+  }
   componentDidMount() {
     window.addEventListener(
       "resize",
@@ -81,7 +83,8 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 const mapStateToProps = state => ({
-  screensize: state
+  screensize: state,
+  currentuser: state.setcurrentuser
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

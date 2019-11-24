@@ -21,7 +21,7 @@ const createuserstate = {
   id: undefined,
   email: undefined
 };
-const currentstate = {
+const currentuser = {
   usertype: undefined,
   username: undefined,
   name: undefined,
@@ -81,7 +81,7 @@ const createuser = (state = createuserstate, action) => {
   }
 };
 
-const currentuser = (state = currentuser, action) => {
+const setcurrentuser = (state = currentuser, action) => {
   switch (action.type) {
     case "SET_CURRENT_USER":
       return { ...state, ...action.user };
@@ -90,4 +90,9 @@ const currentuser = (state = currentuser, action) => {
   }
 };
 
-export default combineReducers({ screen, getcards, createuser });
+export default combineReducers({
+  screen,
+  getcards,
+  createuser,
+  setcurrentuser
+});

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { GoogleLogin } from "react-google-login";
 import { connect } from "react-redux";
-import { initializegmailuser } from "../../../Actions/Actions";
+import { initializegmailuser, creategmailuser } from "../../../Actions/Actions";
 
 class Gmailform extends Component {
   onsuccess = result => {
@@ -13,6 +13,17 @@ class Gmailform extends Component {
   };
   onfailure = result => {
     console.log(result);
+  };
+  registerbutton = () => {
+    this.props.creategmailuser({
+      name: this["First Name"].value,
+      lastname: this["Last Name"].value,
+      username: this["Username"].value,
+      phone:
+        this["Phone Number"].value !== ""
+          ? this["Phone Number"].value
+          : undefined
+    });
   };
   render() {
     return (
@@ -33,23 +44,25 @@ class Gmailform extends Component {
           }}
         ></GoogleLogin>
         {this.props.userstate.method === "gmail"
-          ? [
-              "Username",
-              "First Name",
-              "Last Name",
-              "Email",
-              "Phone Number"
-            ].map((a, b) => {
-              return (
-                <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
-                  <input className="formfieldinput" placeholder={a}></input>
-                </div>
-              );
-            })
+          ? ["Username", "First Name", "Last Name", "Phone Number"].map(
+              (a, b) => {
+                return (
+                  <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
+                    <input
+                      ref={e => (this[a] = e)}
+                      className="formfieldinput"
+                      placeholder={a}
+                    ></input>
+                  </div>
+                );
+              }
+            )
           : null}
 
         {this.props.userstate.method === "gmail" ? (
-          <div className="registerbutton">Register</div>
+          <div onClick={this.registerbutton} className="registerbutton">
+            Register
+          </div>
         ) : null}
       </div>
     );
@@ -61,9 +74,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  cinitializegmailuser: e => {
+  initializegmailuser: e => {
     dispatch(initializegmailuser(e));
-  }
+  },
+  creategmailuser: e => dispatch(creategmailuser(e))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gmailform);

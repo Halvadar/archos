@@ -31,11 +31,45 @@ export const setcurrentuser = user => ({
   type: "SET_CURRENT_USER",
   user
 });
+
+export const createuser = props => {
+  return (dispatch, getState) => {
+    console.log(getState());
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `
+          mutation inputtypes($name:String!, $lastname:String!,$username:String!, $email:String!, $phone:Int,$password:String!,$repassword:String! ) {
+            createUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, phone:$phone,password:$password, repassword:$repassword }){
+              name
+              username
+              lastname
+              usertype
+     }}`,
+        variables: {
+          phone: parseInt(props.phone),
+          name: props.name,
+          lastname: props.lastname,
+          username: props.username,
+          email: props.email,
+          password: props.password,
+          repassword: props.repassword
+        }
+      }
+    }).then(result => {
+      console.log(result);
+      dispatch(setcurrentuser(result));
+    });
+  };
+};
+
 export const createfacebookuser = props => {
   console.log(props);
   return (dispatch, getState) => {
     console.log(getState());
     return axiosInstance({
+      withCredentials: true,
       method: "POST",
       data: {
         query: `
@@ -43,7 +77,8 @@ export const createfacebookuser = props => {
             createFacebookUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, phone:$phone, token:$token, facebookid:$facebookid}){
               name
               username
-              
+              lastname
+              usertype
 
      }}`,
         variables: {
@@ -58,7 +93,39 @@ export const createfacebookuser = props => {
       }
     }).then(result => {
       console.log(result);
-      dispatch(setcurrentuser(result));
+      dispatch(setcurrentuser(result.data.data.createFacebookUser));
+    });
+  };
+};
+export const creategmailuser = props => {
+  return (dispatch, getState) => {
+    console.log(getState());
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `
+          mutation inputtypes($name:String!, $lastname:String!,$username:String!, $email:String!, $token:String!, $gmailid:String!, $phone:Int ) {
+            createGmailUser(Input:{name:$name,lastname:$lastname,username:$username,email:$email, phone:$phone, token:$token, gmailid:$gmailid}){
+              name
+              username
+              lastname
+              usertype
+
+     }}`,
+        variables: {
+          phone: parseInt(props.phone),
+          name: props.name,
+          lastname: props.lastname,
+          username: props.username,
+          email: getState().createuser.email,
+          token: getState().createuser.token,
+          gmailid: getState().createuser.id
+        }
+      }
+    }).then(result => {
+      console.log(result);
+      dispatch(setcurrentuser(result.data.data));
     });
   };
 };

@@ -15,9 +15,7 @@ class Facebookform extends Component {
       method: "facebook"
     });
   };
-  componentDidUpdate() {
-    console.log(this["Username"].value);
-  }
+  componentDidUpdate() {}
 
   registerbutton = () => {
     this.props.createfacebookuser({
