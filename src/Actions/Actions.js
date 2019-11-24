@@ -59,7 +59,7 @@ export const createuser = props => {
       }
     }).then(result => {
       console.log(result);
-      dispatch(setcurrentuser(result));
+      dispatch(setcurrentuser(result.data.data.setUser));
     });
   };
 };
@@ -125,7 +125,7 @@ export const creategmailuser = props => {
       }
     }).then(result => {
       console.log(result);
-      dispatch(setcurrentuser(result.data.data));
+      dispatch(setcurrentuser(result.data.data.createGmailUser));
     });
   };
 };

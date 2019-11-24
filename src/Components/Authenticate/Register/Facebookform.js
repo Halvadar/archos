@@ -8,6 +8,7 @@ import {
 
 class Facebookform extends Component {
   callback = response => {
+    console.log(response);
     let { id, accessToken } = response;
     this.props.initializefacebookuser({
       id,

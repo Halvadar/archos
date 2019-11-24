@@ -4,6 +4,7 @@ import "./Navbar.css";
 import { connect } from "react-redux";
 import hamburger from "./hamburger.svg";
 import { NavLink } from "react-router-dom";
+import { setcurrentuser } from "../../../../Actions/Actions";
 
 class Navbar extends Component {
   constructor(props) {
@@ -183,135 +184,172 @@ class Navbar extends Component {
           </NavLink>
 
           <div className="row links rounded-left">
-            <div
-              className="custnavitemcont"
-              onMouseEnter={() => this.onMouseEnterFunc(0)}
-              onMouseLeave={() => this.onMouseLeaveFunc(0)}
-            >
-              <div
-                style={{
-                  position: "relative",
-                  bottom: this.state.loginAnimation + "%"
-                }}
-                className="custnavitem"
-              >
-                Log In
-              </div>
-              <div
-                className="shadow"
-                style={{
-                  width: `${this.state.loginAnimation * 10}%`
-                }}
-              ></div>
-            </div>
-            <div
-              className="custnavitemcont"
-              onMouseEnter={() => this.onMouseEnterFunc(1)}
-              onMouseLeave={() => this.onMouseLeaveFunc(1)}
-            >
-              <div
-                style={{
-                  position: "relative",
-                  bottom: this.state.registerAnimation + "%"
-                }}
-                className=" custnavitem"
-              >
-                Register
-              </div>
-              <div
-                className="shadow"
-                style={{
-                  width: `${this.state.registerAnimation * 10}%`
-                }}
-              ></div>
-            </div>
+            {this.props.currentuser.username === undefined ? (
+              <React.Fragment>
+                <div
+                  className="custnavitemcont"
+                  onMouseEnter={() => this.onMouseEnterFunc(0)}
+                  onMouseLeave={() => this.onMouseLeaveFunc(0)}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      bottom: this.state.loginAnimation + "%"
+                    }}
+                    className="custnavitem"
+                  >
+                    Log In
+                  </div>
+                  <div
+                    className="shadow"
+                    style={{
+                      width: `${this.state.loginAnimation * 10}%`
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className="custnavitemcont"
+                  onMouseEnter={() => this.onMouseEnterFunc(1)}
+                  onMouseLeave={() => this.onMouseLeaveFunc(1)}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      bottom: this.state.registerAnimation + "%"
+                    }}
+                    className=" custnavitem"
+                  >
+                    Register
+                  </div>
+                  <div
+                    className="shadow"
+                    style={{
+                      width: `${this.state.registerAnimation * 10}%`
+                    }}
+                  ></div>
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div
+                  className="custnavitemcont"
+                  onMouseEnter={() => this.onMouseEnterFunc(1)}
+                  onMouseLeave={() => this.onMouseLeaveFunc(1)}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      bottom: this.state.registerAnimation + "%"
+                    }}
+                    className=" custnavitem"
+                  >
+                    Log Out
+                  </div>
+                  <div
+                    className="shadow"
+                    style={{
+                      width: `${this.state.registerAnimation * 10}%`
+                    }}
+                  ></div>
+                </div>
+              </React.Fragment>
+            )}
           </div>
         </div>
       );
     } else {
       return (
-        <div className="w-100  custnavbar justify-content-between ">
-          <div className=" mt-2 img-l img-sm img-md img-xl">
-            <img
-              ref={r => (this.r = r)}
-              src={logo}
-              alt="Archos"
-              width="100%"
-              onClick={this.hamburgerclick}
-            />
-          </div>
-          <div
-            style={{
-              marginRight: "5%",
-              width: "25%",
-              position: "relative",
-              display: "flex",
-              alignItems: "center"
-            }}
-          >
-            <div
-              ref={q => this.aaa(q)}
-              style={{
-                position: "absolute",
-                zIndex: 102,
-                right: "0px",
-                width: this.state.hamburgerwidth + "%",
-                height: this.state.hamburgerheight + "%",
-                top: this.state.hamburgertop + "%"
-              }}
-            >
+        <React.Fragment>
+          <div className="w-100  custnavbar justify-content-between ">
+            <div className=" mt-2 img-l img-sm img-md img-xl">
+              <img
+                ref={r => (this.r = r)}
+                src={logo}
+                alt="Archos"
+                width="100%"
+                onClick={this.hamburgerclick}
+              />
+            </div>
+            {this.props.currentuser.username === undefined ? (
               <div
                 style={{
+                  marginRight: "5%",
+                  width: "25%",
                   position: "relative",
-                  zIndex: 100,
-                  background: "white"
+                  display: "flex",
+                  alignItems: "center"
                 }}
               >
                 <div
-                  onClick={e => this.hamburgerclick(e)}
+                  ref={q => this.aaa(q)}
                   style={{
-                    zIndex: 1,
-                    position: "relative",
-                    background: "white"
+                    position: "absolute",
+                    zIndex: 102,
+                    right: "0px",
+                    width: this.state.hamburgerwidth + "%",
+                    height: this.state.hamburgerheight + "%",
+                    top: this.state.hamburgertop + "%"
                   }}
                 >
-                  <img
-                    ref={a => (this.hambimgref = a)}
-                    src={hamburger}
+                  <div
                     style={{
-                      width: `${
-                        this.state.hamburgerimagewidth
-                          ? this.state.hamburgerimagewidth
-                          : null
-                      }+px`
+                      position: "relative",
+                      zIndex: 100,
+                      background: "white"
                     }}
-                  ></img>
-                </div>
-                <div
-                  className="hamburgeritems"
-                  style={{
-                    zIndex: -1,
-                    top: this.state.logintop + "%"
-                  }}
-                >
-                  {this.state.hamburgerwidth < 100 ? "" : "Log in"}
-                </div>
-                <div
-                  className="hamburgeritems"
-                  style={{
-                    zIndex: -2,
-                    top: this.state.registertop + "%"
-                  }}
-                >
-                  {this.state.hamburgerwidth < 100 ? "" : "Register"}
+                  >
+                    <div
+                      onClick={e => this.hamburgerclick(e)}
+                      style={{
+                        zIndex: 1,
+                        position: "relative",
+                        background: "white"
+                      }}
+                    >
+                      <img
+                        ref={a => (this.hambimgref = a)}
+                        src={hamburger}
+                        style={{
+                          width: `${
+                            this.state.hamburgerimagewidth
+                              ? this.state.hamburgerimagewidth
+                              : null
+                          }+px`
+                        }}
+                      ></img>
+                    </div>
+                    <div
+                      className="hamburgeritems"
+                      style={{
+                        zIndex: -1,
+                        top: this.state.logintop + "%"
+                      }}
+                    >
+                      {this.state.hamburgerwidth < 100 ? "" : "Log in"}
+                    </div>
+                    <div
+                      className="hamburgeritems"
+                      style={{
+                        zIndex: -2,
+                        top: this.state.registertop + "%"
+                      }}
+                    >
+                      {this.state.hamburgerwidth < 100 ? "" : "Register"}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div>asd</div>
+            )}
           </div>
-        </div>
+        </React.Fragment>
       );
     }
   }
 }
+const mapStateToProps = state => ({
+  currentuser: state.setcurrentuser
+});
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);
