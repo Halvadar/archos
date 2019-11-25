@@ -35,11 +35,15 @@ class Facebookform extends Component {
     return (
       <div style={{ left: this.props.left + "%" }} className="registerpageform">
         <FacebookLogin
-          appId="553096981924816"
+          appId={process.env.REACT_APP_FACEBOOK_ID}
           callback={this.callback}
-          render={renderprops => {
+          disableMobileRedirect={true}
+          onFailure={response => {
+            console.log(response);
+          }}
+          render={renderProps => {
             return (
-              <div onClick={renderprops.onClick} className="facebookbutton">
+              <div onClick={renderProps.onClick} className="facebookbutton">
                 Login With Facebook
               </div>
             );

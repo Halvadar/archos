@@ -1,0 +1,7 @@
+.loginfixed {
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  width: 300px;
+  z-index: 120;
+}

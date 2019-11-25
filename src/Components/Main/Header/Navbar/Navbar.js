@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import hamburger from "./hamburger.svg";
 import { NavLink } from "react-router-dom";
 import { setcurrentuser } from "../../../../Actions/Actions";
+import Login from "../../../Authenticate/Login";
 
 class Navbar extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class Navbar extends Component {
       hamburgeranimationstate: "notexpanded",
       hamburgeranimationindex: 0,
       sm: null,
-      hamburgerimagewidth: undefined
+      hamburgerimagewidth: undefined,
+      loginformstate: "none"
     };
     this.hamburgerref = React.createRef(this.hamburgerref);
     this.r = React.createRef(this.r);
@@ -35,7 +37,9 @@ class Navbar extends Component {
     this.props.refref(q);
   };
   componentWillUpdate() {}
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    console.log(this.props.currentuser);
+  }
   componentDidMount() {
     window.addEventListener("resize", this.resizefunc);
 
@@ -174,6 +178,27 @@ class Navbar extends Component {
   style = () => {
     return this.state.hamburgerwidth;
   };
+  loginclick = () => {
+    this.setState({ loginformstate: "initial" });
+  };
+  loginwidthsetter = () => {
+    let i = window.innerWidth;
+
+    if (i >= 1920) {
+      return "20%";
+    } else if (i >= 1660) {
+      return "25%";
+    } else if (i >= 1440) {
+      return "30%";
+    } else if (i >= 1024) {
+      return "35%";
+    } else if (i >= 768) {
+      return "50%";
+    } else if (i >= 500) {
+      return "40%";
+    }
+    return "200px";
+  };
 
   render() {
     if (window.innerWidth >= 768 || this.state.sm === false) {
@@ -182,6 +207,12 @@ class Navbar extends Component {
           <NavLink to="/" className=" mt-2 img-l img-sm img-md">
             <img src={logo} alt="Archos" width="100%" />
           </NavLink>
+          <Login
+            style={{
+              width: this.loginwidthsetter,
+              display: this.state.loginformstate
+            }}
+          ></Login>
 
           <div className="row links rounded-left">
             {this.props.currentuser.username === undefined ? (
@@ -190,6 +221,7 @@ class Navbar extends Component {
                   className="custnavitemcont"
                   onMouseEnter={() => this.onMouseEnterFunc(0)}
                   onMouseLeave={() => this.onMouseLeaveFunc(0)}
+                  onClick={this.loginclick}
                 >
                   <div
                     style={{
@@ -319,6 +351,7 @@ class Navbar extends Component {
                       ></img>
                     </div>
                     <div
+                      onClick={this.loginclick}
                       className="hamburgeritems"
                       style={{
                         zIndex: -1,
@@ -340,7 +373,7 @@ class Navbar extends Component {
                 </div>
               </div>
             ) : (
-              <div>asd</div>
+              <div className="navlogout">Log Out</div>
             )}
           </div>
         </React.Fragment>

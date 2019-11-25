@@ -38,7 +38,16 @@
 .links {
   background: rgba(113, 191, 211, 0.411);
 }
-
+.navlogout {
+  display: flex;
+  align-items: center;
+  text-shadow: 1px 1px 3px black;
+  color: rgb(204, 203, 203);
+  font-size: 1rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  align-self: center;
+}
 .custnavitem {
   padding: 0.3rem;
   border-radius: 5%;
