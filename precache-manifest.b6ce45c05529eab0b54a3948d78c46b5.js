@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0efa9d8c0c218f381bb7b98b0c5ddc04",
+    "revision": "9e828e8e3757ee2fedc2b44819c610c8",
     "url": "/archos/index.html"
   },
   {
-    "revision": "e7c50b620f8fd88cbf3c",
+    "revision": "f3c7fefea78a374d69f3",
     "url": "/archos/static/css/2.510409cd.chunk.css"
   },
   {
-    "revision": "4ab46f3c09112d14326c",
-    "url": "/archos/static/css/main.86dea1a1.chunk.css"
+    "revision": "59f772b93fb79d4e0bf1",
+    "url": "/archos/static/css/main.2e7e098e.chunk.css"
   },
   {
-    "revision": "e7c50b620f8fd88cbf3c",
-    "url": "/archos/static/js/2.75955128.chunk.js"
+    "revision": "f3c7fefea78a374d69f3",
+    "url": "/archos/static/js/2.9e32cf92.chunk.js"
   },
   {
-    "revision": "4ab46f3c09112d14326c",
-    "url": "/archos/static/js/main.b4e4381f.chunk.js"
+    "revision": "59f772b93fb79d4e0bf1",
+    "url": "/archos/static/js/main.7e512ebd.chunk.js"
   },
   {
     "revision": "92f5ad2ee1d7e6e0bbf0",
@@ -38,6 +38,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "bbbf6639ec0e64042c79dad12ffd9328",
     "url": "/archos/static/media/build.bbbf6639.svg"
+  },
+  {
+    "revision": "0123a8c7258f844e8f685a2e594dcff8",
+    "url": "/archos/static/media/cancel.0123a8c7.svg"
   },
   {
     "revision": "7e10299e4d14b97184619f05d006f8d6",
@@ -90,6 +94,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "4330aa114fbc57bc7852f6313aa6e418",
     "url": "/archos/static/media/lawyer.4330aa11.jpg"
+  },
+  {
+    "revision": "6468634d7642b247f4a6247b94d05553",
+    "url": "/archos/static/media/left-arrow.6468634d.svg"
   },
   {
     "revision": "6ab4b428a8ccc174eeb1419003d3dd3f",
