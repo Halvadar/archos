@@ -325,7 +325,7 @@ class Categoriespagecategories extends Component {
                             : null
                       }}
                       className="subcategoriesname"
-                      onClick={this.subcatanimation(b)}
+                      onClick={this.subcatanimation(b, a)}
                       ref={b === 0 ? e => (this.subcatheightref = e) : null}
                     >
                       <NavLink to={`${this.props.location.pathname}/${a.name}`}>

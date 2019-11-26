@@ -37,9 +37,7 @@ class Navbar extends Component {
     this.props.refref(q);
   };
   componentWillUpdate() {}
-  componentDidUpdate() {
-    console.log(this.props.currentuser);
-  }
+  componentDidUpdate() {}
   componentDidMount() {
     window.addEventListener("resize", this.resizefunc);
 
@@ -180,6 +178,18 @@ class Navbar extends Component {
   };
   loginclick = () => {
     this.setState({ loginformstate: "initial" });
+    window.addEventListener("mousedown", this.closeloginformevent);
+  };
+  closeloginformevent = e => {
+    if (
+      e.clientX < this.loginformref.getBoundingClientRect().left ||
+      e.clientX > this.loginformref.getBoundingClientRect().right ||
+      e.clientY < this.loginformref.getBoundingClientRect().top ||
+      e.clientY > this.loginformref.getBoundingClientRect().bottom
+    ) {
+      window.removeEventListener("mousedown", this.closeloginformevent);
+      this.setState({ loginformstate: "none" });
+    }
   };
   loginwidthsetter = () => {
     let i = window.innerWidth;
@@ -195,7 +205,25 @@ class Navbar extends Component {
     } else if (i >= 768) {
       return "50%";
     } else if (i >= 500) {
+      return "60%";
+    }
+    return "70%";
+  };
+  loginleftsetter = () => {
+    let i = window.innerWidth;
+
+    if (i >= 1920) {
       return "40%";
+    } else if (i >= 1660) {
+      return "37.5%";
+    } else if (i >= 1440) {
+      return "35%";
+    } else if (i >= 1024) {
+      return "32.5%";
+    } else if (i >= 768) {
+      return "25%";
+    } else if (i >= 500) {
+      return "20%";
     }
     return "200px";
   };
@@ -208,8 +236,15 @@ class Navbar extends Component {
             <img src={logo} alt="Archos" width="100%" />
           </NavLink>
           <Login
+            loginformstate={this.state.loginformstate}
+            closeloginform={() => {
+              this.setState({ loginformstate: "none" });
+              window.removeEventListener("mousedown", this.closeloginformevent);
+            }}
+            passref={e => (this.loginformref = e)}
             style={{
-              width: this.loginwidthsetter,
+              left: this.loginleftsetter(),
+              width: this.loginwidthsetter(),
               display: this.state.loginformstate
             }}
           ></Login>
@@ -243,6 +278,9 @@ class Navbar extends Component {
                   className="custnavitemcont"
                   onMouseEnter={() => this.onMouseEnterFunc(1)}
                   onMouseLeave={() => this.onMouseLeaveFunc(1)}
+                  onClick={() => {
+                    this.props.history.push("register");
+                  }}
                 >
                   <div
                     style={{
@@ -294,14 +332,25 @@ class Navbar extends Component {
         <React.Fragment>
           <div className="w-100  custnavbar justify-content-between ">
             <div className=" mt-2 img-l img-sm img-md img-xl">
-              <img
-                ref={r => (this.r = r)}
-                src={logo}
-                alt="Archos"
-                width="100%"
-                onClick={this.hamburgerclick}
-              />
+              <NavLink to="/" className=" mt-2 img-l img-sm img-md">
+                <img src={logo} alt="Archos" width="100%" />
+              </NavLink>
             </div>
+            <Login
+              closeloginform={() => {
+                this.setState({ loginformstate: "none" });
+                window.removeEventListener(
+                  "mousedown",
+                  this.closeloginformevent
+                );
+              }}
+              passref={e => (this.loginformref = e)}
+              style={{
+                left: this.loginleftsetter(),
+                width: this.loginwidthsetter(),
+                display: this.state.loginformstate
+              }}
+            ></Login>
             {this.props.currentuser.username === undefined ? (
               <div
                 style={{
@@ -361,6 +410,9 @@ class Navbar extends Component {
                       {this.state.hamburgerwidth < 100 ? "" : "Log in"}
                     </div>
                     <div
+                      onClick={() => {
+                        this.props.history.push("register");
+                      }}
                       className="hamburgeritems"
                       style={{
                         zIndex: -2,

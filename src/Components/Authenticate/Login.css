@@ -1,7 +1,116 @@
 .loginfixed {
   position: fixed;
-  top: 50vh;
+  top: 30vh;
   left: 50vw;
-  width: 300px;
-  z-index: 120;
+  z-index: 220;
+  height: 25rem;
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.loginbuttonarchos {
+  width: 70%;
+  margin: 1rem 0 1rem 0;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+  background: rgb(0, 174, 255);
+}
+.loginbuttonarchos:hover {
+  cursor: pointer;
+}
+
+.loginformfacegoogle {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.loginx {
+  flex-direction: row;
+
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.loginlogin {
+  color: rgb(145, 166, 197);
+  font-size: 2rem;
+  font-weight: 650;
+  margin: 1rem 0 2rem 0;
+}
+.loginbuttonfacebook {
+  width: 70%;
+  background: rgb(65, 65, 255);
+  margin: 1rem 0 1rem 0;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+.loginbuttonfacebook:hover {
+  cursor: pointer;
+}
+.loginbuttongoogle:hover {
+  cursor: pointer;
+}
+.loginbuttongoogle {
+  width: 70%;
+  background: rgb(255, 55, 48);
+  margin: 1rem 0 1rem 0;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.loginformarchos {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.archoslogininputcont {
+  width: 60%;
+  margin: 1rem 0 1rem 0;
+}
+.archoslogininput {
+  width: 100%;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  height: 3rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+.archosformlogin {
+  width: 30%;
+  height: 3.5rem;
+  background: rgb(54, 158, 255);
+  color: white;
+  border: 1px solid rgb(174, 207, 255);
+  border-radius: 3px;
+  display: flex;
+  font-size: 2rem;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 0 0;
+}
+
+.formicons:hover {
+  cursor: pointer;
 }

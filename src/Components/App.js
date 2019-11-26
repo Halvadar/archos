@@ -19,9 +19,7 @@ class App extends Component {
     this.state = {};
     this.burgerref = React.createRef(this.burgerref);
   }
-  componentDidUpdate() {
-    console.log(this.props.currentuser);
-  }
+  componentDidUpdate() {}
   componentDidMount() {
     window.addEventListener(
       "resize",
@@ -41,7 +39,11 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
-          <Navbar refref={q => (this.burgerref = q)} click1 />
+          <Route
+            render={props => (
+              <Navbar {...props} refref={q => (this.burgerref = q)} click1 />
+            )}
+          ></Route>
           <Switch>
             <Route
               path="/categories"

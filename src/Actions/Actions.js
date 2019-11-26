@@ -31,6 +31,76 @@ export const setcurrentuser = user => ({
   type: "SET_CURRENT_USER",
   user
 });
+export const loginfacebookuser = props => {
+  return dispatch => {
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `
+          query inputtypes($id:String!, $token:String!){
+            loginFacebook(Input:{id:$id,token:$token}){
+              name
+              username
+              lastname
+              
+            }
+          }
+        `,
+        variables: { id: props.id, token: props.token }
+      }
+    }).then(result => {
+      dispatch(setcurrentuser(result));
+    });
+  };
+};
+export const logingmailuser = props => {
+  return dispatch => {
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `
+          query inputtypes($id:String!, $token:String!){
+            loginGoogle(Input:{id:$id,token:$token}){
+              name
+              username
+              lastname
+              
+            }
+          }
+        `,
+        variables: { id: props.id, token: props.token }
+      }
+    }).then(result => {
+      dispatch(setcurrentuser(result));
+    });
+  };
+};
+
+export const loginarchosuser = props => {
+  return dispatch => {
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `
+          query inputtypes($email:String!,$password:String!){
+            loginArchos(Input:{email:$email,password:$password}){
+              name
+              lastname
+              username
+            }
+          }
+      `,
+        variables: { email: props.email, password: props.password }
+      }
+    }).then(result => {
+      console.log(result);
+      dispatch(setcurrentuser(result));
+    });
+  };
+};
 
 export const createuser = props => {
   return (dispatch, getState) => {
