@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/archos/static/css/main.2e7e098e.chunk.css",
-    "main.js": "/archos/static/js/main.7e512ebd.chunk.js",
-    "main.js.map": "/archos/static/js/main.7e512ebd.chunk.js.map",
+    "main.css": "/archos/static/css/main.a84bec24.chunk.css",
+    "main.js": "/archos/static/js/main.95928e75.chunk.js",
+    "main.js.map": "/archos/static/js/main.95928e75.chunk.js.map",
     "runtime-main.js": "/archos/static/js/runtime-main.450ff823.js",
     "runtime-main.js.map": "/archos/static/js/runtime-main.450ff823.js.map",
     "static/css/2.510409cd.chunk.css": "/archos/static/css/2.510409cd.chunk.css",
-    "static/js/2.9e32cf92.chunk.js": "/archos/static/js/2.9e32cf92.chunk.js",
-    "static/js/2.9e32cf92.chunk.js.map": "/archos/static/js/2.9e32cf92.chunk.js.map",
+    "static/js/2.e8f31813.chunk.js": "/archos/static/js/2.e8f31813.chunk.js",
+    "static/js/2.e8f31813.chunk.js.map": "/archos/static/js/2.e8f31813.chunk.js.map",
     "index.html": "/archos/index.html",
-    "precache-manifest.b6ce45c05529eab0b54a3948d78c46b5.js": "/archos/precache-manifest.b6ce45c05529eab0b54a3948d78c46b5.js",
+    "precache-manifest.d8328385f4d364b740d0bb0eff59b6fa.js": "/archos/precache-manifest.d8328385f4d364b740d0bb0eff59b6fa.js",
     "service-worker.js": "/archos/service-worker.js",
     "static/css/2.510409cd.chunk.css.map": "/archos/static/css/2.510409cd.chunk.css.map",
-    "static/css/main.2e7e098e.chunk.css.map": "/archos/static/css/main.2e7e098e.chunk.css.map",
+    "static/css/main.a84bec24.chunk.css.map": "/archos/static/css/main.a84bec24.chunk.css.map",
     "static/media/Desk.jpg": "/archos/static/media/Desk.399c9a8f.jpg",
     "static/media/background.jpg": "/archos/static/media/background.3384ea3b.jpg",
     "static/media/broom.svg": "/archos/static/media/broom.e17f32ab.svg",
@@ -21,6 +21,7 @@
     "static/media/carpenter.svg": "/archos/static/media/carpenter.7e10299e.svg",
     "static/media/copyright.svg": "/archos/static/media/copyright.dbb4f85a.svg",
     "static/media/dots.svg": "/archos/static/media/dots.8753d10e.svg",
+    "static/media/drop-down-arrow.svg": "/archos/static/media/drop-down-arrow.bfc53b6a.svg",
     "static/media/dropdown.svg": "/archos/static/media/dropdown.bfc53b6a.svg",
     "static/media/electrician.jpg": "/archos/static/media/electrician.416f09c3.jpg",
     "static/media/electro.svg": "/archos/static/media/electro.c4c3fec7.svg",
@@ -43,8 +44,8 @@
   "entrypoints": [
     "static/js/runtime-main.450ff823.js",
     "static/css/2.510409cd.chunk.css",
-    "static/js/2.9e32cf92.chunk.js",
-    "static/css/main.2e7e098e.chunk.css",
-    "static/js/main.7e512ebd.chunk.js"
+    "static/js/2.e8f31813.chunk.js",
+    "static/css/main.a84bec24.chunk.css",
+    "static/js/main.95928e75.chunk.js"
   ]
 }
