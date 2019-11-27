@@ -4,8 +4,9 @@ import "./Navbar.css";
 import { connect } from "react-redux";
 import hamburger from "./hamburger.svg";
 import { NavLink } from "react-router-dom";
-import { setcurrentuser } from "../../../../Actions/Actions";
+import { setcurrentuser, logoutuser } from "../../../../Actions/Actions";
 import Login from "../../../Authenticate/Login";
+import Addservice from "../../../Addservice/Addservice";
 
 class Navbar extends Component {
   constructor(props) {
@@ -250,7 +251,7 @@ class Navbar extends Component {
           ></Login>
 
           <div className="row links rounded-left">
-            {this.props.currentuser.username === undefined ? (
+            {this.props.currentuser.username === (undefined || null) ? (
               <React.Fragment>
                 <div
                   className="custnavitemcont"
@@ -301,10 +302,12 @@ class Navbar extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <Addservice></Addservice>
                 <div
                   className="custnavitemcont"
                   onMouseEnter={() => this.onMouseEnterFunc(1)}
                   onMouseLeave={() => this.onMouseLeaveFunc(1)}
+                  onClick={this.props.logout}
                 >
                   <div
                     style={{
@@ -351,7 +354,7 @@ class Navbar extends Component {
                 display: this.state.loginformstate
               }}
             ></Login>
-            {this.props.currentuser.username === undefined ? (
+            {this.props.currentuser.username === (undefined || null) ? (
               <div
                 style={{
                   marginRight: "5%",
@@ -436,5 +439,8 @@ class Navbar extends Component {
 const mapStateToProps = state => ({
   currentuser: state.setcurrentuser
 });
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutuser())
+});
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

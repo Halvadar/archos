@@ -31,6 +31,34 @@ export const setcurrentuser = user => ({
   type: "SET_CURRENT_USER",
   user
 });
+
+export const logoutuser = () => {
+  return (dispatch, getState) => {
+    return axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      data: {
+        query: `mutation {
+        logoutUser(Input:true){
+          name
+          username
+          lastname
+          usertype
+        }
+      }`
+      }
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(setcurrentuser(result.data.data.logoutUser));
+        console.log(getState().setcurrentuser);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
 export const loginfacebookuser = props => {
   return dispatch => {
     return axiosInstance({
@@ -43,14 +71,15 @@ export const loginfacebookuser = props => {
               name
               username
               lastname
-              
+              usertype
             }
           }
         `,
         variables: { id: props.id, token: props.token }
       }
     }).then(result => {
-      dispatch(setcurrentuser(result));
+      console.log(result);
+      dispatch(setcurrentuser(result.data.data.loginFacebook));
     });
   };
 };
@@ -66,14 +95,14 @@ export const logingmailuser = props => {
               name
               username
               lastname
-              
+              usertype
             }
           }
         `,
         variables: { id: props.id, token: props.token }
       }
     }).then(result => {
-      dispatch(setcurrentuser(result));
+      dispatch(setcurrentuser(result.data.data.loginGoogle));
     });
   };
 };
@@ -90,14 +119,15 @@ export const loginarchosuser = props => {
               name
               lastname
               username
+              usertype
             }
           }
       `,
         variables: { email: props.email, password: props.password }
       }
     }).then(result => {
-      console.log(result);
-      dispatch(setcurrentuser(result));
+      console.log(result, "asdasd");
+      dispatch(setcurrentuser(result.data.data.loginArchos));
     });
   };
 };
@@ -228,5 +258,41 @@ export const fetchcards = props => {
       .catch(err => {
         console.log(err);
       });
+  };
+};
+
+export const createcard = props => {
+  console.log(props);
+  return dispatch => {
+    /* axiosInstance({
+      method: "POST",
+      query: {
+        query: `
+          mutation {
+            createcard()
+          }
+          `,
+        variables: {
+          title: props.title,
+          description: props.description,
+          category: props.category,
+          subcategory: props.subcategory,
+          image: props.image
+        }
+      }
+    }); */
+    const formdata = new FormData();
+    formdata.append("image", props.image);
+
+    axiosInstance({
+      url: "http://localhost:4000/uploadimage",
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      data: formdata
+    }).then(result => {
+      console.log(result);
+    });
   };
 };

@@ -12,7 +12,7 @@ import Cards from "./Main/Body/Cards/Cards";
 import Footer from "./Main/Footer/Footer";
 import Categoriespage from "./Categories/Categoriespage";
 import Register from "./Authenticate/Register/Register";
-
+import Postservice from "./Addservice/Postservice/Postservice";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +44,12 @@ class App extends Component {
               <Navbar {...props} refref={q => (this.burgerref = q)} click1 />
             )}
           ></Route>
+
           <Switch>
+            <Route
+              path="/postservice"
+              render={props => <Postservice {...props}></Postservice>}
+            ></Route>
             <Route
               path="/categories"
               render={props => <Categoriespage {...props}></Categoriespage>}

@@ -1,0 +1,145 @@
+.postservicecont {
+  display: flex;
+  height: 30rem;
+  flex-direction: column;
+  border-radius: 5px;
+  background: rgb(194, 241, 255);
+  width: 30%;
+  padding: 1rem 1rem 1rem 3rem;
+}
+
+.postservicecontcont {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.postserviceinputtitle {
+  height: 2rem;
+  width: 90%;
+  margin: 1rem 0 1rem 0;
+  display: flex;
+}
+.postserviceinput {
+  height: 100%;
+  flex-grow: 1;
+  border: 1px solid rgb(135, 163, 255);
+  border-radius: 3px;
+  margin-left: 1rem;
+}
+
+.postserviceinputdescription {
+  height: 7rem;
+  width: 90%;
+  margin: 0 0 1rem 0;
+  display: flex;
+}
+.addaservice {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: rgb(86, 173, 255);
+  font-size: 1.5rem;
+  font-weight: 750;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.forminputtitle {
+  width: 10rem;
+
+  color: rgb(0, 110, 255);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.forminputtitlecat {
+  width: 10rem;
+  color: rgb(0, 110, 255);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.postserviceselectcat {
+  width: 90%;
+  margin: 1rem 0 1rem 0;
+  display: flex;
+}
+.selectcategrelative {
+  position: relative;
+  flex-grow: 1;
+  height: 100%;
+  margin: 0 1rem 0 1rem;
+}
+.postserviceselectcatcatcont {
+  height: 10rem;
+  width: 100%;
+  top: 100%;
+  position: absolute;
+  overflow-y: scroll;
+  z-index: 2;
+}
+.postserviceselectcatcat {
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 1rem 0 1rem;
+  background: rgb(55, 192, 255);
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  border-color: white;
+}
+.postserviceselectcatcat:hover {
+  cursor: pointer;
+}
+.postserviceselectcatname {
+  display: flex;
+  background: rgb(0, 183, 255);
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 1rem 0 1rem;
+  height: 2rem;
+  color: white;
+  font-weight: 600;
+}
+.postserviceselectcatname:hover {
+  cursor: pointer;
+}
+
+.postserviceaddimg {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+.postserviceinputimg {
+  width: 100%;
+}
+
+.postserviceinputimgcont {
+  flex-shrink: 1;
+  margin-left: 1rem;
+}
+.postservicesubmitcont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.postservicesubmit {
+  width: 20%;
+  height: 2rem;
+  background: rgb(71, 172, 255);
+  color: white;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postservicesubmit:hover {
+  cursor: pointer;
+}

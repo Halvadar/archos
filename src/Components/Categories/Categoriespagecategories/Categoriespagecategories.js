@@ -11,7 +11,7 @@ const cr = (categname, ...args) => {
     children: args
   };
 };
-const services = [
+export const services = [
   cr(
     "Cleaning",
     "House Cleaning",
