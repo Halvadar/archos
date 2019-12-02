@@ -1,4 +1,5 @@
 import { axiosInstance } from "../Configs";
+import { Promise } from "q";
 
 export const changescreensize = prop => ({
   type: "CHANGE_SCREEN_SIZE",
@@ -30,6 +31,13 @@ export const initializegmailuser = user => ({
 export const setcurrentuser = user => ({
   type: "SET_CURRENT_USER",
   user
+});
+export const getpostedcards = cards => ({
+  type: "GET_POSTED_CARDS",
+  cards
+});
+export const setpostedcards = cards => ({
+  type: "SET_POSTED_CARDS"
 });
 
 export const logoutuser = () => {
@@ -264,35 +272,88 @@ export const fetchcards = props => {
 export const createcard = props => {
   console.log(props);
   return dispatch => {
-    /* axiosInstance({
-      method: "POST",
-      query: {
-        query: `
-          mutation {
-            createcard()
-          }
-          `,
-        variables: {
-          title: props.title,
-          description: props.description,
-          category: props.category,
-          subcategory: props.subcategory,
-          image: props.image
-        }
-      }
-    }); */
     const formdata = new FormData();
     formdata.append("image", props.image);
 
     axiosInstance({
-      url: "http://localhost:4000/uploadimage",
+      withCredentials: true,
       method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
-      data: formdata
-    }).then(result => {
-      console.log(result);
-    });
+      data: {
+        query: `
+        mutation inputtypes($title:String!,$description:String!,$category:String!,$subcategory:String,$imageurl:String){ 
+          createCard(Input:{title:$title,description:$description,category:$category,subcategory:$subcategory,imageurl:$imageurl}){
+            _id
+          }}
+        `,
+        variables: { ...props },
+        headers: { "Content-Type": "application/json" }
+      }
+    })
+      .then(result => {
+        console.log(result.data.data.createCard);
+        formdata.append("_id", result.data.data.createCard._id);
+
+        axiosInstance({
+          withCredentials: true,
+          url: process.env.REACT_APP_BACKEND_URL + "/uploadimage",
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          data: formdata
+        });
+      })
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => console.log(err));
+  };
+};
+
+export const checklogin = props => {
+  return dispatch => {
+    axiosInstance({
+      method: "GET",
+      withCredentials: true,
+      url: process.env.REACT_APP_BACKEND_URL + "/checklogin"
+    })
+      .then(result => {
+        console.log(result.data);
+        dispatch(setcurrentuser(result.data));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const postedcards = props => {
+  return dispatch => {
+    dispatch(setpostedcards());
+    axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        query {
+          getPostedCards{
+            title
+            description
+            score
+            image
+            _id
+          }
+        }
+      `
+      }
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(getpostedcards(result.data.data.getPostedCards));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 };

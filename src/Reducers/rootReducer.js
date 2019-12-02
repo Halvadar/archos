@@ -28,6 +28,11 @@ const currentuser = {
   lastname: undefined
 };
 
+const createdcards = {
+  cards: [],
+  isfetching: false
+};
+
 const screen = (state = screenstate, action) => {
   switch (action.type) {
     case "CHANGE_SCREEN_SIZE":
@@ -90,9 +95,21 @@ const setcurrentuser = (state = currentuser, action) => {
   }
 };
 
+const getpostedcards = (state = createdcards, action) => {
+  switch (action.type) {
+    case "GET_POSTED_CARDS":
+      return { ...state, cards: action.cards, isfetching: false };
+    case "SET_POSTED_CARDS":
+      return { ...state, isfetching: true };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   screen,
   getcards,
   createuser,
-  setcurrentuser
+  setcurrentuser,
+  getpostedcards
 });

@@ -7,6 +7,7 @@ class Searchboxanimation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      mounted: true,
       animationstate: undefined,
       searchboxbottomdistance: 0,
       searchboxwidth: 0,
@@ -16,6 +17,8 @@ class Searchboxanimation extends Component {
       fixedsearchboxfromtop: undefined
     };
     this.searchbox = React.createRef();
+    this.bottomupinterval = undefined;
+    this.interval = undefined;
   }
   componentDidMount() {
     this.props.changescreensize(window.innerWidth);
@@ -24,7 +27,13 @@ class Searchboxanimation extends Component {
     window.addEventListener("resize", this.resizewidthsetter);
     window.addEventListener("scroll", this.searchboxfixed);
   }
-  componentDidUpdate() {}
+  componentWillUnmount() {
+    this.setState({ mount: false });
+    this.interval = undefined;
+    this.bottomupinterval = undefined;
+    window.removeEventListener("resize", this.resizewidthsetter);
+    window.removeEventListener("scroll", this.searchboxfixed);
+  }
   searchboxtopinit = () => {
     this.setState({
       searchboxfromtop:
@@ -33,14 +42,20 @@ class Searchboxanimation extends Component {
   };
 
   searchboxanimation = async () => {
-    await this.bottomupanimation();
-    await this.searchboxstretchanimation();
-    this.setState({
-      searchinputborder: "1px solid rgb(200,200,200)",
-      animationstate: "done",
-      searchboxfromtop:
-        this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
-    });
+    if (this.state.mounted) {
+      await this.bottomupanimation();
+    }
+    if (this.state.mounted) {
+      await this.searchboxstretchanimation();
+    }
+    if (this.state.mounted) {
+      this.setState({
+        searchinputborder: "1px solid rgb(200,200,200)",
+        animationstate: "done",
+        searchboxfromtop:
+          this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
+      });
+    }
   };
 
   searchboxfixed = () => {
@@ -91,13 +106,13 @@ class Searchboxanimation extends Component {
         );
     var searchboxbottomdistance = this.state.searchboxbottomdistance;
     return new Promise((resolve, reject) => {
-      let bottomupinterval = setInterval(() => {
+      this.bottomupinterval = setInterval(() => {
         if (searchboxstyle("top") - searchboxstyle("bottom") >= 1) {
           searchboxbottomdistance++;
           this.setState({ searchboxbottomdistance: searchboxbottomdistance });
         } else {
           this.setState({ animationstate: "liftended" });
-          clearInterval(bottomupinterval);
+          clearInterval(this.bottomupinterval);
           resolve();
         }
       }, 10);
@@ -108,7 +123,7 @@ class Searchboxanimation extends Component {
     return new Promise((resolve, reject) => {
       let width = this.state.searchboxwidth;
       if (this.state.animationstate === "liftended") {
-        let interval = setInterval(() => {
+        this.interval = setInterval(() => {
           if (this.props.screensize < 500 && this.state.searchboxwidth <= 40) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
@@ -144,7 +159,7 @@ class Searchboxanimation extends Component {
             this.setState({ searchboxwidth: width });
           } else {
             this.setState({ animationstate: "stretchended" });
-            clearInterval(interval);
+            clearInterval(this.interval);
             resolve();
           }
         }, 10);

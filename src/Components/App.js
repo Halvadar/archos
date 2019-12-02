@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./Main/Header/Navbar/Navbar";
 import Sandbox from "./Main/Sandbox";
 import Headerbackground from "./Main/Header/Headerbackground/Headerbackground";
 import { connect } from "react-redux";
-import { changescreensize } from "../Actions/Actions";
+import { changescreensize, checklogin } from "../Actions/Actions";
 import Categories from "./Main/Header/Categories/Categories";
 import { scroll } from "../Actions/Actions";
 import Jumbotron from "./Main/Body/Jumbotron/Jumbotron";
@@ -13,6 +13,7 @@ import Footer from "./Main/Footer/Footer";
 import Categoriespage from "./Categories/Categoriespage";
 import Register from "./Authenticate/Register/Register";
 import Postservice from "./Addservice/Postservice/Postservice";
+import Postedservices from "./Addservice/Postedservices/Postedservices";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +22,7 @@ class App extends Component {
   }
   componentDidUpdate() {}
   componentDidMount() {
+    this.props.checklogin();
     window.addEventListener(
       "resize",
       this.props.changescreensize(this.windowwidth)
@@ -46,6 +48,10 @@ class App extends Component {
           ></Route>
 
           <Switch>
+            <Route
+              path="/postedservices"
+              render={props => <Postedservices {...props}></Postedservices>}
+            ></Route>
             <Route
               path="/postservice"
               render={props => <Postservice {...props}></Postservice>}
@@ -87,7 +93,8 @@ const mapDispatchToProps = dispatch => ({
     return () => {
       dispatch(scroll(e()));
     };
-  }
+  },
+  checklogin: e => dispatch(checklogin())
 });
 const mapStateToProps = state => ({
   screensize: state,

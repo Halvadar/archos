@@ -10,7 +10,7 @@ export default class Headerbackground extends Component {
       backgroundheight: undefined
     };
 
-    this.backgroundref = React.createRef(this.backgroundref);
+    this.backgroundref = React.createRef();
   }
 
   componentDidMount() {
@@ -20,7 +20,7 @@ export default class Headerbackground extends Component {
   backgroundheightsetter = () => {
     this.setState({
       backgroundheight: window
-        .getComputedStyle(this.backgroundref)
+        .getComputedStyle(this.backgroundref.current)
         .getPropertyValue("height")
     });
   };
@@ -29,7 +29,7 @@ export default class Headerbackground extends Component {
     return (
       <React.Fragment>
         <div
-          ref={q => (this.backgroundref = q)}
+          ref={this.backgroundref}
           className="mainheaderbackgrounddiv"
           style={{
             backgroundImage: `url(${background})`

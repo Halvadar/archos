@@ -19,9 +19,7 @@ class Login extends Component {
     };
     this.newinterval = undefined;
   }
-  componentDidMount() {
-    console.log(this.props.style);
-  }
+  componentDidMount() {}
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       if (this.props.loginformstate === "none") {

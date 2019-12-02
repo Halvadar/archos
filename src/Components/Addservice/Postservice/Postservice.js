@@ -54,7 +54,9 @@ class Postservice extends Component {
       });
     };
   };
+
   currenttitledescription = () => {
+    console.log(this.titleref.value, this.descriptionref.value);
     if (this.titleref.value.length > 0) {
       return {
         title: this.titleref.value,
@@ -65,17 +67,17 @@ class Postservice extends Component {
   };
   submitservice = () => {
     console.log(this.imageref.files);
-    /* if (
+    if (
       this.state.currentlyselectedcategory !== "Not Selected" &&
       this.currenttitledescription !== null &&
-      this.imageref.value !== (null || undefined || "")
-    ) */
-    this.props.createcard({
-      ...this.currenttitledescription,
-      category: this.state.currentlyselectedcategory,
-      subcategory: this.state.currentlyselectedsubcategory,
-      image: this.imageref.files[0]
-    });
+      (this.imageref.value !== null || undefined || "")
+    )
+      this.props.createcard({
+        ...this.currenttitledescription(),
+        category: this.state.currentlyselectedcategory,
+        subcategory: this.state.currentlyselectedsubcategory,
+        image: this.imageref.files[0]
+      });
   };
 
   render() {

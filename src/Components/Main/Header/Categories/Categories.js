@@ -228,7 +228,10 @@ class Categories extends Component {
           );
         })}
 
-        <div className="dotsdiv categchildren categchildrenlarge categchildrenmedium categchildrensmall">
+        <div
+          onClick={() => this.props.history.push("/categories")}
+          className="dotsdiv categchildren categchildrenlarge categchildrenmedium categchildrensmall"
+        >
           <img className="dots" src={dots} width="20px" />
           More
         </div>

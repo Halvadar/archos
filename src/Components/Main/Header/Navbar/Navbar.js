@@ -26,7 +26,8 @@ class Navbar extends Component {
       hamburgeranimationindex: 0,
       sm: null,
       hamburgerimagewidth: undefined,
-      loginformstate: "none"
+      loginformstate: "none",
+      history: undefined
     };
     this.hamburgerref = React.createRef(this.hamburgerref);
     this.r = React.createRef(this.r);
@@ -40,6 +41,10 @@ class Navbar extends Component {
   componentWillUpdate() {}
   componentDidUpdate() {}
   componentDidMount() {
+    this.setState({ history: this.props.history.location.pathname });
+    this.props.history.listen(location => {
+      this.setState({ history: this.props.history.location.pathname });
+    });
     window.addEventListener("resize", this.resizefunc);
 
     if (this.state.sm) {
@@ -251,7 +256,8 @@ class Navbar extends Component {
           ></Login>
 
           <div className="row links rounded-left">
-            {this.props.currentuser.username === (undefined || null) ? (
+            {this.props.currentuser.username === undefined ||
+            this.props.currentuser.username === null ? (
               <React.Fragment>
                 <div
                   className="custnavitemcont"
@@ -302,7 +308,10 @@ class Navbar extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Addservice></Addservice>
+                <Addservice
+                  historystate={this.state.history}
+                  history={this.props.history}
+                ></Addservice>
                 <div
                   className="custnavitemcont"
                   onMouseEnter={() => this.onMouseEnterFunc(1)}
@@ -340,6 +349,7 @@ class Navbar extends Component {
               </NavLink>
             </div>
             <Login
+              loginformstate={this.state.loginformstate}
               closeloginform={() => {
                 this.setState({ loginformstate: "none" });
                 window.removeEventListener(
@@ -354,7 +364,8 @@ class Navbar extends Component {
                 display: this.state.loginformstate
               }}
             ></Login>
-            {this.props.currentuser.username === (undefined || null) ? (
+            {this.props.currentuser.username === undefined ||
+            this.props.currentuser.username === null ? (
               <div
                 style={{
                   marginRight: "5%",
