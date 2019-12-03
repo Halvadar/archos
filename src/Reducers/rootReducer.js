@@ -10,10 +10,6 @@ const getcardsstate = {
   category: "all",
   subcategory: "all"
 };
-const userstate = {
-  name: undefined,
-  username: undefined
-};
 
 const createuserstate = {
   method: undefined,

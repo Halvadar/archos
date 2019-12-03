@@ -1,0 +1,128 @@
+.manageaccountmanageaccount {
+  text-align: center;
+  color: rgb(138, 255, 163);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 2rem 0 3rem 0;
+}
+.manageaccountswitcheroo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+  background: rgb(90, 148, 255);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 5px 5px 0 0;
+  justify-content: space-evenly;
+}
+
+.manageaccountcont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.changeaccountpasswordswitcheroo {
+  height: 100%;
+  padding: 1rem 2rem;
+  flex-grow: 1;
+  text-align: center;
+}
+.changeaccountpasswordswitcheroo:hover {
+  cursor: pointer;
+}
+
+.deleteaccountswitcheroo {
+  height: 100%;
+  padding: 1rem 2rem;
+  flex-grow: 3;
+  text-align: center;
+}
+.deleteaccountswitcheroo:hover {
+  cursor: pointer;
+}
+.manageaccountslideroo {
+  width: 30%;
+  position: relative;
+  display: flex;
+  height: 30rem;
+  overflow: hidden;
+}
+
+.changeaccountpasswordcont {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background: white;
+  border: 1px solid rgb(113, 174, 253);
+  border-radius: 0 0 5px 5px;
+  padding: 1rem;
+  z-index: 2;
+}
+.deleteaccountcont {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  border-radius: 0 0 5px 5px;
+  border: 1px solid rgb(113, 174, 253);
+  padding: 1rem;
+}
+.changepasswordemailinputcont {
+  width: 70%;
+  height: 3rem;
+  margin: 2rem 1rem 1rem 1rem;
+}
+
+.deleteaccountemailinputcont {
+  width: 70%;
+  height: 3rem;
+  margin: 2rem 1rem 1rem 1rem;
+}
+.deleteaccountpasswordinputcont {
+  width: 70%;
+  height: 3rem;
+  margin: 2rem 1rem 1rem 1rem;
+}
+.manageaccountinput {
+  padding: 3px 1rem;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(81, 177, 255);
+}
+
+.manageaccountmessages {
+  color: rgb(186, 255, 121);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2rem;
+}
+.manageaccountbutton {
+  width: 10rem;
+  height: 4rem;
+  background: rgb(50, 156, 255);
+  border-radius: 3px;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2rem;
+}
+
+.manageaccountbutton:hover {
+  cursor: pointer;
+}

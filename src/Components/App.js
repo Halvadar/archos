@@ -14,6 +14,8 @@ import Categoriespage from "./Categories/Categoriespage";
 import Register from "./Authenticate/Register/Register";
 import Postservice from "./Addservice/Postservice/Postservice";
 import Postedservices from "./Addservice/Postedservices/Postedservices";
+import Manageaccount from "./Manageaccount/Manageaccount";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,10 @@ class App extends Component {
           ></Route>
 
           <Switch>
+            <Route
+              path="/manageaccount"
+              render={props => <Manageaccount {...props}></Manageaccount>}
+            ></Route>
             <Route
               path="/postedservices"
               render={props => <Postedservices {...props}></Postedservices>}
