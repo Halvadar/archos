@@ -29,6 +29,10 @@ const createdcards = {
   isfetching: false
 };
 
+const emailtokenstate = {
+  tokenstate: "invalid"
+};
+
 const screen = (state = screenstate, action) => {
   switch (action.type) {
     case "CHANGE_SCREEN_SIZE":
@@ -101,11 +105,21 @@ const getpostedcards = (state = createdcards, action) => {
       return state;
   }
 };
+const setemailtokenstate = (state = emailtokenstate, action) => {
+  switch (action.type) {
+    case "EMAIL_TOKEN_STATE":
+      return { ...state, tokenstate: action.prop };
+
+    default:
+      return state;
+  }
+};
 
 export default combineReducers({
   screen,
   getcards,
   createuser,
   setcurrentuser,
-  getpostedcards
+  getpostedcards,
+  setemailtokenstate
 });

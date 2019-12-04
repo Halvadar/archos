@@ -94,7 +94,7 @@ class Login extends Component {
       <div
         ref={e => this.props.passref(e)}
         style={this.props.style}
-        className="loginfixed"
+        className="loginfixed loginfixedmd"
       >
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
           <div className="loginx">

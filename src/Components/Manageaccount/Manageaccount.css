@@ -83,6 +83,9 @@
   height: 3rem;
   margin: 2rem 1rem 1rem 1rem;
 }
+input:-webkit-autofill {
+  background: blue;
+}
 
 .deleteaccountemailinputcont {
   width: 70%;
@@ -125,4 +128,18 @@
 
 .manageaccountbutton:hover {
   cursor: pointer;
+}
+
+.areyousure {
+  position: fixed;
+  left: 37.5%;
+  height: 10rem;
+  width: 25%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  background: rgb(206, 206, 206);
+  padding: 1rem 1rem;
 }

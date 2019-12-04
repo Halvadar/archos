@@ -1,9 +1,9 @@
 .loginfixed {
   position: fixed;
-  top: 30vh;
+  top: 15vh;
   left: 50vw;
   z-index: 220;
-  height: 25rem;
+  height: 30rem;
   background: rgb(255, 255, 255);
   border-radius: 5px;
   overflow: hidden;

@@ -93,6 +93,7 @@ class Addservice extends Component {
             Posted Services
           </div>
           <div
+            onClick={() => this.props.history.push("/manageaccount")}
             style={{
               top: this.state.animation * 3 + "%",
               background:

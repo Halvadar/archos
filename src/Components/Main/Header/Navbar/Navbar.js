@@ -231,7 +231,7 @@ class Navbar extends Component {
     } else if (i >= 500) {
       return "20%";
     }
-    return "200px";
+    return "15%";
   };
 
   render() {

@@ -39,6 +39,10 @@ export const getpostedcards = cards => ({
 export const setpostedcards = cards => ({
   type: "SET_POSTED_CARDS"
 });
+export const emailtoken = prop => ({
+  type: "EMAIL_TOKEN_STATE",
+  prop
+});
 
 export const logoutuser = () => {
   return (dispatch, getState) => {
@@ -351,6 +355,121 @@ export const postedcards = props => {
       .then(result => {
         console.log(result);
         dispatch(getpostedcards(result.data.data.getPostedCards));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const changepassword = props => {
+  console.log(props);
+  return dispatch => {
+    axiosInstance({
+      withCredentials: true,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `mutation types($email:String!){
+          changePassword(email:$email){
+            result
+          }
+        }`,
+        variables: { ...props }
+      }
+    })
+      .then(result => {
+        console.log(result.data.data.changePassword);
+        if (result.data.data.changePassword.result) {
+          dispatch(emailtoken("valid"));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+export const changepasswordconfirmation = props => {
+  return dispatch => {
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        mutation types($changeemail:String!,$token:String!) {
+          changePasswordConfirmation(changeemail:$changeemail,token:$token){
+            result
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    })
+      .then(result => {
+        dispatch(emailtoken("successful"));
+      })
+      .then(() => {
+        setTimeout(() => {
+          dispatch(emailtoken("invalid"));
+        }, 5000);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteuser = ({ props, result }) => {
+  return dispatch => {
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        mutation types($email:String!,$password:String) {
+          deleteUser(email:$email,password:$password){
+            result
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    })
+      .then(deleteresult => {
+        if (deleteresult.data.data.deleteUser.result) {
+          console.log(deleteresult);
+          result.result = deleteresult.data.data.deleteUser.result;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteuserconfirmation = props => {
+  return dispatch => {
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        mutation types($token:String!) {
+          deleteUserConfirmation(token:$token){
+            result
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    })
+      .then(result => {
+        if (result.data.data.deleteUserConfirmation.result) {
+          return result.data.data.deleteUserConfirmation.result;
+        }
       })
       .catch(err => {
         console.log(err);
