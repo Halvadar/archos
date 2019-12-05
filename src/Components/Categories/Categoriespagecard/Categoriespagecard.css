@@ -1,0 +1,61 @@
+.cardpage {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  margin: 0 1rem;
+}
+.cardpagenocardmessage {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(255, 164, 164);
+  grid-column: span 5;
+  text-align: center;
+}
+.cardpagecardmaininfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .cardpagemd {
+    padding-top: 5vh;
+  }
+}
+
+.cardpagecard {
+  grid-column: span 5;
+  height: 30rem;
+  background: rgb(223, 223, 223);
+  display: flex;
+}
+.cardpagecardimage {
+  width: 500px;
+  height: 250px;
+  background: blue;
+  background-size: cover;
+  background-position: center;
+}
+.cardpagecardtitle {
+  grid-row: 2/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.cardpagecarddescription {
+  grid-row: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.cardpagecardinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}

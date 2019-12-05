@@ -17,7 +17,8 @@ class Manageaccount extends Component {
       switcheroostate: 0,
       swipestate: 0,
       pswareyousuredisplay: "none",
-      deletestate: "invalid"
+      deletestate: "invalid",
+      accareyousuredisplay: "none"
     };
     this.interval = undefined;
   }
@@ -147,17 +148,25 @@ class Manageaccount extends Component {
       });
     }
     console.log(result);
-    if (result.result) {
+    if (result.result === true) {
       this.setState({ deletestate: "valid" });
     }
   };
   deleteuserconfirmation = async () => {
-    const result = await this.props.deleteuserconfirmation({
-      token: this.deleteacctoken.value
+    const result = { result: false };
+    await this.props.deleteuserconfirmation({
+      props: { token: this.deleteacctoken.value },
+      result: result
     });
-    if (result) {
+
+    if (result.result === true) {
       this.setState({ deletestate: "success" });
     }
+  };
+
+  deleteaccountconfirmationagree = () => {
+    this.deleteuserconfirmation();
+    this.setState({ accareyousuredisplay: "none" });
   };
 
   render() {
@@ -403,19 +412,54 @@ class Manageaccount extends Component {
                         The token was sent to your email address
                       </div>
                       <div className="changepasswordemailinputcont">
-                        <input
-                          style={{ height: this.inputheightsetter() }}
-                          ref={a => (this.deleteacctoken = a)}
-                          placeholder="Token"
-                          className="manageaccountinput"
-                          type="text"
-                        ></input>
+                        <div style={{ width: "100%", height: "100%" }}>
+                          <input
+                            style={{ height: this.inputheightsetter() }}
+                            ref={a => (this.deleteacctoken = a)}
+                            placeholder="Token"
+                            className="manageaccountinput"
+                            type="text"
+                          ></input>
+                        </div>
                       </div>
                       <div
-                        onClick={this.deleteuserconfirmation}
+                        onClick={() =>
+                          this.setState({ accareyousuredisplay: "flex" })
+                        }
                         className="manageaccountbutton"
                       >
                         Proceed
+                      </div>
+                      <div
+                        style={{ display: this.state.accareyousuredisplay }}
+                        className="areyousure"
+                      >
+                        <div
+                          style={{
+                            flexGrow: 1,
+                            color: "rgb(186, 255, 121)"
+                          }}
+                        >
+                          Are you sure you want to continue
+                        </div>
+                        <div style={{ display: "flex" }}>
+                          <div
+                            className="manageaccountbutton"
+                            onClick={this.deleteaccountconfirmationagree}
+                          >
+                            Yes
+                          </div>
+                          <div
+                            className="manageaccountbutton"
+                            onClick={() =>
+                              this.setState({
+                                accareyousuresuredisplay: "none"
+                              })
+                            }
+                          >
+                            No
+                          </div>
+                        </div>
                       </div>
                     </React.Fragment>
                   );

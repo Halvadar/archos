@@ -43,6 +43,13 @@ export const emailtoken = prop => ({
   type: "EMAIL_TOKEN_STATE",
   prop
 });
+export const setcurrentcard = prop => ({
+  type: "SET_CURRENT_CARD",
+  prop
+});
+export const getcurrentcard = () => ({
+  type: "GET_CURRENT_CARD"
+});
 
 export const logoutuser = () => {
   return (dispatch, getState) => {
@@ -421,8 +428,8 @@ export const changepasswordconfirmation = props => {
 };
 
 export const deleteuser = ({ props, result }) => {
-  return dispatch => {
-    axiosInstance({
+  return async dispatch => {
+    await axiosInstance({
       method: "POST",
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
@@ -449,9 +456,9 @@ export const deleteuser = ({ props, result }) => {
   };
 };
 
-export const deleteuserconfirmation = props => {
-  return dispatch => {
-    axiosInstance({
+export const deleteuserconfirmation = ({ props, result }) => {
+  return async dispatch => {
+    await axiosInstance({
       method: "POST",
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
@@ -466,13 +473,45 @@ export const deleteuserconfirmation = props => {
         variables: { ...props }
       }
     })
-      .then(result => {
-        if (result.data.data.deleteUserConfirmation.result) {
-          return result.data.data.deleteUserConfirmation.result;
+      .then(confirmationresult => {
+        if (confirmationresult.data.data.deleteUserConfirmation.result) {
+          result.result =
+            confirmationresult.data.data.deleteUserConfirmation.result;
         }
       })
       .catch(err => {
         console.log(err);
       });
+  };
+};
+
+export const getcard = props => {
+  console.log(props);
+  return dispatch => {
+    dispatch(getcurrentcard());
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        query type($id:String!){
+          getCard(id:$id){
+            image
+            description
+            title
+            score
+            createdby
+            _id
+            category
+            subcategory
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    }).then(result => {
+      dispatch(setcurrentcard(result.data.data.getCard));
+    });
   };
 };

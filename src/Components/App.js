@@ -15,6 +15,7 @@ import Register from "./Authenticate/Register/Register";
 import Postservice from "./Addservice/Postservice/Postservice";
 import Postedservices from "./Addservice/Postedservices/Postedservices";
 import Manageaccount from "./Manageaccount/Manageaccount";
+import Categoriespagecard from "./Categories/Categoriespagecard/Categoriespagecard";
 
 class App extends Component {
   constructor(props) {
@@ -50,6 +51,12 @@ class App extends Component {
           ></Route>
 
           <Switch>
+            <Route
+              path="/cardinfo/:id"
+              render={props => (
+                <Categoriespagecard {...props}></Categoriespagecard>
+              )}
+            ></Route>
             <Route
               path="/manageaccount"
               render={props => <Manageaccount {...props}></Manageaccount>}

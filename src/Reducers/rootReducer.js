@@ -32,6 +32,10 @@ const createdcards = {
 const emailtokenstate = {
   tokenstate: "invalid"
 };
+const currentcardstate = {
+  isfetching: false,
+  card: undefined
+};
 
 const screen = (state = screenstate, action) => {
   switch (action.type) {
@@ -114,6 +118,16 @@ const setemailtokenstate = (state = emailtokenstate, action) => {
       return state;
   }
 };
+const setcurrentcard = (state = currentcardstate, action) => {
+  switch (action.type) {
+    case "GET_CURRENT_CARD":
+      return { ...state, fetching: true };
+    case "SET_CURRENT_CARD":
+      return { ...state, fetching: false, card: action.prop };
+    default:
+      return state;
+  }
+};
 
 export default combineReducers({
   screen,
@@ -121,5 +135,6 @@ export default combineReducers({
   createuser,
   setcurrentuser,
   getpostedcards,
-  setemailtokenstate
+  setemailtokenstate,
+  setcurrentcard
 });
