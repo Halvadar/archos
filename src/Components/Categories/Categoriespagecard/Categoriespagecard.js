@@ -31,8 +31,29 @@ class Categoriespagecard extends Component {
                 {" "}
                 {this.props.card.card.title}
               </div>
+              <div
+                style={{ width: "90%", background: "gray", height: "1px" }}
+              ></div>
               <div className="cardpagecarddescription">
                 {this.props.card.card.description}
+              </div>
+              <div className="cardpagecardcategory">
+                <div className="cardpagecardcategorycategory">
+                  <div className="cardpagedisplayflexcolumnchild">
+                    Category:
+                  </div>
+                  <div>{"\xa0" + this.props.card.card.category}</div>
+                </div>
+                <div className="cardpagecardcategorycategory">
+                  <div className="cardpagedisplayflexcolumnchild">
+                    Subcategory:
+                  </div>
+                  <div>
+                    {this.props.card.card.subcategory
+                      ? "\xa0" + this.props.card.card.subcategory
+                      : " Not specified"}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="cardpagecardinfo">
@@ -49,13 +70,14 @@ class Categoriespagecard extends Component {
                             i++;
                             score =
                               score + parseFloat(this.props.card.card.score[i]);
+
                             console.log(
                               parseFloat(this.props.card.card.score[i])
                             );
                           }
                           score = score / this.props.card.card.score.length;
                           console.log(score);
-                          return score.toString();
+                          return score.toFixed(2);
                         })()}
                       </div>
                     </div>
@@ -66,8 +88,27 @@ class Categoriespagecard extends Component {
                   <div>Not rated</div>
                 )}
               </div>
+              <div className="cardpagecardemail cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Email</div>
+                <div>
+                  {this.props.card.card.email
+                    ? this.props.card.card.email
+                    : "Not Specified"}
+                </div>
+              </div>
+              <div className="cardpagecardphone cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Phone</div>
+                <div>
+                  {this.props.card.card.phone
+                    ? this.props.card.card.phoen
+                    : "Not Specifed"}
+                </div>
+              </div>
+              <div className="cardpagecarduser cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Posted By</div>
+                <div>{this.props.card.card.createdby.username}</div>
+              </div>
             </div>
-            <div></div>
           </div>
         ) : (
           <div className="cardpagenocardmessage">

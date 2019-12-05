@@ -23,15 +23,16 @@
 }
 
 .cardpagecard {
-  grid-column: span 5;
-  height: 30rem;
-  background: rgb(223, 223, 223);
+  grid-column: span 4;
+  height: 40rem;
+  background: rgb(236, 249, 255);
   display: flex;
+  border-radius: 3px;
+  box-shadow: 0 0 2px black;
 }
 .cardpagecardimage {
   width: 500px;
   height: 250px;
-  background: blue;
   background-size: cover;
   background-position: center;
 }
@@ -40,22 +41,56 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 650;
+  width: 100%;
+  color: rgb(65, 65, 65);
+  height: 3rem;
 }
 
 .cardpagecarddescription {
   grid-row: 3/4;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  width: 100%;
+  flex-grow: 1;
+  padding: 0.5rem 5%;
 }
 
 .cardpagecardinfo {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  border-left: 1px solid gray;
+}
+
+.cardpagedisplayflexcolumn {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+  height: 4rem;
+  background: rgb(172, 222, 255);
+  width: 100%;
+  color: rgb(35, 150, 0);
+  padding: 0.5rem;
+  font-weight: 600;
+  border-radius: 3px;
+}
+.cardpagedisplayflexcolumnchild {
+  color: gray;
+}
+
+.cardpagecardcategory {
+  display: flex;
+  flex-direction: column;
+  height: 4rem;
+  background: rgb(85, 85, 85);
+  width: 100%;
+  color: rgb(35, 150, 0);
+  padding: 0.5rem;
+  font-weight: 600;
+}
+.cardpagecardcategorycategory {
+  display: flex;
 }

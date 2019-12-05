@@ -38,7 +38,7 @@ export class Categoriespagecards extends Component {
                             }
                             score = score / a.score.length;
                             console.log(score);
-                            return score.toString();
+                            return score.toFixed(2);
                           })()}
                         </div>
                       </div>
