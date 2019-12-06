@@ -121,9 +121,11 @@ const setemailtokenstate = (state = emailtokenstate, action) => {
 const setcurrentcard = (state = currentcardstate, action) => {
   switch (action.type) {
     case "GET_CURRENT_CARD":
-      return { ...state, fetching: true };
+      return { ...state, isfetching: true };
     case "SET_CURRENT_CARD":
-      return { ...state, fetching: false, card: action.prop };
+      return { ...state, isfetching: false, card: action.prop };
+    case "SET_CURRENT_CARD_SCORE":
+      return { ...state, card: { ...state.card, score: action.score } };
     default:
       return state;
   }

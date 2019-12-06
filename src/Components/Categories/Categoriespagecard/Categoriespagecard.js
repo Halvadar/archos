@@ -3,13 +3,49 @@ import "./Categoriespagecard.css";
 import Categoriespagecategories from "../Categoriespagecategories/Categoriespagecategories";
 import { connect } from "react-redux";
 import { getcard } from "../../../Actions/Actions";
+import spin from "./spin.gif";
+import star from "./star.svg";
+import activestar from "./activestar.svg";
 
 class Categoriespagecard extends Component {
+  constructor() {
+    super();
+    this.state = {
+      starstate: 0,
+      clicked: false
+    };
+  }
+
   componentDidMount() {
     console.log(this.props.match.params.id);
     console.log(this.props.card);
     this.props.getcard({ id: this.props.match.params.id });
   }
+  onmousenterevent = i => {
+    return () => {
+      if (this.state.clicked === false) {
+        this.setState({ starstate: i });
+      }
+    };
+  };
+  onmouseleaveevent = () => {
+    return () => {
+      if (this.state.clicked === false) {
+        this.setState({ starstate: 0 });
+      }
+    };
+  };
+  onclickevent = i => {
+    return () => {
+      this.setState({ starstate: i, clicked: true });
+    };
+  };
+  starbackgroundsetter = i => {
+    if (i <= this.state.starstate) {
+      return true;
+    }
+  };
+
   render() {
     return (
       <div className="cardpage cardpagemd">
@@ -18,7 +54,11 @@ class Categoriespagecard extends Component {
         ></Categoriespagecategories>
 
         <div></div>
-        {this.props.card.card ? (
+        {this.props.card.isfetching ? (
+          <div style={{ gridColumn: "span 5", textAlign: "center" }}>
+            <img src={spin} width="20px" alt="" />
+          </div>
+        ) : this.props.card.card ? (
           <div className="cardpagecard">
             <div className="cardpagecardmaininfo">
               <div
@@ -57,6 +97,26 @@ class Categoriespagecard extends Component {
               </div>
             </div>
             <div className="cardpagecardinfo">
+              <div className="cardpagecardemail cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Email</div>
+                <div>
+                  {this.props.card.card.email
+                    ? this.props.card.card.email
+                    : "Not Specified"}
+                </div>
+              </div>
+              <div className="cardpagecardphone cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Phone</div>
+                <div>
+                  {this.props.card.card.phone
+                    ? this.props.card.card.phoen
+                    : "Not Specifed"}
+                </div>
+              </div>
+              <div className="cardpagecarduser cardpagedisplayflexcolumn">
+                <div className="cardpagedisplayflexcolumnchild">Posted By</div>
+                <div>{this.props.card.card.createdby.username}</div>
+              </div>
               <div className="cardpagecardscore">
                 {this.props.card.card.score ? (
                   this.props.card.card.score.length > 0 ? (
@@ -88,25 +148,31 @@ class Categoriespagecard extends Component {
                   <div>Not rated</div>
                 )}
               </div>
-              <div className="cardpagecardemail cardpagedisplayflexcolumn">
-                <div className="cardpagedisplayflexcolumnchild">Email</div>
-                <div>
-                  {this.props.card.card.email
-                    ? this.props.card.card.email
-                    : "Not Specified"}
+              <div className="cardpagecardratehim">
+                <div className="cardpagecardratehimstars">
+                  {(() => {
+                    let list = [];
+                    for (let i = 1; i <= 5; i++) {
+                      list.push(
+                        <div
+                          onClick={this.onclickevent(i)}
+                          onMouseEnter={this.onmousenterevent(i)}
+                          onMouseLeave={this.onmouseleaveevent(i)}
+                          className="cardpagecardratehimstar"
+                        >
+                          <img
+                            src={
+                              this.starbackgroundsetter(i) ? activestar : star
+                            }
+                            width="20px"
+                          ></img>
+                        </div>
+                      );
+                    }
+                    return list;
+                  })()}
                 </div>
-              </div>
-              <div className="cardpagecardphone cardpagedisplayflexcolumn">
-                <div className="cardpagedisplayflexcolumnchild">Phone</div>
-                <div>
-                  {this.props.card.card.phone
-                    ? this.props.card.card.phoen
-                    : "Not Specifed"}
-                </div>
-              </div>
-              <div className="cardpagecarduser cardpagedisplayflexcolumn">
-                <div className="cardpagedisplayflexcolumnchild">Posted By</div>
-                <div>{this.props.card.card.createdby.username}</div>
+                <div className="cardpagecardratehimrate"></div>
               </div>
             </div>
           </div>

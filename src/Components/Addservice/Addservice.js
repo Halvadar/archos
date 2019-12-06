@@ -64,7 +64,7 @@ class Addservice extends Component {
           </div>
 
           <div
-            onClick={() => this.props.history.push("postservice")}
+            onClick={() => this.props.history.push("/postservice")}
             style={{
               top: this.state.animation + "%",
               background:

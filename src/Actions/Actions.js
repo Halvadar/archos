@@ -50,6 +50,10 @@ export const setcurrentcard = prop => ({
 export const getcurrentcard = () => ({
   type: "GET_CURRENT_CARD"
 });
+export const setcurrentcardscore = prop => ({
+  type: "SET_CURRENT_CARD_SCORE",
+  prop
+});
 
 export const logoutuser = () => {
   return (dispatch, getState) => {
@@ -512,6 +516,31 @@ export const getcard = props => {
       }
     }).then(result => {
       dispatch(setcurrentcard(result.data.data.getCard));
+    });
+  };
+};
+
+export const ratecard = props => {
+  return (dispatch, getState) => {
+    dispatch(getcurrentcard());
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        mutation type($id:String!,$score:Int!){
+          rateCard(id:$id,score:$score){
+           score
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    }).then(result => {
+      if (getState().setcurrentcard.card) {
+        dispatch(setcurrentcardscore(result.data.data.rateCard.score));
+      }
     });
   };
 };
