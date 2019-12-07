@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Categoriespagecard.css";
 import Categoriespagecategories from "../Categoriespagecategories/Categoriespagecategories";
 import { connect } from "react-redux";
-import { getcard } from "../../../Actions/Actions";
+import { getcard, ratecard } from "../../../Actions/Actions";
 import spin from "./spin.gif";
 import star from "./star.svg";
 import activestar from "./activestar.svg";
@@ -12,8 +12,10 @@ class Categoriespagecard extends Component {
     super();
     this.state = {
       starstate: 0,
-      clicked: false
+      clicked: false,
+      votesent: false
     };
+    this.timeout = undefined;
   }
 
   componentDidMount() {
@@ -37,6 +39,15 @@ class Categoriespagecard extends Component {
   };
   onclickevent = i => {
     return () => {
+      clearTimeout(this.timeout);
+      this.props
+        .ratecard({ score: i, id: this.props.match.params.id })
+        .then(() => {
+          this.setState({ votesent: true });
+          this.timeout = setTimeout(() => {
+            this.setState({ votesent: false });
+          }, 5000);
+        });
       this.setState({ starstate: i, clicked: true });
     };
   };
@@ -109,7 +120,7 @@ class Categoriespagecard extends Component {
                 <div className="cardpagedisplayflexcolumnchild">Phone</div>
                 <div>
                   {this.props.card.card.phone
-                    ? this.props.card.card.phoen
+                    ? this.props.card.card.phone
                     : "Not Specifed"}
                 </div>
               </div>
@@ -126,17 +137,15 @@ class Categoriespagecard extends Component {
                         {(() => {
                           let score = 0;
                           let i = 0;
-                          while (i < this.props.card.card.score.length - 1) {
-                            i++;
+                          while (i < this.props.card.card.score.length) {
                             score =
-                              score + parseFloat(this.props.card.card.score[i]);
-
-                            console.log(
-                              parseFloat(this.props.card.card.score[i])
-                            );
+                              score +
+                              parseFloat(this.props.card.card.score[i].score);
+                            i++;
                           }
+
                           score = score / this.props.card.card.score.length;
-                          console.log(score);
+
                           return score.toFixed(2);
                         })()}
                       </div>
@@ -172,7 +181,12 @@ class Categoriespagecard extends Component {
                     return list;
                   })()}
                 </div>
-                <div className="cardpagecardratehimrate"></div>
+                <div
+                  style={{ display: this.state.votesent ? "flex" : "none" }}
+                  className="cardpagecardratehimrate"
+                >
+                  Successfully rated
+                </div>
               </div>
             </div>
           </div>
@@ -191,7 +205,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getcard: e => dispatch(getcard(e))
+  getcard: e => dispatch(getcard(e)),
+  ratecard: e => dispatch(ratecard(e))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categoriespagecard);

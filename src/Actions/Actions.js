@@ -504,8 +504,8 @@ export const getcard = props => {
             image
             description
             title
-            score
-            createdby
+            score{score}
+            createdby{username}
             _id
             category
             subcategory
@@ -515,15 +515,15 @@ export const getcard = props => {
         variables: { ...props }
       }
     }).then(result => {
+      console.log(result);
       dispatch(setcurrentcard(result.data.data.getCard));
     });
   };
 };
 
 export const ratecard = props => {
-  return (dispatch, getState) => {
-    dispatch(getcurrentcard());
-    axiosInstance({
+  return async (dispatch, getState) => {
+    await axiosInstance({
       method: "POST",
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
@@ -531,16 +531,22 @@ export const ratecard = props => {
         query: `
         mutation type($id:String!,$score:Int!){
           rateCard(id:$id,score:$score){
-           score
+           score{score}
           }
         }
       `,
         variables: { ...props }
       }
-    }).then(result => {
-      if (getState().setcurrentcard.card) {
-        dispatch(setcurrentcardscore(result.data.data.rateCard.score));
-      }
-    });
+    })
+      .then(result => {
+        console.log(result, getState().setcurrentcard.card);
+        if (getState().setcurrentcard.card) {
+          console.log("asd");
+          dispatch(setcurrentcardscore(result.data.data.rateCard.score));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 };

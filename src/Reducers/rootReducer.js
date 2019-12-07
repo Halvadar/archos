@@ -125,7 +125,11 @@ const setcurrentcard = (state = currentcardstate, action) => {
     case "SET_CURRENT_CARD":
       return { ...state, isfetching: false, card: action.prop };
     case "SET_CURRENT_CARD_SCORE":
-      return { ...state, card: { ...state.card, score: action.score } };
+      return {
+        ...state,
+        isfetching: false,
+        card: { ...state.card, score: action.prop }
+      };
     default:
       return state;
   }
