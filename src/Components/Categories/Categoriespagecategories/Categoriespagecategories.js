@@ -229,7 +229,11 @@ class Categoriespagecategories extends Component {
     if (window.innerWidth >= 768) {
       return (
         <div
-          className="categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl  "
+          className={
+            this.props.page === "cardpage"
+              ? "cardpagecategoriesxxl cardpagecategoriesxl cardpagecategorieslg cardpagecategoriesmd categoriespagecategories"
+              : "categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl"
+          }
           ref={e => (this.categ = e)}
         >
           {services.map((a, b, arr) => {
@@ -285,7 +289,13 @@ class Categoriespagecategories extends Component {
       );
     } else {
       return (
-        <div className="categoriespagecategoriessm">
+        <div
+          className={
+            this.props.page === "cardpage"
+              ? "cardpagecategoriessm categoriespagecategoriessm"
+              : "categoriespagecategoriessm"
+          }
+        >
           <div
             className="categoriespagecategoriescategoriescont"
             style={{ height: this.state.heightreference + "px" }}

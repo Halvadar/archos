@@ -1,7 +1,125 @@
 .cardpage {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  margin: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+.cardpagecategoriessm {
+  width: 100%;
+  margin: 0;
+}
+.cardpagecategories {
+  width: 20%;
+}
+
+.cardpagecardinfo {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+.cardpagecardimage {
+  width: 300px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+.cardpagecard {
+  flex-direction: column;
+
+  width: 100%;
+  margin: 1rem;
+  height: fit-content;
+  background: rgb(236, 249, 255);
+  display: flex;
+  border-radius: 3px;
+  box-shadow: 0 0 2px black;
+}
+.cardpagecardcategorysm {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  color: rgb(35, 150, 0);
+  padding: 1rem;
+  font-weight: 600;
+}
+.categoriespagecommentsinputcont {
+  display: flex;
+  height: 10rem;
+  width: 100%;
+  background: rgb(206, 206, 206);
+}
+
+@media only screen and (min-width: 768px) {
+  .categoriespagecommentsinputcontmd {
+    width: 70%;
+  }
+  .cardpagecardmd {
+    margin-left: 10%;
+    flex-grow: 1;
+    margin-right: 2rem;
+    width: initial;
+    margin-top: 0;
+  }
+  .cardpagecategoriesmd {
+    width: 30%;
+  }
+  .cardpagecardimagemd {
+    width: 200px;
+    height: 100px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .categoriespagecommentsinputcontlg {
+    width: 60%;
+  }
+  .cardpagecardinfomd {
+    border-left: 1px solid gray;
+  }
+  .cardpagecardcategory {
+    padding: 0;
+  }
+  .cardpagecardlg {
+    flex-grow: initial;
+    flex-direction: row;
+    height: 40rem;
+  }
+  .cardpagecategorieslg {
+    width: 30%;
+  }
+  .cardpagecardimagelg {
+    width: 300px;
+    height: 150px;
+  }
+}
+@media only screen and (min-width: 1366px) {
+  .categoriespagecommentsinputcontxl {
+    width: 50%;
+  }
+  .cardpagecategoriesxl {
+    width: 25%;
+  }
+
+  .cardpagecardimagexl {
+    width: 400px;
+    height: 200px;
+  }
+}
+@media only screen and (min-width: 1660px) {
+  .categoriespagecommentsinputcontxxl {
+    width: 40%;
+  }
+  .cardpagecategoriesxxl {
+    width: 20%;
+  }
+
+  .cardpagecardimagexxl {
+    width: 500px;
+    height: 250px;
+  }
 }
 .cardpagenocardmessage {
   font-size: 1.5rem;
@@ -18,24 +136,11 @@
 
 @media only screen and (min-width: 768px) {
   .cardpagemd {
+    margin-left: 1rem;
     padding-top: 5vh;
   }
 }
 
-.cardpagecard {
-  grid-column: span 4;
-  height: 40rem;
-  background: rgb(236, 249, 255);
-  display: flex;
-  border-radius: 3px;
-  box-shadow: 0 0 2px black;
-}
-.cardpagecardimage {
-  width: 500px;
-  height: 250px;
-  background-size: cover;
-  background-position: center;
-}
 .cardpagecardtitle {
   grid-row: 2/3;
   display: flex;
@@ -56,15 +161,6 @@
   padding: 0.5rem 5%;
 }
 
-.cardpagecardinfo {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  border-left: 1px solid gray;
-}
-
 .cardpagedisplayflexcolumn {
   display: flex;
   flex-direction: column;
@@ -81,18 +177,12 @@
   color: gray;
 }
 
-.cardpagecardcategory {
-  display: flex;
-  flex-direction: column;
-  height: 4rem;
-  background: rgb(230, 230, 230);
-  width: 100%;
-  color: rgb(35, 150, 0);
-  padding: 0.5rem;
-  font-weight: 600;
-}
 .cardpagecardcategorycategory {
+  padding: 0.5rem;
+
+  flex-grow: 1;
   display: flex;
+  background: rgb(230, 230, 230);
 }
 
 .cardpagecardratehim {
@@ -109,7 +199,7 @@
 }
 .cardpagecardratehimrate {
   margin-top: 2rem;
-  color: rgb(157, 255, 132);
+  color: rgb(118, 255, 83);
   font-size: 1rem;
   font-weight: 600;
 }

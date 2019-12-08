@@ -36,6 +36,7 @@ export default class Headerbackground extends Component {
           }}
         >
           <Searchboxanimation
+            history={this.props.history}
             backgroundheight={this.state.backgroundheight}
           ></Searchboxanimation>
         </div>

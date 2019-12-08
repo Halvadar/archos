@@ -54,6 +54,10 @@ export const setcurrentcardscore = prop => ({
   type: "SET_CURRENT_CARD_SCORE",
   prop
 });
+export const setcurrentcardcomment = prop => ({
+  type: "SET_CURRENT_CARD_COMMENT",
+  prop
+});
 
 export const logoutuser = () => {
   return (dispatch, getState) => {
@@ -267,7 +271,7 @@ export const fetchcards = props => {
               title
               description
               image
-              score
+              score{score}
               _id   
      }}`,
         variables: { category: props.category, subcategory: props.subcategory }
@@ -509,15 +513,26 @@ export const getcard = props => {
             _id
             category
             subcategory
+            comments{comment commentedby{username name _id lastname} date}
+            
           }
         }
       `,
         variables: { ...props }
       }
-    }).then(result => {
-      console.log(result);
-      dispatch(setcurrentcard(result.data.data.getCard));
-    });
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(
+          setcurrentcard({
+            ...result.data.data.getCard,
+            comments: result.data.data.getCard.comments.reverse()
+          })
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 };
 
@@ -544,6 +559,35 @@ export const ratecard = props => {
           console.log("asd");
           dispatch(setcurrentcardscore(result.data.data.rateCard.score));
         }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const comment = props => {
+  return dispatch => {
+    axiosInstance({
+      method: "POST",
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: `
+        mutation type($id:String!,$comment:String!){
+          comment(id:$id,comment:$comment){
+           comment
+           commentedby{username}
+           date
+          }
+        }
+      `,
+        variables: { ...props }
+      }
+    })
+      .then(res => {
+        console.log(res);
+        dispatch(setcurrentcardcomment(res.data.data.comment.reverse()));
       })
       .catch(err => {
         console.log(err);

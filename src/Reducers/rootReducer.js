@@ -130,6 +130,8 @@ const setcurrentcard = (state = currentcardstate, action) => {
         isfetching: false,
         card: { ...state.card, score: action.prop }
       };
+    case "SET_CURRENT_CARD_COMMENT":
+      return { ...state, card: { ...state.card, comments: action.prop } };
     default:
       return state;
   }

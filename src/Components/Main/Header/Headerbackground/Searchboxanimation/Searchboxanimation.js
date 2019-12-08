@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import "./Searchboxanimation.css";
 import searchicon from "./searchicon.svg";
 import { connect } from "react-redux";
-import { changescreensize } from "../../../../../Actions/Actions";
+import { changescreensize, fetchcards } from "../../../../../Actions/Actions";
+import { services } from "../../../../Categories/Categoriespagecategories/Categoriespagecategories";
+
 class Searchboxanimation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputheight: 0,
+      inputdone: false,
       mounted: true,
       animationstate: undefined,
       searchboxbottomdistance: 0,
@@ -14,7 +18,9 @@ class Searchboxanimation extends Component {
       searchinputborder: null,
       searchboxposition: "absolute",
       searchboxfromtop: undefined,
-      fixedsearchboxfromtop: undefined
+      fixedsearchboxfromtop: undefined,
+      matchedvalues: [],
+      firstsuggestedvalue: null
     };
     this.searchbox = React.createRef();
     this.bottomupinterval = undefined;
@@ -27,6 +33,7 @@ class Searchboxanimation extends Component {
     window.addEventListener("resize", this.resizewidthsetter);
     window.addEventListener("scroll", this.searchboxfixed);
   }
+
   componentWillUnmount() {
     this.setState({ mount: false });
     this.interval = undefined;
@@ -54,6 +61,13 @@ class Searchboxanimation extends Component {
         animationstate: "done",
         searchboxfromtop:
           this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
+      });
+    }
+    if (this.state.mounted) {
+      this.setState({
+        inputheight: window
+          .getComputedStyle(this.searchbox)
+          .getPropertyValue("height")
       });
     }
   };
@@ -124,36 +138,36 @@ class Searchboxanimation extends Component {
       let width = this.state.searchboxwidth;
       if (this.state.animationstate === "liftended") {
         this.interval = setInterval(() => {
-          if (this.props.screensize < 500 && this.state.searchboxwidth <= 40) {
+          if (this.props.screensize < 500 && this.state.searchboxwidth <= 50) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 768 &&
-            this.state.searchboxwidth <= 35
+            this.state.searchboxwidth <= 40
           ) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 1024 &&
-            this.state.searchboxwidth <= 25
+            this.state.searchboxwidth <= 35
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 1366 &&
-            this.state.searchboxwidth <= 20
+            this.state.searchboxwidth <= 30
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 1920 &&
-            this.state.searchboxwidth <= 15
+            this.state.searchboxwidth <= 25
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize >= 1920 &&
-            this.state.searchboxwidth <= 10
+            this.state.searchboxwidth <= 20
           ) {
             width = width + 0.2;
             this.setState({ searchboxwidth: width });
@@ -172,6 +186,37 @@ class Searchboxanimation extends Component {
     return this.state.searchboxposition === "absolute"
       ? { bottom: this.state.searchboxbottomdistance + "%" }
       : { top: this.state.fixedsearchboxfromtop + "px" };
+  };
+
+  inputonchange = e => {
+    let matchedvalues = [];
+    let input = this.inputref.value;
+    input.length > 0
+      ? this.setState({ inputdone: true })
+      : this.setState({ inputdone: false });
+    services.forEach(value => {
+      if (value.name.toLowerCase().includes(input)) {
+        matchedvalues.push({ name: value.name, type: "cat" });
+      }
+      if (value.children.length > 0) {
+        value.children.forEach(child => {
+          if (child.toLowerCase().includes(input)) {
+            matchedvalues.push({ name: child, type: "subcat" });
+          }
+        });
+      }
+    });
+    this.setState({ matchedvalues: matchedvalues });
+    matchedvalues.length > 0
+      ? this.setState({ firstsuggestedvalue: matchedvalues[0].name })
+      : this.setState({ firstsuggestedvalue: null });
+  };
+
+  getcardsevent = e => {
+    return () => {
+      this.props.history.push("/categories");
+      this.props.getcards(e);
+    };
   };
 
   render() {
@@ -193,12 +238,50 @@ class Searchboxanimation extends Component {
           className="searchbox"
           ref={a => (this.searchbox = a)}
         >
+          <div
+            style={{
+              display: this.state.inputdone ? "initial" : "none",
+              top: this.state.inputheight
+            }}
+            className="searchboxsuggestions"
+          >
+            {this.state.matchedvalues.length > 0 ? (
+              this.state.matchedvalues.map(item => {
+                return (
+                  <div
+                    className="searchsuggestionsitem"
+                    onClick={
+                      item.type === "cat"
+                        ? this.getcardsevent({ category: item.name })
+                        : this.getcardsevent({ subcategory: item.name })
+                    }
+                  >
+                    {item.name}
+                  </div>
+                );
+              })
+            ) : (
+              <div
+                className="searchsuggestionsitem"
+                style={{ color: "rgb(255, 125, 125)", borderBottom: 0 }}
+              >
+                {" "}
+                No Result found{" "}
+              </div>
+            )}
+          </div>
           <div className="searchboxinputcont">
             <input
+              onChange={this.inputonchange}
+              ref={a => (this.inputref = a)}
               className="searchboxinput"
               type="text"
               style={{ border: this.state.searchinputborder }}
             />
+            <div className="inputsuggest">
+              {" "}
+              {this.state.firstsuggestedvalue && this.state.firstsuggestedvalue}
+            </div>
           </div>
 
           <div className="searchbuttoncontainer">
@@ -217,7 +300,8 @@ const mapStateToProps = state => ({
   scroll: state.screen.scroll
 });
 const mapDispatchToProps = dispatch => ({
-  changescreensize: e => dispatch(changescreensize(e))
+  changescreensize: e => dispatch(changescreensize(e)),
+  getcards: e => dispatch(fetchcards(e))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Searchboxanimation);

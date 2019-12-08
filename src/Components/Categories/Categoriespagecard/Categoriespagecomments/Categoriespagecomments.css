@@ -1,0 +1,60 @@
+.cateogriespagecommentscont {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* .categoriespagecommentsinputcont {
+  display: flex;
+  height: 10rem;
+  width: 100%;
+  background: rgb(206, 206, 206);
+} */
+.categoriespagecommentsinput {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgb(172, 221, 250);
+  padding: 0.5rem;
+  border-radius: 3px;
+}
+.categoriespagecommentsinput::placeholder {
+  color: rgb(255, 117, 117);
+
+  font-weight: 600;
+}
+.categoriespagecommentsbutton {
+  margin: 1.5rem 0;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background: rgb(63, 98, 255);
+  color: white;
+  font-weight: 600;
+  border-radius: 3px;
+}
+.categoriespagecommentscomment {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid rgb(216, 216, 216);
+  flex-direction: column;
+  color: rgb(83, 83, 83);
+  font-weight: 580;
+  font-family: "Roboto", sans-serif;
+}
+.categoriepagecommentscommentscont {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+}
+.categoriespagecommentauthor {
+  color: rgb(160, 204, 255);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1rem 0;
+  color: rgb(147, 212, 255);
+}

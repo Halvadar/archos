@@ -79,7 +79,7 @@ class App extends Component {
               path="/"
               render={props => (
                 <React.Fragment>
-                  <Headerbackground />
+                  <Headerbackground {...props} />
                   <Categories {...props} />
                   <Jumbotron />
                   <Cards />

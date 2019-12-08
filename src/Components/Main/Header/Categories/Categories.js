@@ -29,7 +29,6 @@ class Categories extends Component {
   componentDidMount() {}
 
   func = b => () => {
-    console.log("aaa");
     var styleprop = (aaa, bbb, ccc) => {
       return {
         background: `linear-gradient(45deg, rgb(176, 205, 240) ${aaa -
@@ -98,7 +97,6 @@ class Categories extends Component {
               });
             }
           } else if (bott > 0 && this.state.style[b] == 0) {
-            console.log("elseif");
             bott = bott - 1;
             this.setState(prevState => {
               var stata = { ...prevState.style2 };
@@ -106,7 +104,6 @@ class Categories extends Component {
               return { style2: stata };
             });
           } else {
-            console.log("else");
             clearInterval(bottommargin1);
           }
         }, 10);
