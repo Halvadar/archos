@@ -29,13 +29,6 @@
 .searchsuggestionsitem:hover {
   cursor: pointer;
 }
-.inputsuggest {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  color: gray;
-  top: 0;
-}
 
 .searchboxinputcont {
   flex: 1;

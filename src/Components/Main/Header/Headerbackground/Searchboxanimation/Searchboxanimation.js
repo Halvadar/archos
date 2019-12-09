@@ -9,6 +9,7 @@ class Searchboxanimation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputlength: 0,
       inputheight: 0,
       inputdone: false,
       mounted: true,
@@ -88,7 +89,7 @@ class Searchboxanimation extends Component {
 
   resizefunc = (
     screensizes = [500, 768, 1024, 1366, 1920],
-    widths = [40, 35, 25, 20, 15, 10],
+    widths = [60, 45, 35, 30, 25, 20],
     screensize = this.props.screensize
   ) => {
     for (const element of screensizes) {
@@ -97,7 +98,7 @@ class Searchboxanimation extends Component {
           searchboxwidth: widths[screensizes.indexOf(element)]
         });
       } else if (screensize >= 1920) {
-        this.setState({ searchboxwidth: 10 });
+        this.setState({ searchboxwidth: 20 });
       }
     }
   };
@@ -138,7 +139,7 @@ class Searchboxanimation extends Component {
       let width = this.state.searchboxwidth;
       if (this.state.animationstate === "liftended") {
         this.interval = setInterval(() => {
-          if (this.props.screensize < 500 && this.state.searchboxwidth <= 50) {
+          if (this.props.screensize < 500 && this.state.searchboxwidth <= 60) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
           } else if (
@@ -151,25 +152,25 @@ class Searchboxanimation extends Component {
             this.props.screensize < 1024 &&
             this.state.searchboxwidth <= 35
           ) {
-            width = width + 0.2;
+            width = width + 0.5;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 1366 &&
             this.state.searchboxwidth <= 30
           ) {
-            width = width + 0.2;
+            width = width + 0.5;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize < 1920 &&
             this.state.searchboxwidth <= 25
           ) {
-            width = width + 0.2;
+            width = width + 0.4;
             this.setState({ searchboxwidth: width });
           } else if (
             this.props.screensize >= 1920 &&
             this.state.searchboxwidth <= 20
           ) {
-            width = width + 0.2;
+            width = width + 0.3;
             this.setState({ searchboxwidth: width });
           } else {
             this.setState({ animationstate: "stretchended" });
@@ -191,17 +192,20 @@ class Searchboxanimation extends Component {
   inputonchange = e => {
     let matchedvalues = [];
     let input = this.inputref.value;
+    this.setState({ inputlength: input.length });
     input.length > 0
       ? this.setState({ inputdone: true })
       : this.setState({ inputdone: false });
     services.forEach(value => {
-      if (value.name.toLowerCase().includes(input)) {
-        matchedvalues.push({ name: value.name, type: "cat" });
+      let a = value.name.toLowerCase().indexOf(input);
+      if (a !== -1) {
+        matchedvalues.push({ index: a, name: value.name, type: "cat" });
       }
       if (value.children.length > 0) {
         value.children.forEach(child => {
-          if (child.toLowerCase().includes(input)) {
-            matchedvalues.push({ name: child, type: "subcat" });
+          let a = child.toLowerCase().indexOf(input);
+          if (!a == -1) {
+            matchedvalues.push({ index: a, name: child, type: "subcat" });
           }
         });
       }
@@ -247,6 +251,12 @@ class Searchboxanimation extends Component {
           >
             {this.state.matchedvalues.length > 0 ? (
               this.state.matchedvalues.map(item => {
+                console.log(
+                  item.name.slice(
+                    item.index,
+                    item.index + this.state.inputlength
+                  )
+                );
                 return (
                   <div
                     className="searchsuggestionsitem"
@@ -256,7 +266,19 @@ class Searchboxanimation extends Component {
                         : this.getcardsevent({ subcategory: item.name })
                     }
                   >
-                    {item.name}
+                    {item.name.slice(0, item.index)}
+
+                    <span style={{ color: "red" }}>
+                      {item.name.slice(
+                        item.index,
+                        item.index + this.state.inputlength
+                      )}
+                    </span>
+
+                    {item.name.slice(
+                      item.index + this.state.inputlength,
+                      item.name.length
+                    )}
                   </div>
                 );
               })
@@ -278,10 +300,6 @@ class Searchboxanimation extends Component {
               type="text"
               style={{ border: this.state.searchinputborder }}
             />
-            <div className="inputsuggest">
-              {" "}
-              {this.state.firstsuggestedvalue && this.state.firstsuggestedvalue}
-            </div>
           </div>
 
           <div className="searchbuttoncontainer">
