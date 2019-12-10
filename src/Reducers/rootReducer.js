@@ -8,7 +8,9 @@ const getcardsstate = {
   isfetching: false,
   cards: [],
   category: "all",
-  subcategory: "all"
+  subcategory: "all",
+  filterinput: "",
+  sorttype: undefined
 };
 
 const createuserstate = {
@@ -62,6 +64,14 @@ const getcards = (state = getcardsstate, action) => {
       };
     case "SET_CARDS":
       return { ...state, isfetching: false, cards: action.cards };
+    case "AZ":
+      return { ...state, cards: action.cards, sorttype: "AZ" };
+    case "ZA":
+      return { ...state, cards: action.cards, sorttype: "ZA" };
+    case "RATING":
+      return { ...state, cards: action.cards, sorttype: "RATING" };
+    case "FILTER_CARDS":
+      return { ...state, filterinput: action.prop };
     default:
       return state;
   }
@@ -94,6 +104,7 @@ const setcurrentuser = (state = currentuser, action) => {
   switch (action.type) {
     case "SET_CURRENT_USER":
       return { ...state, ...action.user };
+
     default:
       return state;
   }
@@ -105,10 +116,12 @@ const getpostedcards = (state = createdcards, action) => {
       return { ...state, cards: action.cards, isfetching: false };
     case "SET_POSTED_CARDS":
       return { ...state, isfetching: true };
+
     default:
       return state;
   }
 };
+
 const setemailtokenstate = (state = emailtokenstate, action) => {
   switch (action.type) {
     case "EMAIL_TOKEN_STATE":

@@ -39,7 +39,6 @@
 .cardpagecardcategorysm {
   display: flex;
   flex-direction: column;
-
   width: 100%;
   color: rgb(35, 150, 0);
   padding: 1rem;

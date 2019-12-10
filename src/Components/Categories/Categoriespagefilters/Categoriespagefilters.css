@@ -70,6 +70,9 @@
   background: rgb(108, 223, 238);
   border: 1px solid rgb(192, 253, 253);
 }
+.sortbydropdown:hover {
+  cursor: pointer;
+}
 
 @media only screen and (min-width: 768px) {
   .categoriespagefiltersmd {

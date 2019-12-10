@@ -61,10 +61,14 @@ export const services = [
   cr("IT", "Computer Network Wiring", "Troubleshooting")
 ];
 
+const intervalsetter = () =>
+  services.map((a, b) => {
+    return { interval: undefined };
+  });
 const car = () =>
   services.map((a, b) => {
     return {
-      animationstate: "not going",
+      animationstate: "closing",
       animationtopdistance: 0,
       subcategoryextensionheight: undefined
     };
@@ -76,59 +80,84 @@ class Categoriespagecategories extends Component {
     this.state = {
       animation: car(),
       heightreference: undefined,
-      dropdownanimationstate: "not going",
-      dropdowntopdistance: 0
+      dropdownanimationstate: "closing",
+      dropdowntopdistance: 0,
+      currentcategory: null,
+      currentcategoryindex: null,
+      currentsubcategory: null,
+      subcatanimationstate: "closing",
+      subcattopdistance: 0
     };
+    this.newinterval = intervalsetter();
+    this.smcateginterval = undefined;
+    this.smsubcateinterval = undefined;
   }
   subcatanimation = (b, a) => {
     return () => {
-      console.log(this.props.cardsstate);
+      clearInterval(this.newinterval[b].interval);
+      console.log("passed");
+      if (this.props.location.pathname !== "/categories") {
+        this.props.history.push("/categories");
+      }
+      this.setState({ currentcategory: a.name });
       if (this.state.animation[b].animationtopdistance === 0) {
         this.props.getcards({ category: a.name })();
       }
       let animationtopdistance = this.state.animation[b].animationtopdistance;
       let animationcopy = [...this.state.animation];
-      if (this.state.animation[b].animationstate === "not going") {
-        if (this.state.animation[b].animationtopdistance === 0) {
-          animationcopy[b].animationstate = "expanding";
+      this.state.animation.forEach((c, d) => {
+        if (c.animationtopdistance > 0 && d !== b) {
+          this.collapseanimation(d);
+        }
+      });
+
+      if (this.state.animation[b].animationstate === "closing") {
+        animationcopy[b].animationstate = "expanding";
+        this.setState({ animation: animationcopy });
+      } else {
+        animationcopy[b].animationstate = "closing";
+        this.setState({ animation: animationcopy });
+        this.setState({ currentsubcategory: undefined });
+      }
+      this.newinterval[b].interval = setInterval(() => {
+        if (
+          this.state.animation[b].animationstate === "expanding" &&
+          animationtopdistance < 100
+        ) {
+          animationcopy[b].subcategoryextensionheight =
+            animationcopy[b].subcategoryextensionheight +
+            this.categoryheightadder(b);
+          animationtopdistance++;
+          animationcopy[b].animationtopdistance = animationtopdistance;
+
+          this.setState({ animation: animationcopy });
+        } else if (
+          this.state.animation[b].animationstate === "closing" &&
+          animationtopdistance > 0
+        ) {
+          animationcopy[b].subcategoryextensionheight =
+            animationcopy[b].subcategoryextensionheight -
+            this.categoryheightadder(b);
+          animationtopdistance = animationtopdistance - 1;
+          animationcopy[b].animationtopdistance = animationtopdistance;
           this.setState({ animation: animationcopy });
         } else {
-          animationcopy[b].animationstate = "closing";
           this.setState({ animation: animationcopy });
+          clearInterval(this.newinterval[b].interval);
         }
-        let interval = setInterval(() => {
-          if (
-            this.state.animation[b].animationstate === "expanding" &&
-            animationtopdistance < 100
-          ) {
-            animationcopy[b].subcategoryextensionheight =
-              animationcopy[b].subcategoryextensionheight +
-              this.categoryheightadder(b);
-            animationtopdistance++;
-            animationcopy[b].animationtopdistance = animationtopdistance;
-
-            this.setState({ animation: animationcopy });
-          } else if (
-            this.state.animation[b].animationstate === "closing" &&
-            animationtopdistance > 0
-          ) {
-            animationcopy[b].subcategoryextensionheight =
-              animationcopy[b].subcategoryextensionheight -
-              this.categoryheightadder(b);
-            animationtopdistance = animationtopdistance - 1;
-            animationcopy[b].animationtopdistance = animationtopdistance;
-            this.setState({ animation: animationcopy });
-          } else {
-            animationcopy[b].animationstate = "not going";
-            this.setState({ animation: animationcopy });
-            clearInterval(interval);
-          }
-        }, 5);
-      }
+      }, 5);
     };
   };
-  componentDidUpdate() {}
 
+  collapseanimation = d => {
+    clearInterval(this.newinterval[d].interval);
+
+    let animationcopy = [...this.state.animation];
+    animationcopy[d].animationstate = "closing";
+    animationcopy[d].animationtopdistance = 0;
+    animationcopy[d].subcategoryextensionheight = this.state.heightreference;
+    this.setState({ animation: animationcopy, currentsubcategory: undefined });
+  };
   subcatindexchecker = (b, d) => {
     if (this.state.animation[b].animationstate !== "not going") {
       return this.state.animation[b].animationtopdistance * (d + 1);
@@ -193,40 +222,65 @@ class Categoriespagecategories extends Component {
     this.subcategoryextensionheightsetter();
   };
   categoriesdropdown = () => {
-    if (this.state.dropdownanimationstate !== "going") {
-      let i = this.state.dropdowntopdistance;
-      if (i === 0) {
-        this.setState({ dropdownanimationstate: "going" });
-        var newinterval = setInterval(() => {
-          if (i < 100) {
-            i++;
-            this.setState({ dropdowntopdistance: i });
-          } else {
-            clearInterval(newinterval);
-            this.setState({ dropdownanimationstate: "not going" });
-          }
-        }, 5);
-      } else if (i === 100) {
-        this.setState({ dropdownanimationstate: "going" });
-        var newinterval = setInterval(() => {
-          if (i > 0) {
-            i = i - 1;
-            this.setState({ dropdowntopdistance: i });
-          } else {
-            clearInterval(newinterval);
-            this.setState({ dropdownanimationstate: "not going" });
-          }
-        }, 5);
-      }
+    clearInterval(this.smcateginterval);
+    let i = this.state.dropdowntopdistance;
+    if (this.state.dropdownanimationstate === "closing") {
+      this.setState({ dropdownanimationstate: "expanding" });
+    } else {
+      this.setState({ dropdownanimationstate: "closing" });
     }
+
+    this.smcateginterval = setInterval(() => {
+      if (this.state.dropdownanimationstate === "closing" && i > 0) {
+        i = i - 1;
+        this.setState({ dropdowntopdistance: i });
+      } else if (this.state.dropdownanimationstate === "expanding" && i < 100) {
+        i++;
+        this.setState({ dropdowntopdistance: i });
+      } else {
+        clearInterval(this.smcateginterval);
+      }
+    }, 5);
+  };
+
+  subcatdropdown = () => {
+    clearInterval(this.subcatinterval);
+    let i = this.state.subcattopdistance;
+    if (this.state.subcatanimationstate === "closing") {
+      this.setState({ subcatanimationstate: "expanding" });
+    } else {
+      this.setState({ subcatanimationstate: "closing" });
+    }
+    this.subcatinterval = setInterval(() => {
+      if (this.state.subcatanimationstate === "closing" && i > 0) {
+        i = i - 1;
+        this.setState({ subcattopdistance: i });
+      } else if (this.state.subcatanimationstate === "expanding" && i < 100) {
+        i++;
+        this.setState({ subcattopdistance: i });
+      } else {
+        clearInterval(this.subcatinterval);
+      }
+    }, 5);
   };
 
   componentDidMount() {
+    console.log(this.props);
+    console.log(this.newinterval);
     this.subcategoryextensionheightsetter();
     window.addEventListener("resize", this.categoryitemresetter);
   }
+  componentDidUpdate() {
+    console.log(this.state.subcattopdistance);
+  }
+  subgetcards = e => {
+    return () => {
+      this.props.getcards({ ...e })();
+      this.setState({ currentsubcategory: e.subcategory });
+    };
+  };
   render() {
-    if (window.innerWidth >= 768) {
+    if (this.props.screensize.screensize >= 768 || window.innerWidth > 768) {
       return (
         <div
           className={
@@ -245,13 +299,19 @@ class Categoriespagecategories extends Component {
                     this.state.animation[b].subcategoryextensionheight + "px"
                 }}
               >
-                <div className="subcategories">
+                <div className="subcategories" style={{}}>
                   <div
                     style={
-                      arr.length - b < 1 &&
+                      (arr.length - b < 1 &&
                       this.state.animation[b].animationtopdistance === 0
                         ? { paddingBottom: "1px" }
-                        : {}
+                        : {},
+                      {
+                        background:
+                          this.state.currentcategory === a.name
+                            ? "rgb(155, 223, 255)"
+                            : null
+                      })
                     }
                     className="subcategoriesname"
                     onClick={this.subcatanimation(b, a)}
@@ -263,6 +323,10 @@ class Categoriespagecategories extends Component {
                     return (
                       <div
                         style={{
+                          background:
+                            this.state.currentsubcategory === c
+                              ? "rgb(255, 208, 180)"
+                              : null,
                           top: this.subcatindexchecker(b, d) + "%",
                           border:
                             this.state.animation[d].animationstate ===
@@ -271,7 +335,7 @@ class Categoriespagecategories extends Component {
                               : "1px solid rgb(181, 245, 245) ",
                           borderWidth: "1px 0 1px 0"
                         }}
-                        onClick={this.props.getcards({
+                        onClick={this.subgetcards({
                           subcategory: c,
                           category: a.name
                         })}
@@ -301,10 +365,19 @@ class Categoriespagecategories extends Component {
             style={{ height: this.state.heightreference + "px" }}
           >
             <div
-              onClick={this.categoriesdropdown}
+              onClick={() => {
+                this.categoriesdropdown();
+                clearInterval(this.subcatinterval);
+                this.setState({
+                  subcattopdistance: 0,
+                  subcatanimationstate: "closing"
+                });
+              }}
               className="categoriespagecategoriescategories"
             >
-              Categories
+              Category{" "}
+              {this.state.currentcategory &&
+                ` -  ${this.state.currentcategory}`}
               <div>
                 <img src={dropdown} width="10px"></img>
               </div>
@@ -322,52 +395,76 @@ class Categoriespagecategories extends Component {
                 >
                   <div className="subcategories">
                     <div
-                      style={{
-                        border:
-                          this.state.dropdownanimationstate === "not going"
-                            ? "1px solid rgb(181, 245, 245)"
-                            : "1px solid rgb(218, 247, 247)",
-                        borderWidth: "1px 0 1px 0",
-                        paddingBottom:
-                          arr.length - b < 1 &&
-                          this.state.animation[b].animationtopdistance === 0
-                            ? "1px"
-                            : null
+                      style={{}}
+                      onClick={() => {
+                        this.setState({
+                          currentcategoryindex: b,
+                          currentcategory: a.name,
+                          currentsubcategory: null
+                        });
+                        this.props.getcards({ category: a.name })();
+                        this.categoriesdropdown();
                       }}
                       className="subcategoriesname"
-                      onClick={this.subcatanimation(b, a)}
                       ref={b === 0 ? e => (this.subcatheightref = e) : null}
                     >
-                      <NavLink to={`${this.props.location.pathname}/${a.name}`}>
-                        {a.name}
-                      </NavLink>
+                      {a.name}
                     </div>
-                    {a.children.map((c, d, ttt) => {
-                      return (
-                        <div
-                          style={{
-                            top: this.subcatindexchecker(b, d) + "%",
-                            border:
-                              this.state.animation[d].animationstate ===
-                              "not going"
-                                ? "1px solid rgb(218, 247, 247)"
-                                : "1px solid rgb(181, 245, 245) ",
-                            borderWidth: "1px 0 1px 0"
-                          }}
-                          className="subsubcategories"
-                          onClick={this.props.getcards({
-                            subcategory: c,
-                            category: a.name
-                          })}
-                        >
-                          {c}
-                        </div>
-                      );
-                    })}
                   </div>
                 </div>
               );
             })}
+          </div>
+          <div
+            className="categoriespagecategoriescategoriescont"
+            style={{ zIndex: -100, height: this.state.heightreference + "px" }}
+          >
+            <div
+              onClick={() => {
+                this.subcatdropdown();
+                clearInterval(this.smcateginterval);
+                this.setState({
+                  dropdowntopdistance: 0,
+                  dropdownanimationstate: "not going"
+                });
+              }}
+              className="categoriespagecategoriescategories"
+            >
+              Subcategory
+              {services[this.state.currentcategoryindex] &&
+                services[this.state.currentcategoryindex].children.length ===
+                  0 &&
+                " - No Subcategories"}
+              {this.state.currentsubcategory &&
+                ` -  ${this.state.currentsubcategory}`}
+              <div>
+                <img src={dropdown} width="10px"></img>
+              </div>
+            </div>
+            {services[this.state.currentcategoryindex] &&
+            services[this.state.currentcategoryindex].children.length > 0
+              ? services[this.state.currentcategoryindex].children.map(
+                  (a, b) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          this.setState({ currentsubcategory: a });
+                          this.subcatdropdown();
+                          this.props.getcards({ subcategory: a })();
+                        }}
+                        className="categoriescontsm"
+                        style={{
+                          top: this.state.subcattopdistance * (b + 1) + "%",
+                          zIndex: -1 - b,
+                          height: this.state.heightreference + "px"
+                        }}
+                      >
+                        <div className="subcategoriesname">{a}</div>
+                      </div>
+                    );
+                  }
+                )
+              : null}
           </div>
         </div>
       );
@@ -380,7 +477,8 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 const mapStateToProps = state => ({
-  cardsstate: state.getcards
+  cardsstate: state.getcards,
+  screensize: state.screen
 });
 export default connect(
   mapStateToProps,

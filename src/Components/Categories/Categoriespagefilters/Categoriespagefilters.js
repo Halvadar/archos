@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import "./Categoriespagefilters.css";
 import dropdown from "../Categoriespagecategories/dropdown.svg";
 import searchicon from "./search.svg";
+import { connect } from "react-redux";
+import { sortcards, filtercards } from "../../../Actions/Actions";
 
-export default class Categoriespagefilters extends Component {
+class Categoriespagefilters extends Component {
   constructor() {
     super();
     this.state = {
@@ -11,6 +13,8 @@ export default class Categoriespagefilters extends Component {
       animationtopdistance: 0
     };
   }
+
+  componentDidMount() {}
   animation = () => {
     if (this.state.animationstate === "not going") {
       var i = this.state.animationtopdistance;
@@ -24,7 +28,7 @@ export default class Categoriespagefilters extends Component {
             clearInterval(newinterval);
             this.setState({ animationstate: "not going" });
           }
-        }, 10);
+        }, 5);
       } else if (i === 100) {
         var newinterval = setInterval(() => {
           if (i > 0) {
@@ -36,7 +40,7 @@ export default class Categoriespagefilters extends Component {
             clearInterval(newinterval);
             this.setState({ animationstate: "not going" });
           }
-        }, 10);
+        }, 5);
       }
       if (i < 100) {
       }
@@ -60,17 +64,69 @@ export default class Categoriespagefilters extends Component {
     }
     return "200px";
   };
+
+  sortcardsAZ = () => {
+    let sortedcards;
+    sortedcards = this.props.cards.cards.sort((a, b) => {
+      if (a.title.localeCompare(b.title) < 0) {
+        return -1;
+      } else if (a.title.localeCompare(b.title) > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    this.props.sortcards({ type: "AZ", cards: sortedcards });
+  };
+  sortcardsZA = () => {
+    let sortedcards;
+    sortedcards = this.props.cards.cards.sort((a, b) => {
+      if (a.title.localeCompare(b.title) < 0) {
+        return 1;
+      } else if (a.title.localeCompare(b.title) > 0) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    this.props.sortcards({ type: "ZA", cards: sortedcards });
+  };
+  sortcardsrating = () => {
+    let sortedcards;
+    sortedcards = this.props.cards.cards.sort((a, b) => {
+      if (a.score !== "Not Rated" && b.score === "Not Rated") {
+        return -1;
+      } else if (a.score === "Not Rated" && b.score !== "Not Rated") {
+        return 1;
+      } else if (a.score === "Not Rated" && b.score === "Not Rated") {
+        return 0;
+      } else if (a.score > b.score) {
+        return -1;
+      } else if (a.score < b.score) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    this.props.sortcards({ type: "RATING", cards: sortedcards });
+  };
+
+  inputfilter = () => {
+    this.props.filtercards(this.inputref.value);
+  };
+
   render() {
     return (
       <div className="categoriespagefilters categoriespagefiltersmd  categoriespagefilterslg categoriespagefiltersxl">
-        <div onClick={this.animation} className="sortbyrating">
-          <div className="rating">
+        <div className="sortbyrating">
+          <div onClick={this.animation} className="rating">
             Sort By
             <div>
               <img src={dropdown} width="10px"></img>
             </div>
           </div>
           <div
+            onClick={this.sortcardsrating}
             className="sortbydropdown"
             style={{
               top: this.state.animationtopdistance * 1 + "%",
@@ -81,6 +137,7 @@ export default class Categoriespagefilters extends Component {
             Rating{" "}
           </div>
           <div
+            onClick={this.sortcardsAZ}
             className="sortbydropdown"
             style={{
               zIndex: -2,
@@ -91,6 +148,7 @@ export default class Categoriespagefilters extends Component {
             Alphabet A-Z
           </div>
           <div
+            onClick={this.sortcardsZA}
             className="sortbydropdown"
             style={{
               top: this.state.animationtopdistance * 3 + "%",
@@ -106,7 +164,12 @@ export default class Categoriespagefilters extends Component {
           style={{ width: this.searchboxwidthsetter() }}
         >
           <div className="categoriespagesearchboxinputcont">
-            <input className="categoriespagesearchboxinput" type="text"></input>
+            <input
+              onChange={this.inputfilter}
+              ref={a => (this.inputref = a)}
+              className="categoriespagesearchboxinput"
+              type="text"
+            ></input>
           </div>
           <div className="categoriespagesearchboxbutton">
             <img src={searchicon} width="75%"></img>
@@ -116,3 +179,17 @@ export default class Categoriespagefilters extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  cards: state.getcards
+});
+
+const mapDispatchToProps = dispatch => ({
+  sortcards: e => dispatch(sortcards(e)),
+  filtercards: e => dispatch(filtercards(e))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Categoriespagefilters);

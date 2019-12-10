@@ -72,6 +72,7 @@ class Categoriespagecard extends Component {
       <React.Fragment>
         <div className="cardpage cardpagemd">
           <Categoriespagecategories
+            history={this.props.history}
             page="cardpage"
             location={this.props.location}
           ></Categoriespagecategories>

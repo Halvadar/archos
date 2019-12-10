@@ -14,10 +14,12 @@ class Categoriespage extends Component {
       <div className="categoriespage categoriespagemd categoriespagelg">
         <Categoriespagecategories
           location={this.props.location}
+          history={this.props.history}
         ></Categoriespagecategories>
         <Categoriespagefilters></Categoriespagefilters>
         <Categoriespagecards
           location={this.props.location}
+          history={this.props.history}
         ></Categoriespagecards>
       </div>
     );

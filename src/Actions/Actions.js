@@ -1,6 +1,15 @@
 import { axiosInstance } from "../Configs";
 import { Promise } from "q";
 
+export const sortcards = prop => ({
+  type: prop.type,
+  cards: prop.cards
+});
+export const filtercards = prop => ({
+  type: "FILTER_CARDS",
+  prop
+});
+
 export const changescreensize = prop => ({
   type: "CHANGE_SCREEN_SIZE",
   prop
@@ -279,8 +288,24 @@ export const fetchcards = props => {
       headers: { "Content-Type": "application/json" }
     })
       .then(result => {
-        console.log(result.data.data.getCards);
-        dispatch(setcards(result.data.data.getCards));
+        let cards = result.data.data.getCards.map(a => {
+          if (a.score.length > 0) {
+            let score = 0;
+            let i = 0;
+            while (i < a.score.length) {
+              score = score + parseFloat(a.score[i].score);
+              i++;
+            }
+
+            score = score / a.score.length;
+
+            return { ...a, score: score.toFixed(2) };
+          } else {
+            return { ...a, score: "Not Rated" };
+          }
+        });
+        console.log(cards);
+        dispatch(setcards(cards));
       })
       .catch(err => {
         console.log(err);
