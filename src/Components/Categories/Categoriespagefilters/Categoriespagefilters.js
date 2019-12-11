@@ -3,7 +3,7 @@ import "./Categoriespagefilters.css";
 import dropdown from "../Categoriespagecategories/dropdown.svg";
 import searchicon from "./search.svg";
 import { connect } from "react-redux";
-import { sortcards, filtercards } from "../../../Actions/Actions";
+import { sortcards, filtercards, focuscards } from "../../../Actions/Actions";
 
 class Categoriespagefilters extends Component {
   constructor() {
@@ -114,6 +114,13 @@ class Categoriespagefilters extends Component {
   inputfilter = () => {
     this.props.filtercards(this.inputref.value);
   };
+  focuscardsevent = () => {
+    if (this.props.cards.focuscards === 0) {
+      this.props.focuscards(1);
+    } else {
+      this.props.focuscards(0);
+    }
+  };
 
   render() {
     return (
@@ -171,7 +178,10 @@ class Categoriespagefilters extends Component {
               type="text"
             ></input>
           </div>
-          <div className="categoriespagesearchboxbutton">
+          <div
+            onClick={this.focuscardsevent}
+            className="categoriespagesearchboxbutton"
+          >
             <img src={searchicon} width="75%"></img>
           </div>
         </div>
@@ -185,6 +195,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  focuscards: e => dispatch(focuscards(e)),
   sortcards: e => dispatch(sortcards(e)),
   filtercards: e => dispatch(filtercards(e))
 });

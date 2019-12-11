@@ -30,6 +30,9 @@
   align-items: center;
   justify-content: center;
 }
+.categoriespagesearchboxbutton:hover {
+  cursor: pointer;
+}
 .categoriespagesearchboxinput {
   width: 100%;
   border-width: 0;

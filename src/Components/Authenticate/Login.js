@@ -34,14 +34,12 @@ class Login extends Component {
       clearInterval(this.newinterval);
       if (e === "archos") {
         if (this.state.animation > -100) {
-          console.log("passed");
           let i = this.state.animation;
-          console.log(i);
+
           this.newinterval = setInterval(() => {
-            console.log("passed2");
             if (this.state.animation > -100) {
               i = i - 1;
-              console.log("passed2");
+
               this.setState({ animation: i });
             } else {
               clearInterval(this.newinterval);
@@ -49,11 +47,9 @@ class Login extends Component {
           }, 5);
         }
       } else if (e === "facebookgmail") {
-        console.log("face");
         if (this.state.animation < 0) {
           let i = this.state.animation;
           this.newinterval = setInterval(() => {
-            console.log(i, this.state.animation);
             if (this.state.animation < 0) {
               i++;
               this.setState({ animation: i });
@@ -159,6 +155,18 @@ class Login extends Component {
             style={{ left: this.state.animation + 100 + "%" }}
             className="loginformarchos"
           >
+            {this.props.userstate.errormessage && (
+              <div
+                style={{
+                  background: "rgb(255, 132, 132)",
+
+                  height: "3rem",
+                  width: "70%"
+                }}
+              >
+                {this.props.userstate.errormessage}
+              </div>
+            )}
             <div className="archoslogininputcont">
               <input
                 ref={a => (this.email = a)}
@@ -173,6 +181,7 @@ class Login extends Component {
                 className="archoslogininput"
               ></input>
             </div>
+
             <div onClick={this.archoscallback} className="archosformlogin">
               Login
             </div>
@@ -182,6 +191,9 @@ class Login extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  userstate: state.setcurrentuser
+});
 
 const mapDispatchToProps = dispatch => ({
   loginfacebook: e => {
@@ -195,4 +207,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

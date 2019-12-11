@@ -10,7 +10,8 @@ const getcardsstate = {
   category: "all",
   subcategory: "all",
   filterinput: "",
-  sorttype: undefined
+  sorttype: undefined,
+  focuscards: false
 };
 
 const createuserstate = {
@@ -20,6 +21,7 @@ const createuserstate = {
   email: undefined
 };
 const currentuser = {
+  errormessage: undefined,
   usertype: undefined,
   username: undefined,
   name: undefined,
@@ -72,6 +74,8 @@ const getcards = (state = getcardsstate, action) => {
       return { ...state, cards: action.cards, sorttype: "RATING" };
     case "FILTER_CARDS":
       return { ...state, filterinput: action.prop };
+    case "FOCUS_CARDS":
+      return { ...state, focuscards: action.prop };
     default:
       return state;
   }
@@ -104,7 +108,8 @@ const setcurrentuser = (state = currentuser, action) => {
   switch (action.type) {
     case "SET_CURRENT_USER":
       return { ...state, ...action.user };
-
+    case "ERROR":
+      return { ...state, errormessage: action.prop };
     default:
       return state;
   }

@@ -5,7 +5,11 @@ import { fetchcards, setcards } from "../../../Actions/Actions";
 
 export class Categoriespagecards extends Component {
   componentDidMount() {}
-  componentDidUpdate() {}
+  componentDidUpdate(prevprops) {
+    if (this.props.cardsstate.focuscards !== prevprops.cardsstate.focuscards) {
+      this.cardscontref.scrollIntoView();
+    }
+  }
   cardinfo = e => {
     return () => {
       this.props.history.push(`cardinfo/${e}`);
@@ -18,7 +22,10 @@ export class Categoriespagecards extends Component {
       }
     });
     return (
-      <div className="categoriespagecards categoriespagecardsmd categoriespagecardslg categoriespagecardsxl">
+      <div
+        ref={a => (this.cardscontref = a)}
+        className="categoriespagecards categoriespagecardsmd categoriespagecardslg categoriespagecardsxl"
+      >
         {this.props.cardsstate.isfetching ? (
           <h1>loading</h1>
         ) : (

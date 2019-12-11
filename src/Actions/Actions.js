@@ -9,6 +9,10 @@ export const filtercards = prop => ({
   type: "FILTER_CARDS",
   prop
 });
+export const focuscards = prop => ({
+  type: "FOCUS_CARDS",
+  prop
+});
 
 export const changescreensize = prop => ({
   type: "CHANGE_SCREEN_SIZE",
@@ -65,6 +69,10 @@ export const setcurrentcardscore = prop => ({
 });
 export const setcurrentcardcomment = prop => ({
   type: "SET_CURRENT_CARD_COMMENT",
+  prop
+});
+export const loginerror = prop => ({
+  type: "ERROR",
   prop
 });
 
@@ -161,10 +169,17 @@ export const loginarchosuser = props => {
       `,
         variables: { email: props.email, password: props.password }
       }
-    }).then(result => {
-      console.log(result, "asdasd");
-      dispatch(setcurrentuser(result.data.data.loginArchos));
-    });
+    })
+      .then(result => {
+        console.log(result, "asdasd");
+        dispatch(setcurrentuser(result.data.data.loginArchos));
+      })
+      .catch(err => {
+        console.log(err.response.data.errors);
+        if (err.response.data.errors) {
+          dispatch(loginerror(err.response.data.errors[0].message));
+        }
+      });
   };
 };
 
