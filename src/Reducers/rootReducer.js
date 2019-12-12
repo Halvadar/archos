@@ -15,6 +15,9 @@ const getcardsstate = {
 };
 
 const createuserstate = {
+  archoserrormessage: undefined,
+  gmailerrormessage: undefined,
+  facebookerrormessage: undefined,
   method: undefined,
   token: undefined,
   id: undefined,
@@ -98,7 +101,12 @@ const createuser = (state = createuserstate, action) => {
         email: action.user.email,
         method: action.user.method
       };
-
+    case "REGISTER_ARCHOS_USER_ERROR":
+      return { ...state, archoserrormessage: action.errormessage };
+    case "REGISTER_FACEBOOK_USER_ERROR":
+      return { ...state, facebookerrormessage: action.errormessage };
+    case "REGISTER_GMAIL_USER_ERROR":
+      return { ...state, gmailerrormessage: action.errormessage };
     default:
       return state;
   }

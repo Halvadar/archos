@@ -5,7 +5,10 @@ import gmail from "../../Main/Footer/gmail.svg";
 import Facebookform from "./Facebookform";
 import Gmailform from "./Gmailform";
 import Archosform from "./Archosform";
-export default class Register extends Component {
+import { connect } from "react-redux";
+import { registererror } from "../../../Actions/Actions";
+
+class Register extends Component {
   constructor() {
     super();
     this.state = {
@@ -16,11 +19,8 @@ export default class Register extends Component {
     };
     this.newinterval = undefined;
   }
-  componentDidUpdate() {
-    console.log(this.state.activecategory, this.state.formheight);
-  }
+  componentDidUpdate() {}
   componentDidMount() {
-    console.log(this.formref);
     this.setState({
       formheight: this.formrefstylecalc("height"),
       formwidth: this.formrefstylecalc("width")
@@ -31,6 +31,7 @@ export default class Register extends Component {
   };
   activecategorysetter = e => {
     return () => {
+      this.props.nullifyerrors();
       this.swipeanimation(e);
       this.setState(prevState => {
         prevState.activecategory = [0, 0, 0];
@@ -105,7 +106,7 @@ export default class Register extends Component {
             }}
           ></div>
           <div className="registerpagecategories">
-            {["Facebook", "Google", "Website"].map((i, e) => {
+            {["Facebook", "Google", "Archos"].map((i, e) => {
               return (
                 <div
                   className="registerpagecategory registerpagecategorysm"
@@ -158,9 +159,16 @@ export default class Register extends Component {
               overflow: "hidden"
             }}
           >
-            <Facebookform left={this.state.swipestate} />
-            <Gmailform left={this.state.swipestate} />
+            <Facebookform
+              error={this.props.error.facebookerrormessage}
+              left={this.state.swipestate}
+            />
+            <Gmailform
+              error={this.props.error.gmailerrormessage}
+              left={this.state.swipestate}
+            />
             <Archosform
+              error={this.props.error.archoserrormessage}
               passref={e => (this.formref = e)}
               left={this.state.swipestate}
             />
@@ -170,3 +178,26 @@ export default class Register extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  error: state.createuser
+});
+
+const mapDispatchToProps = dispatch => ({
+  nullifyerrors: e => {
+    dispatch(
+      registererror({ errormessage: null, type: "REGISTER_ARCHOS_USER_ERROR" })
+    );
+    dispatch(
+      registererror({
+        errormessage: null,
+        type: "REGISTER_FACEBOOK_USER_ERROR"
+      })
+    );
+    dispatch(
+      registererror({ errormessage: null, type: "REGISTER_GMAIL_USER_ERROR" })
+    );
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

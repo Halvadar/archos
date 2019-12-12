@@ -4,6 +4,12 @@
   flex-flow: wrap;
   justify-content: center;
 }
+.nocards {
+  margin-top: 2rem;
+  font-size: 2rem;
+  color: rgb(255, 118, 118);
+  font-weight: 600;
+}
 .categoriespagecard:hover {
   cursor: pointer;
 }

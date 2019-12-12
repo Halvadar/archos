@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createuser } from "../../../Actions/Actions";
+import { createuser, registererror } from "../../../Actions/Actions";
 
 class Archosform extends Component {
+  componentDidMount() {
+    this.props.nullifyerror();
+  }
+  componentDidUpdate() {}
   createnormaluser = () => {
     this.props.createuser({
       name: this["First Name"].value,
@@ -24,6 +28,15 @@ class Archosform extends Component {
         ref={this.props.passref}
         className="registerpageform"
       >
+        <div
+          style={{
+            position: "relative",
+            visibility: this.props.error ? "initial" : "hidden"
+          }}
+          className="errormessage"
+        >
+          {this.props.error}
+        </div>
         {[
           "Username",
           "First Name",
@@ -53,7 +66,11 @@ class Archosform extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-  createuser: e => dispatch(createuser(e))
+  createuser: e => dispatch(createuser(e)),
+  nullifyerror: e =>
+    dispatch(
+      registererror({ errormessage: null, type: "REGISTER_ARCHOS_USER_ERROR" })
+    )
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Archosform);

@@ -76,6 +76,11 @@ export const loginerror = prop => ({
   prop
 });
 
+export const registererror = prop => ({
+  type: prop.type,
+  errormessage: prop.errormessage
+});
+
 export const logoutuser = () => {
   return (dispatch, getState) => {
     return axiosInstance({
@@ -121,10 +126,16 @@ export const loginfacebookuser = props => {
         `,
         variables: { id: props.id, token: props.token }
       }
-    }).then(result => {
-      console.log(result);
-      dispatch(setcurrentuser(result.data.data.loginFacebook));
-    });
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(setcurrentuser(result.data.data.loginFacebook));
+      })
+      .catch(err => {
+        if (err.response.data) {
+          dispatch(loginerror(err.response.data));
+        }
+      });
   };
 };
 export const logingmailuser = props => {
@@ -145,9 +156,15 @@ export const logingmailuser = props => {
         `,
         variables: { id: props.id, token: props.token }
       }
-    }).then(result => {
-      dispatch(setcurrentuser(result.data.data.loginGoogle));
-    });
+    })
+      .then(result => {
+        dispatch(setcurrentuser(result.data.data.loginGoogle));
+      })
+      .catch(err => {
+        if (err.response.data) {
+          dispatch(loginerror(err.response.data));
+        }
+      });
   };
 };
 
@@ -173,11 +190,11 @@ export const loginarchosuser = props => {
       .then(result => {
         console.log(result, "asdasd");
         dispatch(setcurrentuser(result.data.data.loginArchos));
+        dispatch(loginerror(null));
       })
       .catch(err => {
-        console.log(err.response.data.errors);
-        if (err.response.data.errors) {
-          dispatch(loginerror(err.response.data.errors[0].message));
+        if (err.response.data) {
+          dispatch(loginerror(err.response.data));
         }
       });
   };
@@ -208,10 +225,21 @@ export const createuser = props => {
           repassword: props.repassword
         }
       }
-    }).then(result => {
-      console.log(result);
-      dispatch(setcurrentuser(result.data.data.setUser));
-    });
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(setcurrentuser(result.data.data.setUser));
+        dispatch(registererror(null));
+      })
+      .catch(err => {
+        console.log(err.response);
+        dispatch(
+          registererror({
+            errormessage: err.response.data,
+            type: "REGISTER_ARCHOS_USER_ERROR"
+          })
+        );
+      });
   };
 };
 
@@ -242,10 +270,20 @@ export const createfacebookuser = props => {
           facebookid: getState().createuser.id
         }
       }
-    }).then(result => {
-      console.log(result);
-      dispatch(setcurrentuser(result.data.data.createFacebookUser));
-    });
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(setcurrentuser(result.data.data.createFacebookUser));
+      })
+      .catch(err => {
+        console.log(err.response);
+        dispatch(
+          registererror({
+            errormessage: err.response.data,
+            type: "REGISTER_FACEBOOK_USER_ERROR"
+          })
+        );
+      });
   };
 };
 export const creategmailuser = props => {
@@ -274,10 +312,20 @@ export const creategmailuser = props => {
           gmailid: getState().createuser.id
         }
       }
-    }).then(result => {
-      console.log(result);
-      dispatch(setcurrentuser(result.data.data.createGmailUser));
-    });
+    })
+      .then(result => {
+        console.log(result);
+        dispatch(setcurrentuser(result.data.data.createGmailUser));
+      })
+      .catch(err => {
+        console.log(err.response);
+        dispatch(
+          registererror({
+            errormessage: err.response.data,
+            type: "REGISTER_GMAIL_USER_ERROR"
+          })
+        );
+      });
   };
 };
 

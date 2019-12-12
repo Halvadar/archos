@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 import {
   loginfacebookuser,
   logingmailuser,
-  loginarchosuser
+  loginarchosuser,
+  loginerror
 } from "../../Actions/Actions";
 
 class Login extends Component {
@@ -31,6 +32,7 @@ class Login extends Component {
 
   slideanimation = e => {
     return () => {
+      this.props.loginerror();
       clearInterval(this.newinterval);
       if (e === "archos") {
         if (this.state.animation > -100) {
@@ -65,6 +67,7 @@ class Login extends Component {
   animationresetter = () => {
     this.props.closeloginform();
     this.setState({ animation: 0 });
+    this.props.loginerror();
   };
   facebookcallback = result => {
     console.log(result);
@@ -112,6 +115,11 @@ class Login extends Component {
             className="loginformfacegoogle"
           >
             <div className="loginlogin"> Login </div>
+            {this.props.userstate.errormessage && (
+              <div className="errormessage">
+                {this.props.userstate.errormessage}
+              </div>
+            )}
             <FacebookLogin
               appId={process.env.REACT_APP_FACEBOOK_ID}
               callback={this.facebookcallback}
@@ -156,14 +164,7 @@ class Login extends Component {
             className="loginformarchos"
           >
             {this.props.userstate.errormessage && (
-              <div
-                style={{
-                  background: "rgb(255, 132, 132)",
-
-                  height: "3rem",
-                  width: "70%"
-                }}
-              >
+              <div className="errormessage">
                 {this.props.userstate.errormessage}
               </div>
             )}
@@ -204,7 +205,8 @@ const mapDispatchToProps = dispatch => ({
   },
   loginarchos: e => {
     dispatch(loginarchosuser(e));
-  }
+  },
+  loginerror: e => dispatch(loginerror(null))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

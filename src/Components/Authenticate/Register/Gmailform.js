@@ -43,6 +43,15 @@ class Gmailform extends Component {
             );
           }}
         ></GoogleLogin>
+        <div
+          style={{
+            position: "relative",
+            visibility: this.props.error ? "initial" : "hidden"
+          }}
+          className="errormessage"
+        >
+          {this.props.error}
+        </div>
         {this.props.userstate.method === "gmail"
           ? ["Username", "First Name", "Last Name", "Phone Number"].map(
               (a, b) => {

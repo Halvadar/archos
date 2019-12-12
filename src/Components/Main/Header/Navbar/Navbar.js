@@ -4,7 +4,11 @@ import "./Navbar.css";
 import { connect } from "react-redux";
 import hamburger from "./hamburger.svg";
 import { NavLink } from "react-router-dom";
-import { setcurrentuser, logoutuser } from "../../../../Actions/Actions";
+import {
+  setcurrentuser,
+  logoutuser,
+  loginerror
+} from "../../../../Actions/Actions";
 import Login from "../../../Authenticate/Login";
 import Addservice from "../../../Addservice/Addservice";
 
@@ -193,6 +197,7 @@ class Navbar extends Component {
       e.clientY < this.loginformref.getBoundingClientRect().top ||
       e.clientY > this.loginformref.getBoundingClientRect().bottom
     ) {
+      this.props.loginerror();
       window.removeEventListener("mousedown", this.closeloginformevent);
       this.setState({ loginformstate: "none" });
     }
@@ -451,7 +456,8 @@ const mapStateToProps = state => ({
   currentuser: state.setcurrentuser
 });
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logoutuser())
+  logout: () => dispatch(logoutuser()),
+  loginerror: () => dispatch(loginerror(null))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

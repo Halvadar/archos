@@ -28,7 +28,7 @@ export class Categoriespagecards extends Component {
       >
         {this.props.cardsstate.isfetching ? (
           <h1>loading</h1>
-        ) : (
+        ) : filteredcards.length > 0 ? (
           filteredcards.map((a, b) => {
             return (
               <div
@@ -61,6 +61,8 @@ export class Categoriespagecards extends Component {
               </div>
             );
           })
+        ) : (
+          <div className="nocards"> No Cards Found</div>
         )}
       </div>
     );
