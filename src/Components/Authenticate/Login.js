@@ -11,12 +11,14 @@ import {
   loginarchosuser,
   loginerror
 } from "../../Actions/Actions";
+import { isEmpty, isLength, isEmail } from "validator";
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      animation: 0
+      animation: 0,
+      errorsfound: false
     };
     this.newinterval = undefined;
   }
@@ -32,7 +34,7 @@ class Login extends Component {
 
   slideanimation = e => {
     return () => {
-      this.props.loginerror();
+      this.props.loginerror(null);
       clearInterval(this.newinterval);
       if (e === "archos") {
         if (this.state.animation > -100) {
@@ -67,7 +69,7 @@ class Login extends Component {
   animationresetter = () => {
     this.props.closeloginform();
     this.setState({ animation: 0 });
-    this.props.loginerror();
+    this.props.loginerror(null);
   };
   facebookcallback = result => {
     console.log(result);
@@ -81,11 +83,41 @@ class Login extends Component {
     });
   };
 
-  archoscallback = () => {
-    this.props.loginarchos({
-      email: this.email.value,
-      password: this.password.value
-    });
+  archoscallback = async () => {
+    await this.validatorfun();
+    if (!this.state.errorsfound) {
+      this.props.loginarchos({
+        email: this.email.value,
+        password: this.password.value
+      });
+    }
+  };
+  validatorfun = () => {
+    let emailerrors = [];
+    let passworderrors = [];
+    if (isEmpty(this.email.value)) {
+      emailerrors.push("Email Input is Empty");
+    }
+
+    if (!isLength(this.email.value, { max: 40 })) {
+      emailerrors.push("Email Input is Too Long");
+    }
+    if (!isEmail(this.email.value)) {
+      emailerrors.push("Email needs to be in a given format - aaa@email.com");
+    }
+    if (isEmpty(this.password.value)) {
+      passworderrors.push("Password Input is Empty");
+    }
+    if (!isLength(this.password.value, { max: 100 })) {
+      passworderrors.push("Password Input is Too Long");
+    }
+    let combinederrors = [...emailerrors, ...passworderrors];
+    if (combinederrors.length > 0) {
+      this.setState({ errorsfound: true });
+    } else {
+      this.setState({ errorsfound: false });
+    }
+    this.props.loginerror(combinederrors[0]);
   };
 
   render() {
@@ -169,14 +201,51 @@ class Login extends Component {
               </div>
             )}
             <div className="archoslogininputcont">
+              <div
+                className="inputenteredtitle"
+                style={{
+                  position: "absolute",
+                  bottom: "100%",
+                  left: "0",
+                  visibility: this.email
+                    ? this.email.value.length > 0
+                      ? "initial"
+                      : "hidden"
+                    : "hidden"
+                }}
+              >
+                Email
+              </div>
               <input
+                onChange={() => {
+                  this.forceUpdate();
+                }}
                 ref={a => (this.email = a)}
                 placeholder="Email"
                 className="archoslogininput"
               ></input>
             </div>
             <div className="archoslogininputcont">
+              <div
+                className="inputenteredtitle"
+                style={{
+                  position: "absolute",
+                  bottom: "100%",
+                  left: "0",
+                  visibility: this.password
+                    ? this.password.value.length > 0
+                      ? "initial"
+                      : "hidden"
+                    : "hidden"
+                }}
+              >
+                Password
+              </div>
               <input
+                onChange={() => {
+                  this.forceUpdate();
+                }}
+                type="password"
                 ref={a => (this.password = a)}
                 placeholder="Password"
                 className="archoslogininput"
@@ -206,7 +275,7 @@ const mapDispatchToProps = dispatch => ({
   loginarchos: e => {
     dispatch(loginarchosuser(e));
   },
-  loginerror: e => dispatch(loginerror(null))
+  loginerror: e => dispatch(loginerror(e))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

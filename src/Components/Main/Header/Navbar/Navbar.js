@@ -259,7 +259,24 @@ class Navbar extends Component {
               display: this.state.loginformstate
             }}
           ></Login>
-
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              flexGrow: "1",
+              marginRight: "2rem"
+            }}
+          >
+            <div
+              className="custnavitem custnavitem1"
+              style={{}}
+              onClick={() => {
+                this.props.history.push("categories");
+              }}
+            >
+              Categories
+            </div>
+          </div>
           <div className="row links rounded-left">
             {this.props.currentuser.username === undefined ||
             this.props.currentuser.username === null ? (

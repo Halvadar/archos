@@ -9,14 +9,46 @@
   margin-right: auto;
   background: rgb(230, 250, 243);
 }
+.inputerrors {
+  right: 0;
+  z-index: 10;
+  position: absolute;
+  bottom: 100%;
+  min-height: 2rem;
+  width: 15rem;
+  background: rgb(255, 134, 134);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 3px;
+}
+.inputerrorsmark {
+  position: relative;
+  background: white;
+  min-height: 100%;
+  max-height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+.inputenteredtitle {
+  color: rgb(0, 140, 255);
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+}
 .formfield {
+  border: 1px solid gray;
+  display: flex;
+  position: relative;
   height: 3rem;
   margin: 1rem 1rem 1rem 1rem;
   width: 100%;
   background: rgb(235, 235, 235);
-  box-shadow: 0 0 2px 0px rgb(169, 189, 255), 0 0 4px 0px rgb(0, 110, 255);
+  /*  box-shadow: 0 0 2px 0px rgb(169, 189, 255), 0 0 4px 0px rgb(0, 110, 255); */
 }
 .formfieldinput {
+  border: 0;
   width: 100%;
   height: 100%;
   padding: 1rem;

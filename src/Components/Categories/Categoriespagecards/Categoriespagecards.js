@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import "./categoriespagecards.css";
 import { connect } from "react-redux";
 import { fetchcards, setcards } from "../../../Actions/Actions";
+import spin from "../Categoriespagecard/spin.gif";
 
 export class Categoriespagecards extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.props.cardsstate);
+  }
   componentDidUpdate(prevprops) {
     if (this.props.cardsstate.focuscards !== prevprops.cardsstate.focuscards) {
       this.cardscontref.scrollIntoView();
@@ -27,7 +30,12 @@ export class Categoriespagecards extends Component {
         className="categoriespagecards categoriespagecardsmd categoriespagecardslg categoriespagecardsxl"
       >
         {this.props.cardsstate.isfetching ? (
-          <h1>loading</h1>
+          <img
+            src={spin}
+            width="40px"
+            height="40px"
+            style={{ marginTop: "3rem" }}
+          ></img>
         ) : filteredcards.length > 0 ? (
           filteredcards.map((a, b) => {
             return (
@@ -61,8 +69,12 @@ export class Categoriespagecards extends Component {
               </div>
             );
           })
+        ) : this.props.cardsstate.category === "all" ? (
+          <div className="nocards" style={{ color: "rgb(129, 197, 129)" }}>
+            Choose a category
+          </div>
         ) : (
-          <div className="nocards"> No Cards Found</div>
+          <div className="nocards">No Cards Found</div>
         )}
       </div>
     );
