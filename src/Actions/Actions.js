@@ -387,8 +387,8 @@ export const createcard = props => {
       method: "POST",
       data: {
         query: `
-        mutation inputtypes($title:String!,$description:String!,$category:String!,$subcategory:String,$imageurl:String){ 
-          createCard(Input:{title:$title,description:$description,category:$category,subcategory:$subcategory,imageurl:$imageurl}){
+        mutation inputtypes($title:String!,$description:String!,$category:String!,$subcategory:String,$imageurl:String,$email:String,$phone:Int){ 
+          createCard(Input:{title:$title,description:$description,category:$category,subcategory:$subcategory,imageurl:$imageurl,email:$email,phone:$phone}){
             _id
           }}
         `,
@@ -602,7 +602,8 @@ export const getcard = props => {
             category
             subcategory
             comments{comment commentedby{username name _id lastname} date}
-            
+            email
+            phone
           }
         }
       `,

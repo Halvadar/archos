@@ -18,13 +18,16 @@ class Navbar extends Component {
     this.state = {
       loginOnMouseEnter: false,
       registerOnMouseEnter: false,
+      categoriesOnMouseEnter: false,
       loginAnimation: 0,
       registerAnimation: 0,
+      categoriesAnimation: 0,
       hamburgerheight: 0,
       hamburgerwidth: 0,
       hamburgertop: 30,
       registertop: 0,
       logintop: 0,
+      usertop: 0,
       hamburgeranimationstatus: false,
       hamburgeranimationstate: "notexpanded",
       hamburgeranimationindex: 0,
@@ -70,15 +73,22 @@ class Navbar extends Component {
       this.setState({ loginOnMouseEnter: true });
 
       this.onmousenteranimation();
-    } else {
+    } else if (arg === 1) {
       this.setState({ registerOnMouseEnter: true });
       this.onmouseenteranimation1();
+    } else if (arg === 2) {
+      this.setState({ categoriesOnMouseEnter: true });
+      this.onmouseenteranimation2();
     }
   };
   onMouseLeaveFunc = arg => {
     if (arg === 0) {
       this.setState({ loginOnMouseEnter: false });
-    } else this.setState({ registerOnMouseEnter: false });
+    } else if (arg === 1) {
+      this.setState({ registerOnMouseEnter: false });
+    } else if (arg === 2) {
+      this.setState({ categoriesOnMouseEnter: false });
+    }
   };
 
   onmousenteranimation = () => {
@@ -113,6 +123,22 @@ class Navbar extends Component {
       }
     }, 10);
   };
+  onmouseenteranimation2 = () => {
+    var bot = 0;
+    var interval = setInterval(() => {
+      if (bot < 10 && this.state.categoriesOnMouseEnter === true) {
+        bot++;
+        this.setState({ categoriesAnimation: bot });
+        console.log(this.state.categoriesOnMouseEnter);
+      } else if (bot > 0 && this.state.categoriesOnMouseEnter === false) {
+        bot = bot - 1;
+        this.setState({ categoriesAnimation: bot });
+      } else if (bot === 10 && this.state.categoriesOnMouseEnter === true) {
+      } else {
+        clearInterval(interval);
+      }
+    }, 10);
+  };
 
   hamburgerclick = e => {
     e.preventDefault();
@@ -137,6 +163,7 @@ class Navbar extends Component {
             this.setState({
               logintop: b,
               registertop: b * 2,
+              usertop: b * 3,
               hamburgerheight: b,
               hamburgeranimationstatus: true
             });
@@ -161,6 +188,7 @@ class Navbar extends Component {
               hamburgerheight: b,
               logintop: b,
               registertop: b * 2,
+              usertop: b * 3,
               hamburgeranimationindex: a,
               hamburgeranimationstatus: true
             });
@@ -266,18 +294,32 @@ class Navbar extends Component {
               flexGrow: "1",
               marginRight: "2rem"
             }}
-          >
+          ></div>
+          <div className="row links rounded-left">
             <div
-              className="custnavitem custnavitem1"
-              style={{}}
+              className="custnavitemcont "
+              onMouseEnter={() => this.onMouseEnterFunc(2)}
+              onMouseLeave={() => this.onMouseLeaveFunc(2)}
               onClick={() => {
-                this.props.history.push("categories");
+                this.props.history.push("/categories");
               }}
             >
-              Categories
+              <div
+                style={{
+                  position: "relative",
+                  bottom: this.state.categoriesAnimation + "%"
+                }}
+                className="custnavitem"
+              >
+                Categories
+              </div>
+              <div
+                className="shadow"
+                style={{
+                  width: `${this.state.categoriesAnimation * 10}%`
+                }}
+              ></div>
             </div>
-          </div>
-          <div className="row links rounded-left">
             {this.props.currentuser.username === undefined ||
             this.props.currentuser.username === null ? (
               <React.Fragment>
@@ -461,7 +503,94 @@ class Navbar extends Component {
                 </div>
               </div>
             ) : (
-              <div className="navlogout">Log Out</div>
+              <div
+                style={{
+                  marginRight: "5%",
+                  width: window.innerWidth > 500 ? "30%" : "60%",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center"
+                }}
+              >
+                <div
+                  ref={q => this.aaa(q)}
+                  style={{
+                    position: "absolute",
+                    zIndex: 102,
+                    right: "0px",
+                    width: this.state.hamburgerwidth + "%",
+                    height: this.state.hamburgerheight + "%",
+                    top: this.state.hamburgertop + "%"
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      zIndex: 100,
+                      background: "white"
+                    }}
+                  >
+                    <div
+                      onClick={e => this.hamburgerclick(e)}
+                      style={{
+                        zIndex: 1,
+                        position: "relative",
+                        background: "white"
+                      }}
+                    >
+                      <img
+                        ref={a => (this.hambimgref = a)}
+                        src={hamburger}
+                        style={{
+                          width: `${
+                            this.state.hamburgerimagewidth
+                              ? this.state.hamburgerimagewidth
+                              : null
+                          }+px`
+                        }}
+                      ></img>
+                    </div>
+                    <div
+                      onClick={this.props.logout}
+                      className="hamburgeritems"
+                      style={{
+                        zIndex: -1,
+                        top: this.state.logintop + "%"
+                      }}
+                    >
+                      {this.state.hamburgerwidth < 100 ? "" : "Log Out"}
+                    </div>
+                    <div
+                      onClick={() => {
+                        this.props.history.push("categories");
+                      }}
+                      className="hamburgeritems"
+                      style={{
+                        zIndex: -2,
+                        top: this.state.registertop + "%"
+                      }}
+                    >
+                      {this.state.hamburgerwidth < 100 ? "" : "Categories"}
+                    </div>
+                    <div
+                      style={{
+                        zIndex: -2,
+                        top: this.state.usertop + "%"
+                      }}
+                      className="hamburgeritems"
+                    >
+                      {this.state.hamburgerwidth < 100 ? (
+                        ""
+                      ) : (
+                        <Addservice
+                          historystate={this.state.history}
+                          history={this.props.history}
+                        ></Addservice>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </React.Fragment>

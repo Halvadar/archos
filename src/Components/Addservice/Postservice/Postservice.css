@@ -1,6 +1,6 @@
 .postservicecont {
   display: flex;
-  height: 30rem;
+
   flex-direction: column;
   border-radius: 5px;
   background: rgb(194, 241, 255);

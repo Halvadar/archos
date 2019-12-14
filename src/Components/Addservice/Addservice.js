@@ -56,7 +56,12 @@ class Addservice extends Component {
 
   render() {
     return (
-      <div className="loggedinusercont">
+      <div
+        style={{
+          width: window.innerWidth > 768 ? null : "100%"
+        }}
+        className="loggedinusercont"
+      >
         <div style={{ height: "100%" }} className="loggedinuserrelative">
           <div onClick={this.dropdownanimation} className="currentusername">
             {this.props.currentuser.username}
