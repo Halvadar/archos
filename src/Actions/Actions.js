@@ -447,7 +447,7 @@ export const postedcards = props => {
           getPostedCards{
             title
             description
-            score
+            score{score}
             image
             _id
           }
@@ -456,8 +456,24 @@ export const postedcards = props => {
       }
     })
       .then(result => {
-        console.log(result);
-        dispatch(getpostedcards(result.data.data.getPostedCards));
+        let cards = result.data.data.getPostedCards.map(a => {
+          if (a.score.length > 0) {
+            let score = 0;
+            let i = 0;
+            while (i < a.score.length) {
+              score = score + parseFloat(a.score[i].score);
+              i++;
+            }
+
+            score = score / a.score.length;
+
+            return { ...a, score: score.toFixed(2) };
+          } else {
+            return { ...a, score: "Not Rated" };
+          }
+        });
+        console.log(cards);
+        dispatch(getpostedcards(cards));
       })
       .catch(err => {
         console.log(err);

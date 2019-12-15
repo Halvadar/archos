@@ -27,6 +27,7 @@ class Categoriespagecomments extends Component {
       }, 1500);
     }
   };
+  
 
   render() {
     return (

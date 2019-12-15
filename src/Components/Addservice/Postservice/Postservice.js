@@ -3,21 +3,29 @@ import "./Postservice.css";
 import { services } from "../../Categories/Categoriespagecategories/Categoriespagecategories";
 import { connect } from "react-redux";
 import { createcard } from "../../../Actions/Actions";
-
+import { isLength, isEmpty, isEmail, isAlphanumeric, isInt } from "validator";
+import exclamation from "../../Authenticate/Register/exclamation-mark.svg";
+import { format } from "path";
 class Postservice extends Component {
   constructor() {
     super();
+
     this.state = {
       categorydisplay: "none",
       subcategorydisplay: "none",
       currentlyselectedcategory: "Not Selected",
       currentlyselectedcategoryindex: 0,
-      currentlyselectedsubcategory: "Not Selected"
+      currentlyselectedsubcategory: "Not Selected",
+      title: null,
+      description: null,
+      email: null,
+      phone: null,
+      category: null,
+      image: null,
+      showerror: [0, 0, 0, 0, 0, 0, 0]
     };
   }
-  componentDidMount() {
-    console.log(services[0]);
-  }
+  componentDidMount() {}
 
   categorydisplaysetter = () => {
     if (this.state.categorydisplay === "none") {
@@ -46,6 +54,7 @@ class Postservice extends Component {
       });
     };
   };
+
   currentlyselectedsubcategorysetter = a => {
     return () => {
       this.setState({
@@ -74,14 +83,14 @@ class Postservice extends Component {
       : {};
   };
   submitservice = () => {
-    console.log(this.imageref.files);
     if (
-      this.state.currentlyselectedcategory !== "Not Selected" &&
-      this.currenttitledescription !== null &&
-      (this.imageref.value !== null ||
-        this.imageref.value !== undefined ||
-        this.imageref.value !== "")
-    )
+      !this.validationfunc(
+        { arg: this.titleref.value, name: "title", length: 100 },
+        { arg: this.descriptionref.value, name: "description", length: 2000 },
+        { arg: this.emailref.value, name: "email", length: 50 },
+        { arg: this.phoneref.value, name: "phone", length: 20 }
+      )
+    ) {
       this.props.createcard({
         ...this.currenttitledescription(),
         ...this.currentemail(),
@@ -90,6 +99,8 @@ class Postservice extends Component {
         subcategory: this.state.currentlyselectedsubcategory,
         image: this.imageref.files[0]
       });
+    }
+    console.log(this.state.image);
   };
   loginwidthsetter = () => {
     let i = window.innerWidth;
@@ -110,7 +121,113 @@ class Postservice extends Component {
     return "100%";
   };
 
+  validationfuncext = args => {
+    let { arg, name, length } = args;
+    console.log(arg, name, length);
+    let errors = [];
+    if (name !== "phone" && name !== "email") {
+      if (isEmpty(arg)) {
+        errors.push("Input is Empty");
+      }
+    }
+
+    if (!isLength(arg, { max: length })) {
+      errors.push(`${name} is Too Long`);
+    }
+    if (name === "email") {
+      if (isEmpty(this.phoneref.value)) {
+        if (isEmpty(arg)) {
+          errors.push(
+            "Both Email and phone cant be empty. please sing at least one of them "
+          );
+        }
+      }
+      if (!isEmpty(arg)) {
+        if (!isEmail(arg)) {
+          errors.push("Email needs to be in a given format - aaa@gmail.com");
+        }
+      }
+    }
+    if (name !== "phone" && name !== "email") {
+      if (!isAlphanumeric(arg)) {
+        errors.push(`${name} can only contain letters and numbers`);
+      }
+    } else if (name === "phone") {
+      if (!isEmpty(arg)) {
+        if (!isInt(arg)) {
+          errors.push(`${name} can only contain numbers`);
+        }
+      }
+    }
+    if (errors.length > 0) {
+      this.setState(prevstate => {
+        prevstate[name] = errors;
+
+        return prevstate;
+      });
+      return true;
+    } else {
+      this.setState(prevstate => {
+        prevstate[name] = null;
+        return prevstate;
+      });
+      return false;
+    }
+  };
+
+  validationfunc = (...args) => {
+    console.log(this.imageref.files);
+    let imageerrors = [];
+    let errorexists = false;
+    args.forEach((a, b) => {
+      if (this.validationfuncext(a)) {
+        if (!errorexists) {
+          errorexists = true;
+        }
+      }
+    });
+    if (this.state.currentlyselectedcategory === "Not Selected") {
+      this.setState({ category: ["Category is not selected"] });
+      if (!errorexists) {
+        errorexists = true;
+      }
+    } else {
+      this.setState({ category: null });
+    }
+    if (this.imageref.files.length !== 0) {
+      if (
+        this.imageref.files[0].type !== "image/jpeg" &&
+        this.imageref.files[0].type !== "image/png" &&
+        this.imageref.files[0].type !== "image/svg"
+      ) {
+        imageerrors.push(
+          "File type is not Supported. Select image file in given format:.PNG/.JPEG/.SVG"
+        );
+        if (!errorexists) {
+          errorexists = true;
+        }
+      }
+      if (this.imageref.files[0].size > 4000000) {
+        imageerrors.push("Image is too big");
+        if (!errorexists) {
+          errorexists = true;
+        }
+      }
+    }
+    if (imageerrors.length > 0) {
+      this.setState({ image: imageerrors });
+    } else {
+      this.setState({ image: null });
+    }
+    if (errorexists) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   render() {
+    console.log(this.state.showerror[6]);
     return (
       <React.Fragment>
         <div className="addaservice">
@@ -119,14 +236,7 @@ class Postservice extends Component {
         <div className="postservicecontcont">
           <div
             className="postservicecont"
-            style={{
-              width: this.loginwidthsetter(),
-              ...(() => {
-                return window.innerWidth <= 500
-                  ? { height: "fit-content" }
-                  : {};
-              })()
-            }}
+            style={{ width: this.loginwidthsetter() }}
           >
             <div
               style={
@@ -140,13 +250,45 @@ class Postservice extends Component {
               className="postserviceinputtitle"
             >
               <div className="forminputtitle">Title</div>
-              <input
+              <div
+                className="postserviceinput"
                 style={
                   window.innerWidth <= 768 ? { margin: 0, width: "100%" } : {}
                 }
-                ref={a => (this.titleref = a)}
-                className="postserviceinput"
-              ></input>
+              >
+                <input
+                  style={{ width: "100%", border: 0, height: "100%" }}
+                  ref={a => (this.titleref = a)}
+                ></input>
+                <div className="inputerrorsmark">
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[0] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      background: "white",
+                      paddingRight: "2px",
+                      display: this.state.title ? "initial" : "none"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[0] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.title && this.state.title[0]}
+                </div>
+              </div>
             </div>
             <div
               style={
@@ -160,15 +302,56 @@ class Postservice extends Component {
               className="postserviceinputdescription"
             >
               <div className="forminputtitle">Description</div>
-              <textarea
+              <div
+                className="postserviceinput"
                 style={
                   window.innerWidth <= 768
                     ? { margin: 0, width: "100%", height: "5rem" }
                     : {}
                 }
-                ref={a => (this.descriptionref = a)}
-                className="postserviceinput"
-              ></textarea>
+              >
+                <textarea
+                  style={{
+                    width: "100%",
+                    border: 0,
+                    height: "100%",
+                    resize: "none"
+                  }}
+                  ref={a => (this.descriptionref = a)}
+                ></textarea>
+                <div
+                  style={{
+                    display: this.state.description ? "initial" : "none"
+                  }}
+                  className="inputerrorsmark"
+                >
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[1] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      background: "white",
+                      paddingRight: "2px"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[1] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.description && this.state.description[0]}
+                </div>
+              </div>
             </div>
             <div
               className="postserviceselectcat"
@@ -188,29 +371,65 @@ class Postservice extends Component {
                   window.innerWidth <= 768 ? { margin: 0, width: "100%" } : {}
                 }
               >
-                <div
-                  onClick={this.categorydisplaysetter}
-                  className="postserviceselectcatname"
-                >
-                  {this.state.currentlyselectedcategory}
+                <div style={{ width: "100%", border: 0, height: "100%" }}>
+                  <div
+                    onClick={this.categorydisplaysetter}
+                    className="postserviceselectcatname"
+                  >
+                    {this.state.currentlyselectedcategory}
+                  </div>
+                  <div
+                    style={{ display: this.state.categorydisplay }}
+                    className="postserviceselectcatcatcont"
+                  >
+                    {services.map((a, b) => {
+                      return (
+                        <div
+                          onClick={this.currentlyselectedcategorysetter(
+                            a.name,
+                            b
+                          )}
+                          className="postserviceselectcatcat"
+                        >
+                          {a.name}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
                 <div
-                  style={{ display: this.state.categorydisplay }}
-                  className="postserviceselectcatcatcont"
+                  className="inputerrorsmark"
+                  style={{
+                    background: "rgb(0, 183, 255)",
+                    border: 0,
+                    display: this.state.category ? "initial" : "none"
+                  }}
                 >
-                  {services.map((a, b) => {
-                    return (
-                      <div
-                        onClick={this.currentlyselectedcategorysetter(
-                          a.name,
-                          b
-                        )}
-                        className="postserviceselectcatcat"
-                      >
-                        {a.name}
-                      </div>
-                    );
-                  })}
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[2] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      paddingRight: "2px",
+                      display: this.state.title ? "initial" : "none"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[2] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.category && this.state.category[0]}
                 </div>
               </div>
             </div>
@@ -232,35 +451,37 @@ class Postservice extends Component {
                   window.innerWidth <= 768 ? { margin: 0, width: "100%" } : {}
                 }
               >
-                <div
-                  onClick={this.subcategorydisplaysetter}
-                  className="postserviceselectcatname"
-                >
-                  {this.state.currentlyselectedsubcategory}
-                </div>
-                <div
-                  style={{ display: this.state.subcategorydisplay }}
-                  className="postserviceselectcatcatcont"
-                >
-                  {services[this.state.currentlyselectedcategoryindex].children
-                    .length > 0 ? (
-                    services[
-                      this.state.currentlyselectedcategoryindex
-                    ].children.map((a, b, c) => {
-                      return (
-                        <div
-                          onClick={this.currentlyselectedsubcategorysetter(a)}
-                          className="postserviceselectcatcat"
-                        >
-                          {a}
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="postserviceselectcatcat">
-                      No Subcategories
-                    </div>
-                  )}
+                <div style={{ width: "100%", border: 0, height: "100%" }}>
+                  <div
+                    onClick={this.subcategorydisplaysetter}
+                    className="postserviceselectcatname"
+                  >
+                    {this.state.currentlyselectedsubcategory}
+                  </div>
+                  <div
+                    style={{ display: this.state.subcategorydisplay }}
+                    className="postserviceselectcatcatcont"
+                  >
+                    {services[this.state.currentlyselectedcategoryindex]
+                      .children.length > 0 ? (
+                      services[
+                        this.state.currentlyselectedcategoryindex
+                      ].children.map((a, b, c) => {
+                        return (
+                          <div
+                            onClick={this.currentlyselectedsubcategorysetter(a)}
+                            className="postserviceselectcatcat"
+                          >
+                            {a}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="postserviceselectcatcat">
+                        No Subcategories
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -276,13 +497,48 @@ class Postservice extends Component {
               className="postserviceinputtitle"
             >
               <div className="forminputtitle">Contact Email</div>
-              <input
+              <div
+                className="postserviceinput"
                 style={
                   window.innerWidth <= 768 ? { margin: 0, width: "100%" } : {}
                 }
-                ref={a => (this.emailref = a)}
-                className="postserviceinput"
-              ></input>
+              >
+                <input
+                  style={{ width: "100%", border: 0, height: "100%" }}
+                  ref={a => (this.emailref = a)}
+                ></input>
+
+                <div
+                  className="inputerrorsmark"
+                  style={{ display: this.state.email ? "initial" : "none" }}
+                >
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[4] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      background: "white",
+                      paddingRight: "2px"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[4] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.email && this.state.email[0]}
+                </div>
+              </div>
             </div>
             <div
               style={
@@ -296,23 +552,89 @@ class Postservice extends Component {
               className="postserviceinputtitle"
             >
               <div className="forminputtitle">Contact Phone</div>
-              <input
+              <div
                 style={
                   window.innerWidth <= 768 ? { margin: 0, width: "100%" } : {}
                 }
-                ref={a => (this.phoneref = a)}
                 className="postserviceinput"
-              ></input>
+              >
+                <input
+                  style={{ width: "100%", border: 0, height: "100%" }}
+                  ref={a => (this.phoneref = a)}
+                ></input>
+                <div
+                  className="inputerrorsmark"
+                  style={{ display: this.state.phone ? "initial" : "none" }}
+                >
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[5] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      background: "white",
+                      paddingRight: "2px"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[5] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.phone && this.state.phone[0]}
+                </div>
+              </div>
             </div>
             <div className="postserviceaddimg">
               <div className="forminputtitle">Upload an Image</div>
               <div className="postserviceinputimgcont">
                 <input
-                  ref={a => (this.imageref = a)}
                   className="postserviceinputimg"
+                  ref={a => (this.imageref = a)}
                   name="image"
                   type="file"
                 ></input>
+                <div
+                  className="inputerrorsmark"
+                  style={{
+                    display: this.state.image ? "initial" : "none",
+                    background: "rgb(194, 241, 255)"
+                  }}
+                >
+                  <img
+                    onMouseEnter={() => {
+                      this.setState(prevstate => {
+                        prevstate.showerror[6] = 1;
+                        return { showerror: prevstate.showerror };
+                      });
+                    }}
+                    onMouseLeave={() => {
+                      this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
+                    }}
+                    style={{
+                      paddingRight: "2px"
+                    }}
+                    src={exclamation}
+                    width="20px"
+                  ></img>
+                </div>
+                <div
+                  style={{
+                    display: this.state.showerror[6] ? "initial" : "none"
+                  }}
+                  className="inputerrors"
+                >
+                  {this.state.image && this.state.image[0]}
+                </div>
               </div>
             </div>
             <div className="postservicesubmitcont">
