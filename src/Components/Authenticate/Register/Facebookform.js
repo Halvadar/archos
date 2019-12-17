@@ -43,7 +43,7 @@ class Facebookform extends Component {
     }
     if (!validator.isAlpha(this["First Name"].value)) {
       console.log("aaa");
-      firstnameerrors.push("Has to contain only Letters and numbers. ");
+      firstnameerrors.push("Has to contain only Letters. ");
     }
     if (!validator.isLength(this["First Name"].value, { max: 30 })) {
       firstnameerrors.push("Input is Too Long");
@@ -52,7 +52,7 @@ class Facebookform extends Component {
       lastnameerrors.push("Input is Empty");
     }
     if (!validator.isAlpha(this["Last Name"].value)) {
-      lastnameerrors.push("Has to contain only Letters and numbers. ");
+      lastnameerrors.push("Has to contain only Letters. ");
     }
 
     if (!validator.isLength(this["Last Name"].value, { max: 30 })) {
@@ -61,7 +61,7 @@ class Facebookform extends Component {
     if (validator.isEmpty(this["Username"].value)) {
       usernameerrors.push("Input is Empty");
     }
-    if (!validator.isAlpha(this["Username"].value)) {
+    if (!validator.isAlphanumeric(this["Username"].value)) {
       usernameerrors.push("Has to contain only Letters and numbers. ");
     }
 
@@ -81,7 +81,7 @@ class Facebookform extends Component {
 
     if (
       !validator.isEmpty(this["Phone Number"].value) &&
-      !validator.isNumeric(this["Phone Number"].value)
+      !validator.isMobilePhone(this["Phone Number"].value)
     ) {
       phoneerrors.push("Phone Number needs to be numeric");
     }
@@ -89,7 +89,7 @@ class Facebookform extends Component {
       !validator.isEmpty(this["Phone Number"].value) &&
       !validator.isLength(this["Phone Number"].value)
     ) {
-      phoneerrors.push("Input Too Long");
+      phoneerrors.push("Input is Too Long");
     }
 
     if (emailerrors.length > 0) {

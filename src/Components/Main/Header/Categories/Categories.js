@@ -11,6 +11,7 @@ import dots from "./dots.svg";
 import { connect } from "react-redux";
 import { fetchcards } from "../../../../Actions/Actions";
 import { NavLink } from "react-router-dom";
+import { tsThisType } from "@babel/types";
 
 class Categories extends Component {
   constructor(props) {
@@ -24,9 +25,13 @@ class Categories extends Component {
     this.categ = React.createRef();
     this.refarray = [];
     this.ggg = React.createRef();
+    this.unmounted = false;
   }
   componentDidUpdate() {}
   componentDidMount() {}
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
 
   func = b => () => {
     var styleprop = (aaa, bbb, ccc) => {
@@ -52,6 +57,7 @@ class Categories extends Component {
           bbb = 10,
           ccc = 100;
         var styleintervali = setInterval(() => {
+          this.unmounted && clearInterval(styleintervali);
           if (aaa < 90 && this.state.style[b] == 1) {
             aaa += 1;
             bbb += 1;
@@ -86,6 +92,7 @@ class Categories extends Component {
         var bott = 0;
 
         var bottommargin1 = setInterval(() => {
+          this.unmounted && clearInterval(bottommargin1);
           if (bott <= 10 && this.state.style[b] == 1) {
             if (bott < 10) {
               bott += 1;

@@ -92,6 +92,21 @@ class Categoriespagecategories extends Component {
     this.smcateginterval = undefined;
     this.smsubcateinterval = undefined;
   }
+  componentDidMount() {
+    console.log(services[0].children);
+    console.log(this.props.cardsstate);
+    if (
+      this.props.cardsstate.category !== "all" &&
+      this.props.cardsstate.category !== undefined
+    ) {
+      this.setState({
+        currentcategory: this.props.cardsstate.category,
+        currentcategoryindex: this.props.cardsstate.index
+      });
+    }
+    this.subcategoryextensionheightsetter();
+    window.addEventListener("resize", this.categoryitemresetter);
+  }
   subcatanimation = (b, a) => {
     return () => {
       clearInterval(this.newinterval[b].interval);
@@ -101,7 +116,7 @@ class Categoriespagecategories extends Component {
       }
       this.setState({ currentcategory: a.name });
       if (this.state.animation[b].animationtopdistance === 0) {
-        this.props.getcards({ category: a.name })();
+        this.props.getcards({ category: a.name, index: b })();
       }
       let animationtopdistance = this.state.animation[b].animationtopdistance;
       let animationcopy = [...this.state.animation];
@@ -120,6 +135,9 @@ class Categoriespagecategories extends Component {
         this.setState({ currentsubcategory: undefined });
       }
       this.newinterval[b].interval = setInterval(() => {
+        if (!this.newinterval) {
+          clearInterval(asd);
+        }
         if (
           this.state.animation[b].animationstate === "expanding" &&
           animationtopdistance < 100
@@ -146,8 +164,14 @@ class Categoriespagecategories extends Component {
           clearInterval(this.newinterval[b].interval);
         }
       }, 5);
+      let asd = this.newinterval[b].interval;
     };
   };
+  componentWillUnmount() {
+    this.newinterval = undefined;
+    this.smcateginterval = undefined;
+    this.smsubcateinterval = undefined;
+  }
 
   collapseanimation = d => {
     clearInterval(this.newinterval[d].interval);
@@ -230,6 +254,9 @@ class Categoriespagecategories extends Component {
     }
 
     this.smcateginterval = setInterval(() => {
+      if (!this.smcateginterval) {
+        clearInterval(a);
+      }
       if (this.state.dropdownanimationstate === "closing" && i > 0) {
         i = i - 1;
         this.setState({ dropdowntopdistance: i });
@@ -240,6 +267,7 @@ class Categoriespagecategories extends Component {
         clearInterval(this.smcateginterval);
       }
     }, 5);
+    let a = this.smcateginterval;
   };
 
   subcatdropdown = () => {
@@ -251,6 +279,9 @@ class Categoriespagecategories extends Component {
       this.setState({ subcatanimationstate: "closing" });
     }
     this.subcatinterval = setInterval(() => {
+      if (!this.subcatinterval) {
+        clearInterval(a);
+      }
       if (this.state.subcatanimationstate === "closing" && i > 0) {
         i = i - 1;
         this.setState({ subcattopdistance: i });
@@ -261,12 +292,9 @@ class Categoriespagecategories extends Component {
         clearInterval(this.subcatinterval);
       }
     }, 5);
+    let a = this.subcatinterval;
   };
 
-  componentDidMount() {
-    this.subcategoryextensionheightsetter();
-    window.addEventListener("resize", this.categoryitemresetter);
-  }
   componentDidUpdate() {}
   subgetcards = e => {
     return () => {
@@ -392,12 +420,15 @@ class Categoriespagecategories extends Component {
                     <div
                       style={{}}
                       onClick={() => {
+                        if (this.props.location.pathname !== "/categories") {
+                          this.props.history.push("/categories");
+                        }
                         this.setState({
                           currentcategoryindex: b,
                           currentcategory: a.name,
                           currentsubcategory: null
                         });
-                        this.props.getcards({ category: a.name })();
+                        this.props.getcards({ category: a.name, index: b })();
                         this.categoriesdropdown();
                       }}
                       className="subcategoriesname"
@@ -443,9 +474,17 @@ class Categoriespagecategories extends Component {
                     return (
                       <div
                         onClick={() => {
+                          if (this.props.location.pathname !== "/categories") {
+                            this.props.history.push("/categories");
+                          }
                           this.setState({ currentsubcategory: a });
                           this.subcatdropdown();
-                          this.props.getcards({ subcategory: a })();
+                          this.props.getcards({
+                            category:
+                              services[this.state.currentcategoryindex].name,
+                            subcategory: a,
+                            index: this.state.currentcategoryindex
+                          })();
                         }}
                         className="categoriescontsm"
                         style={{

@@ -38,14 +38,6 @@ class Searchboxanimation extends Component {
   }
 
   componentWillUnmount() {
-    console.log("unmounted");
-    this.setState(() => {
-      console.log("unmounted");
-      return { mount: false };
-    });
-
-    this.interval = undefined;
-    this.bottomupinterval = undefined;
     window.removeEventListener("resize", this.resizewidthsetter);
     window.removeEventListener("scroll", this.searchboxfixed);
   }
@@ -75,7 +67,7 @@ class Searchboxanimation extends Component {
           .getComputedStyle(this.searchbox)
           .getPropertyValue("height")
       });
-    } catch {}
+    } catch (err) {}
   };
 
   searchboxfixed = () => {
@@ -112,10 +104,7 @@ class Searchboxanimation extends Component {
       this.resizefunc();
     }
   };
-  componentDidCatch(error, errorinfo) {
-    console.log("asdasd");
-    console.log(error, errorinfo);
-  }
+
   bottomupanimation = () => {
     let searchboxstyle;
 
@@ -131,12 +120,15 @@ class Searchboxanimation extends Component {
           );
       }
     };
+    let a;
 
     var searchboxbottomdistance = this.state.searchboxbottomdistance;
     return new Promise((resolve, reject) => {
       this.bottomupinterval = setInterval(() => {
-        let a = this.bottomupinterval;
-        console.log(1);
+        if (!a) {
+          a = this.bottomupinterval;
+        }
+        console.log(a);
         if (searchboxstyle("top") - searchboxstyle("bottom") >= 1) {
           searchboxbottomdistance++;
           this.setState({ searchboxbottomdistance: searchboxbottomdistance });
@@ -152,8 +144,13 @@ class Searchboxanimation extends Component {
   searchboxstretchanimation = () => {
     return new Promise((resolve, reject) => {
       let width = this.state.searchboxwidth;
+
       if (this.state.animationstate === "liftended") {
         this.interval = setInterval(() => {
+          if (!this.interval) {
+            clearInterval(a);
+            reject();
+          }
           if (this.props.screensize < 500 && this.state.searchboxwidth <= 60) {
             width = width + 0.7;
             this.setState({ searchboxwidth: width });
@@ -189,13 +186,15 @@ class Searchboxanimation extends Component {
             this.setState({ searchboxwidth: width });
           } else {
             this.setState({ animationstate: "stretchended" });
-            clearInterval(this.interval);
+            console.log(a);
+            clearInterval(a);
             resolve();
           }
         }, 10);
       } else {
         reject();
       }
+      let a = this.interval;
     });
   };
   searchboxdistance = () => {

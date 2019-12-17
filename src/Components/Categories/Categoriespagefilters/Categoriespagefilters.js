@@ -12,8 +12,11 @@ class Categoriespagefilters extends Component {
       animationstate: "not going",
       animationtopdistance: 0
     };
+    this.unmounted = false;
   }
-
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
   componentDidMount() {}
   animation = () => {
     if (this.state.animationstate === "not going") {
@@ -21,6 +24,7 @@ class Categoriespagefilters extends Component {
       this.setState({ animationstate: "going" });
       if (i === 0) {
         var newinterval = setInterval(() => {
+          this.unmounted && clearInterval(newinterval);
           if (i < 100) {
             i++;
             this.setState({ animationtopdistance: i });
@@ -31,6 +35,7 @@ class Categoriespagefilters extends Component {
         }, 5);
       } else if (i === 100) {
         var newinterval = setInterval(() => {
+          this.unmounted && clearInterval(newinterval);
           if (i > 0) {
             i = i - 1;
             this.setState({

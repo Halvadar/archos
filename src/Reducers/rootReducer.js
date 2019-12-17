@@ -11,7 +11,8 @@ const getcardsstate = {
   subcategory: "all",
   filterinput: "",
   sorttype: undefined,
-  focuscards: false
+  focuscards: false,
+  index: undefined
 };
 
 const createuserstate = {
@@ -65,7 +66,8 @@ const getcards = (state = getcardsstate, action) => {
         ...state,
         isfetching: true,
         category: action.prop.category || undefined,
-        subcategory: action.prop.subcategory || undefined
+        subcategory: action.prop.subcategory || undefined,
+        index: action.prop.index
       };
     case "SET_CARDS":
       return { ...state, isfetching: false, cards: action.cards };

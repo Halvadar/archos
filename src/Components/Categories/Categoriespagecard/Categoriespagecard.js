@@ -113,11 +113,12 @@ class Categoriespagecard extends Component {
                   style={{
                     backgroundImage: `url(${this.props.card.card.image})`,
                     height: this.state.maininfowidth
-                      ? this.state.maininfowidth.slice(
+                      ? (this.state.maininfowidth.slice(
                           0,
                           this.state.maininfowidth.length - 2
-                        ) /
-                          2 +
+                        ) *
+                          3) /
+                          4 +
                         "px"
                       : null
                   }}

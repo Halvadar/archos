@@ -229,10 +229,9 @@ export const createuser = props => {
       .then(result => {
         console.log(result);
         dispatch(setcurrentuser(result.data.data.setUser));
-        dispatch(registererror(null));
       })
       .catch(err => {
-        console.log(err.response);
+        console.log(err);
         dispatch(
           registererror({
             errormessage: err.response.data,
@@ -330,7 +329,6 @@ export const creategmailuser = props => {
 };
 
 export const fetchcards = props => {
-  console.log("asd");
   return dispatch => {
     console.log(props);
     dispatch(requestcards(props));
@@ -367,12 +365,10 @@ export const fetchcards = props => {
             return { ...a, score: "Not Rated" };
           }
         });
-        console.log(cards);
+
         dispatch(setcards(cards));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   };
 };
 

@@ -21,6 +21,7 @@ class Login extends Component {
       errorsfound: false
     };
     this.newinterval = undefined;
+    this.unmounted = false;
   }
   componentDidMount() {}
   componentDidUpdate(prevProps) {
@@ -30,6 +31,9 @@ class Login extends Component {
         this.setState({ animation: 0 });
       }
     }
+  }
+  componentWillUnmount() {
+    this.unmounted = true;
   }
 
   slideanimation = e => {
@@ -41,6 +45,9 @@ class Login extends Component {
           let i = this.state.animation;
 
           this.newinterval = setInterval(() => {
+            if (this.unmounted) {
+              clearInterval(this.newinterval);
+            }
             if (this.state.animation > -100) {
               i = i - 1;
 
@@ -54,6 +61,9 @@ class Login extends Component {
         if (this.state.animation < 0) {
           let i = this.state.animation;
           this.newinterval = setInterval(() => {
+            if (this.unmounted) {
+              clearInterval(this.newinterval);
+            }
             if (this.state.animation < 0) {
               i++;
               this.setState({ animation: i });

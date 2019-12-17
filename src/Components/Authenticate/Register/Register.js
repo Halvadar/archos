@@ -18,6 +18,7 @@ class Register extends Component {
       formwidth: undefined
     };
     this.newinterval = undefined;
+    this.unmounted = false;
   }
   componentDidUpdate() {}
   componentDidMount() {
@@ -25,6 +26,9 @@ class Register extends Component {
       formheight: this.formrefstylecalc("height"),
       formwidth: this.formrefstylecalc("width")
     });
+  }
+  componentWillUnmount() {
+    this.unmounted = true;
   }
   formrefstylecalc = a => {
     return window.getComputedStyle(this.formref).getPropertyValue(a);
@@ -48,6 +52,10 @@ class Register extends Component {
     if (e === 0) {
       if (this.state.swipestate < 0) {
         this.newinterval = setInterval(() => {
+          console.log(1);
+          if (this.unmounted) {
+            clearInterval(this.newinterval);
+          }
           if (this.state.swipestate < 0) {
             swipestate++;
             this.setState({ swipestate: swipestate });
@@ -59,6 +67,9 @@ class Register extends Component {
     } else if (e === 1) {
       if (this.state.swipestate < -100) {
         this.newinterval = setInterval(() => {
+          if (this.unmounted) {
+            clearInterval(this.newinterval);
+          }
           if (this.state.swipestate < -100) {
             swipestate = swipestate + 1;
             this.setState({ swipestate: swipestate });
@@ -68,6 +79,9 @@ class Register extends Component {
         }, 5);
       } else if (this.state.swipestate > -100) {
         this.newinterval = setInterval(() => {
+          if (this.unmounted) {
+            clearInterval(this.newinterval);
+          }
           if (this.state.swipestate > -100) {
             swipestate = swipestate - 1;
             this.setState({ swipestate: swipestate });
@@ -79,6 +93,9 @@ class Register extends Component {
     } else if (e === 2) {
       if (this.state.swipestate > -200) {
         this.newinterval = setInterval(() => {
+          if (this.unmounted) {
+            clearInterval(this.newinterval);
+          }
           if (this.state.swipestate > -200) {
             swipestate = swipestate - 1;
             this.setState({ swipestate: swipestate });

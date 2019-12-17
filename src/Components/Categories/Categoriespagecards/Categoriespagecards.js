@@ -5,9 +5,7 @@ import { fetchcards, setcards } from "../../../Actions/Actions";
 import spin from "../Categoriespagecard/spin.gif";
 
 export class Categoriespagecards extends Component {
-  componentDidMount() {
-    console.log(this.props.cardsstate);
-  }
+  componentDidMount() {}
   componentDidUpdate(prevprops) {
     if (this.props.cardsstate.focuscards !== prevprops.cardsstate.focuscards) {
       this.cardscontref.scrollIntoView();
@@ -48,9 +46,27 @@ export class Categoriespagecards extends Component {
                   className="categoriespagecardimage flex"
                   style={{ backgroundImage: `url(${a.image})` }}
                 ></div>
-                <div className="categoriespagecardtitle flex">{a.title}</div>
-                <div className="categoriespagecarddescription flex">
-                  {a.description}
+                <div className="categoriespagecardtitle flex">
+                  <div
+                    style={{
+                      overflow: "hidden",
+                      width: "100%",
+                      textOverflow: "ellipsis"
+                    }}
+                  >
+                    {a.title}
+                  </div>
+                </div>
+                <div className="categoriespagecarddescription">
+                  <div
+                    style={{
+                      overflow: "hidden",
+                      height: "100%",
+                      textOverflow: "ellipsis"
+                    }}
+                  >
+                    {a.description}
+                  </div>
                 </div>
                 <div className="categoriespagecardscorecont">
                   {a.score !== "Not Rated" ? (

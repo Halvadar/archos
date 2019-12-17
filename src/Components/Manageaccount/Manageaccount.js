@@ -9,6 +9,8 @@ import {
   deleteuserconfirmation
 } from "../../Actions/Actions";
 import leftarrow from "../Authenticate/left-arrow.svg";
+import { isEmpty, isEmail, isLength, matches } from "validator";
+import exclamation from "../Authenticate/Register/exclamation-mark.svg";
 
 class Manageaccount extends Component {
   constructor() {
@@ -18,7 +20,11 @@ class Manageaccount extends Component {
       swipestate: 0,
       pswareyousuredisplay: "none",
       deletestate: "invalid",
-      accareyousuredisplay: "none"
+      accareyousuredisplay: "none",
+      email: null,
+      token: null,
+      password: null,
+      showerror: [0, 0, 0, 0, 0, 0]
     };
     this.interval = undefined;
   }
@@ -167,6 +173,46 @@ class Manageaccount extends Component {
   deleteaccountconfirmationagree = () => {
     this.deleteuserconfirmation();
     this.setState({ accareyousuredisplay: "none" });
+  };
+
+  validationfunc = (arg, name, length) => {
+    let errors = [];
+    if (isEmpty(arg)) {
+      errors.push("Input is empty");
+    }
+    if (name === "email") {
+      if (!isEmail(arg)) {
+        errors.push("Email needs to be in a given format - aaa@gmail.com");
+      }
+    }
+    if (!isLength(arg, { max: length })) {
+      errors.push("Input is too long");
+    }
+    if (errors.length > 0) {
+      this.setState(prevstate => {
+        prevstate[name] = errors;
+        return prevstate;
+      });
+      return true;
+    } else {
+      this.setState(prevstate => {
+        prevstate[name] = null;
+        return prevstate;
+      });
+      return false;
+    }
+  };
+
+  submitvalidation = (...args) => {
+    let errorfound = false;
+    args.map((a, b) => {
+      if (!errorfound) {
+        if (this.validationfunc(a.arg, a.name, a.length)) {
+          errorfound = true;
+        }
+      }
+    });
+    return errorfound;
   };
 
   render() {
@@ -385,6 +431,42 @@ class Manageaccount extends Component {
                           type="text"
                           className="manageaccountinput"
                         ></input>
+                        <div
+                          style={{
+                            display: this.state.email ? "initial" : "none"
+                          }}
+                          className="inputerrorsmark"
+                        >
+                          <img
+                            onMouseEnter={() => {
+                              this.setState(prevstate => {
+                                prevstate.showerror[3] = 1;
+                                return { showerror: prevstate.showerror };
+                              });
+                            }}
+                            onMouseLeave={() => {
+                              this.setState({
+                                showerror: [0, 0, 0, 0, 0, 0, 0]
+                              });
+                            }}
+                            style={{
+                              background: "white",
+                              paddingRight: "2px"
+                            }}
+                            src={exclamation}
+                            width="20px"
+                          ></img>
+                        </div>
+                        <div
+                          style={{
+                            display: this.state.showerror[1]
+                              ? "initial"
+                              : "none"
+                          }}
+                          className="inputerrors"
+                        >
+                          {this.state.description && this.state.description[0]}
+                        </div>
                       </div>
                       {this.props.currentuser.usertype === "archos" ? (
                         <div className="deleteaccountpasswordinputcont">
