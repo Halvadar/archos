@@ -95,7 +95,7 @@ class Categoriespagecategories extends Component {
   subcatanimation = (b, a) => {
     return () => {
       clearInterval(this.newinterval[b].interval);
-      console.log("passed");
+
       if (this.props.location.pathname !== "/categories") {
         this.props.history.push("/categories");
       }
@@ -215,7 +215,6 @@ class Categoriespagecategories extends Component {
       if (this.state.animation[i].animationstate === "not going") {
         continue;
       } else {
-        return console.log("not passed");
       }
     }
 
@@ -265,14 +264,10 @@ class Categoriespagecategories extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
-    console.log(this.newinterval);
     this.subcategoryextensionheightsetter();
     window.addEventListener("resize", this.categoryitemresetter);
   }
-  componentDidUpdate() {
-    console.log(this.state.subcattopdistance);
-  }
+  componentDidUpdate() {}
   subgetcards = e => {
     return () => {
       this.props.getcards({ ...e })();

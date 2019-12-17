@@ -12,20 +12,43 @@ class Categoriespagecard extends Component {
   constructor() {
     super();
     this.state = {
+      mounted: false,
       starstate: 0,
       clicked: false,
-      votesent: false
+      votesent: false,
+      maininfowidth: null,
+      showemail: false,
+      showphone: false
     };
     this.timeout = undefined;
   }
-  componentDidUpdate() {
-    console.log(this.props.card.card);
-  }
+  componentDidUpdate() {}
   componentDidMount() {
-    console.log(this.props.match.params.id);
-    console.log(this.props.card);
-    this.props.getcard({ id: this.props.match.params.id });
+    this.setState({ mounted: true });
+    this.props.getcard({ id: this.props.match.params.id }).then(() => {
+      if (this.state.mounted) {
+        let maininfowidth = window
+          .getComputedStyle(this.imgref)
+          .getPropertyValue("width");
+
+        this.setState({
+          maininfowidth: maininfowidth
+        });
+        window.addEventListener("resize", this.resizefunc);
+      }
+    });
   }
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+    window.removeEventListener("resize", this.resizefunc);
+  }
+  resizefunc = () => {
+    this.setState({
+      maininfowidth: window
+        .getComputedStyle(this.imgref)
+        .getPropertyValue("width")
+    });
+  };
   onmousenterevent = i => {
     return () => {
       if (this.state.clicked === false) {
@@ -88,17 +111,31 @@ class Categoriespagecard extends Component {
                 <div
                   className="cardpagecardimage cardpagecardimagemd cardpagecardimagelg cardpagecardimagexl cardpagecardimagexxl"
                   style={{
-                    backgroundImage: `url(${this.props.card.card.image})`
+                    backgroundImage: `url(${this.props.card.card.image})`,
+                    height: this.state.maininfowidth
+                      ? this.state.maininfowidth.slice(
+                          0,
+                          this.state.maininfowidth.length - 2
+                        ) /
+                          2 +
+                        "px"
+                      : null
                   }}
+                  ref={a => (this.imgref = a)}
                 ></div>
-                <div className="cardpagecardtitle">
-                  {" "}
+                <div
+                  style={{ width: this.state.maininfowidth }}
+                  className="cardpagecardtitle"
+                >
                   {this.props.card.card.title}
                 </div>
                 <div
                   style={{ width: "90%", background: "gray", height: "1px" }}
                 ></div>
-                <div className="cardpagecarddescription">
+                <div
+                  style={{ width: this.state.maininfowidth }}
+                  className="cardpagecarddescription"
+                >
                   {this.props.card.card.description}
                 </div>
                 <div className="cardpagecardcategory cardpagecardcategorysm">
@@ -123,18 +160,58 @@ class Categoriespagecard extends Component {
               <div className="cardpagecardinfo cardpagecardinfomd">
                 <div className="cardpagecardemail cardpagedisplayflexcolumn">
                   <div className="cardpagedisplayflexcolumnchild">Email</div>
-                  <div>
-                    {this.props.card.card.email
-                      ? this.props.card.card.email
-                      : "Not Specified"}
+                  <div ref={a => (this.emailref = a)}>
+                    {this.props.card.card.email ? (
+                      <div
+                        className="clicktoseestyle"
+                        onMouseLeave={() => {
+                          this.setState({ showemail: false });
+                        }}
+                        onMouseEnter={() => {
+                          this.setState({ showemail: true });
+                        }}
+                      >
+                        Click To See
+                      </div>
+                    ) : (
+                      "Not Specified"
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      display: this.state.showemail ? "initial" : "none"
+                    }}
+                    className="clicktoseetext"
+                  >
+                    {this.props.card.card.email}
                   </div>
                 </div>
                 <div className="cardpagecardphone cardpagedisplayflexcolumn">
                   <div className="cardpagedisplayflexcolumnchild">Phone</div>
-                  <div>
-                    {this.props.card.card.phone
-                      ? this.props.card.card.phone
-                      : "Not Specifed"}
+                  <div ref={a => (this.phoneref = a)}>
+                    {this.props.card.card.phone ? (
+                      <div
+                        className="clicktoseestyle"
+                        onMouseLeave={() => {
+                          this.setState({ showphone: false });
+                        }}
+                        onMouseEnter={() => {
+                          this.setState({ showphone: true });
+                        }}
+                      >
+                        Click To See
+                      </div>
+                    ) : (
+                      "Not Specified"
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      display: this.state.showphone ? "initial" : "none"
+                    }}
+                    className="clicktoseetext"
+                  >
+                    {this.props.card.card.phone}
                   </div>
                 </div>
                 <div className="cardpagecarduser cardpagedisplayflexcolumn">

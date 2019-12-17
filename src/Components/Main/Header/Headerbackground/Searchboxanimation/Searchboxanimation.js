@@ -29,14 +29,21 @@ class Searchboxanimation extends Component {
   }
   componentDidMount() {
     this.props.changescreensize(window.innerWidth);
-    this.searchboxanimation();
+    if (this.state.mounted) {
+      this.searchboxanimation();
+    }
     this.searchboxtopinit();
     window.addEventListener("resize", this.resizewidthsetter);
     window.addEventListener("scroll", this.searchboxfixed);
   }
 
   componentWillUnmount() {
-    this.setState({ mount: false });
+    console.log("unmounted");
+    this.setState(() => {
+      console.log("unmounted");
+      return { mount: false };
+    });
+
     this.interval = undefined;
     this.bottomupinterval = undefined;
     window.removeEventListener("resize", this.resizewidthsetter);
@@ -48,34 +55,31 @@ class Searchboxanimation extends Component {
         this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
     });
   };
+  compo;
 
   searchboxanimation = async () => {
-    if (this.state.mounted) {
+    try {
       await this.bottomupanimation();
-    }
-    if (this.state.mounted) {
+
       await this.searchboxstretchanimation();
-    }
-    if (this.state.mounted) {
+
       this.setState({
         searchinputborder: "1px solid rgb(200,200,200)",
         animationstate: "done",
         searchboxfromtop:
           this.searchbox.offsetTop + this.searchbox.parentNode.offsetTop
       });
-    }
-    if (this.state.mounted) {
+
       this.setState({
         inputheight: window
           .getComputedStyle(this.searchbox)
           .getPropertyValue("height")
       });
-    }
+    } catch {}
   };
 
   searchboxfixed = () => {
     if (this.state.animationstate === "done") {
-      console.log(this.state.searchboxfromtop - window.scrollY);
       if (this.state.searchboxfromtop - window.scrollY <= 10) {
         this.setState({
           searchboxposition: "fixed",
@@ -108,26 +112,37 @@ class Searchboxanimation extends Component {
       this.resizefunc();
     }
   };
-
+  componentDidCatch(error, errorinfo) {
+    console.log("asdasd");
+    console.log(error, errorinfo);
+  }
   bottomupanimation = () => {
-    const searchboxstyle = arg =>
-      window
-        .getComputedStyle(this.searchbox)
-        .getPropertyValue(arg)
-        .slice(
-          0,
-          window.getComputedStyle(this.searchbox).getPropertyValue(arg).length -
-            2
-        );
+    let searchboxstyle;
+
+    searchboxstyle = arg => {
+      if (this.searchbox) {
+        return window
+          .getComputedStyle(this.searchbox)
+          .getPropertyValue(arg)
+          .slice(
+            0,
+            window.getComputedStyle(this.searchbox).getPropertyValue(arg)
+              .length - 2
+          );
+      }
+    };
+
     var searchboxbottomdistance = this.state.searchboxbottomdistance;
     return new Promise((resolve, reject) => {
       this.bottomupinterval = setInterval(() => {
+        let a = this.bottomupinterval;
+        console.log(1);
         if (searchboxstyle("top") - searchboxstyle("bottom") >= 1) {
           searchboxbottomdistance++;
           this.setState({ searchboxbottomdistance: searchboxbottomdistance });
         } else {
           this.setState({ animationstate: "liftended" });
-          clearInterval(this.bottomupinterval);
+          clearInterval(a);
           resolve();
         }
       }, 10);
@@ -251,12 +266,6 @@ class Searchboxanimation extends Component {
           >
             {this.state.matchedvalues.length > 0 ? (
               this.state.matchedvalues.map(item => {
-                console.log(
-                  item.name.slice(
-                    item.index,
-                    item.index + this.state.inputlength
-                  )
-                );
                 return (
                   <div
                     className="searchsuggestionsitem"

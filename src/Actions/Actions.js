@@ -599,9 +599,9 @@ export const deleteuserconfirmation = ({ props, result }) => {
 
 export const getcard = props => {
   console.log(props);
-  return dispatch => {
+  return async dispatch => {
     dispatch(getcurrentcard());
-    axiosInstance({
+    await axiosInstance({
       method: "POST",
       withCredentials: true,
       headers: { "Content-Type": "application/json" },

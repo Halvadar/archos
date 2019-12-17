@@ -3,7 +3,16 @@ import "./Postservice.css";
 import { services } from "../../Categories/Categoriespagecategories/Categoriespagecategories";
 import { connect } from "react-redux";
 import { createcard } from "../../../Actions/Actions";
-import { isLength, isEmpty, isEmail, isAlphanumeric, isInt } from "validator";
+import {
+  isLength,
+  isEmpty,
+  isEmail,
+  isAlphanumeric,
+  isInt,
+  blacklist,
+  trim,
+  matches
+} from "validator";
 import exclamation from "../../Authenticate/Register/exclamation-mark.svg";
 import { format } from "path";
 class Postservice extends Component {
@@ -28,6 +37,7 @@ class Postservice extends Component {
   componentDidMount() {}
 
   categorydisplaysetter = () => {
+    this.setState({ subcategorydisplay: "none" });
     if (this.state.categorydisplay === "none") {
       this.setState({ categorydisplay: "initial" });
     } else {
@@ -35,6 +45,7 @@ class Postservice extends Component {
     }
   };
   subcategorydisplaysetter = () => {
+    this.setState({ categorydisplay: "none" });
     if (this.state.subcategorydisplay === "none") {
       this.setState({ subcategorydisplay: "initial" });
     } else {
@@ -68,8 +79,8 @@ class Postservice extends Component {
     console.log(this.titleref.value, this.descriptionref.value);
     if (this.titleref.value.length > 0) {
       return {
-        title: this.titleref.value,
-        description: this.descriptionref.value
+        title: trim(this.titleref.value),
+        description: trim(this.descriptionref.value)
       };
     }
     return null;
@@ -148,8 +159,8 @@ class Postservice extends Component {
         }
       }
     }
-    if (name !== "phone" && name !== "email") {
-      if (!isAlphanumeric(arg)) {
+    if (name !== "phone" && name !== "email" && name !== "description") {
+      if (!isAlphanumeric(blacklist(arg, " "))) {
         errors.push(`${name} can only contain letters and numbers`);
       }
     } else if (name === "phone") {
@@ -157,6 +168,16 @@ class Postservice extends Component {
         if (!isInt(arg)) {
           errors.push(`${name} can only contain numbers`);
         }
+      } else {
+        if (isEmpty(this.emailref.value)) {
+          errors.push(
+            "Both Email and phone cant be empty. please sing at least one of them "
+          );
+        }
+      }
+    } else if (name === "description") {
+      if (matches(arg, /<script>/i)) {
+        errors.push("Invalid input");
       }
     }
     if (errors.length > 0) {
@@ -257,6 +278,13 @@ class Postservice extends Component {
                 }
               >
                 <input
+                  onChange={() => {
+                    this.validationfuncext({
+                      arg: this.titleref.value,
+                      name: "title",
+                      length: 100
+                    });
+                  }}
                   style={{ width: "100%", border: 0, height: "100%" }}
                   ref={a => (this.titleref = a)}
                 ></input>
@@ -311,6 +339,13 @@ class Postservice extends Component {
                 }
               >
                 <textarea
+                  onChange={() => {
+                    this.validationfuncext({
+                      arg: this.descriptionref.value,
+                      name: "description",
+                      length: 2000
+                    });
+                  }}
                   style={{
                     width: "100%",
                     border: 0,
@@ -504,6 +539,18 @@ class Postservice extends Component {
                 }
               >
                 <input
+                  onChange={() => {
+                    this.validationfuncext({
+                      arg: this.emailref.value,
+                      name: "email",
+                      length: 50
+                    });
+                    this.validationfuncext({
+                      arg: this.phoneref.value,
+                      name: "phone",
+                      length: 20
+                    });
+                  }}
                   style={{ width: "100%", border: 0, height: "100%" }}
                   ref={a => (this.emailref = a)}
                 ></input>
@@ -559,6 +606,18 @@ class Postservice extends Component {
                 className="postserviceinput"
               >
                 <input
+                  onChange={() => {
+                    this.validationfuncext({
+                      arg: this.emailref.value,
+                      name: "email",
+                      length: 50
+                    });
+                    this.validationfuncext({
+                      arg: this.phoneref.value,
+                      name: "phone",
+                      length: 20
+                    });
+                  }}
                   style={{ width: "100%", border: 0, height: "100%" }}
                   ref={a => (this.phoneref = a)}
                 ></input>
