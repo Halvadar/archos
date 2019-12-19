@@ -201,7 +201,7 @@ export const loginarchosuser = props => {
 };
 
 export const createuser = props => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     console.log(getState());
     return axiosInstance({
       withCredentials: true,
@@ -479,8 +479,8 @@ export const postedcards = props => {
 
 export const changepassword = props => {
   console.log(props);
-  return dispatch => {
-    axiosInstance({
+  return async dispatch => {
+    await axiosInstance({
       withCredentials: true,
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -500,20 +500,20 @@ export const changepassword = props => {
         }
       })
       .catch(err => {
-        console.log(err);
+        props.result.error = err.response.data;
       });
   };
 };
 export const changepasswordconfirmation = props => {
-  return dispatch => {
-    axiosInstance({
+  return async dispatch => {
+    await axiosInstance({
       method: "POST",
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
       data: {
         query: `
-        mutation types($changeemail:String!,$token:String!) {
-          changePasswordConfirmation(changeemail:$changeemail,token:$token){
+        mutation types($changepassword:String!,$token:String!) {
+          changePasswordConfirmation(changepassword:$changepassword,token:$token){
             result
           }
         }
@@ -530,7 +530,8 @@ export const changepasswordconfirmation = props => {
         }, 5000);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response);
+        props.result.error = err.response.data;
       });
   };
 };
@@ -559,7 +560,7 @@ export const deleteuser = ({ props, result }) => {
         }
       })
       .catch(err => {
-        console.log(err);
+        result.error = err.response.data;
       });
   };
 };

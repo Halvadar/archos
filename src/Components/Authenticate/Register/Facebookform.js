@@ -5,9 +5,18 @@ import {
   initializefacebookuser,
   createfacebookuser
 } from "../../../Actions/Actions";
-import validator from "validator";
-import exclamation from "./exclamation-mark.svg";
 
+import exclamation from "./exclamation-mark.svg";
+import {
+  isEmpty,
+  isEmail,
+  isLength,
+  isAlphanumeric,
+  blacklist,
+  isNumeric
+} from "validator";
+const inputs = ["Username", "First Name", "Last Name", "Email", "Phone Number"];
+const inputlengths = [40, 30, 50, 70, 25];
 class Facebookform extends Component {
   constructor() {
     super();
@@ -32,120 +41,77 @@ class Facebookform extends Component {
   };
   componentDidUpdate() {}
 
-  validatorfunc = () => {
-    let firstnameerrors = [];
-    let lastnameerrors = [];
-    let usernameerrors = [];
-    let emailerrors = [];
-    let phoneerrors = [];
-    if (validator.isEmpty(this["First Name"].value)) {
-      firstnameerrors.push("Input is Empty");
-    }
-    if (!validator.isAlpha(this["First Name"].value)) {
-      console.log("aaa");
-      firstnameerrors.push("Has to contain only Letters. ");
-    }
-    if (!validator.isLength(this["First Name"].value, { max: 30 })) {
-      firstnameerrors.push("Input is Too Long");
-    }
-    if (validator.isEmpty(this["Last Name"].value)) {
-      lastnameerrors.push("Input is Empty");
-    }
-    if (!validator.isAlpha(this["Last Name"].value)) {
-      lastnameerrors.push("Has to contain only Letters. ");
+  validationfunc = (arg, name, length) => {
+    let errors = [];
+    if (name !== "Phone Number") {
+      if (isEmpty(arg)) {
+        errors.push("Input is empty");
+      }
+      if (name !== "Email") {
+        if (!isAlphanumeric(blacklist(arg, " "))) {
+          errors.push(`${name} Cant Only contain letters and numbers`);
+        }
+      }
     }
 
-    if (!validator.isLength(this["Last Name"].value, { max: 30 })) {
-      lastnameerrors.push("Input is Too Long");
-    }
-    if (validator.isEmpty(this["Username"].value)) {
-      usernameerrors.push("Input is Empty");
-    }
-    if (!validator.isAlphanumeric(this["Username"].value)) {
-      usernameerrors.push("Has to contain only Letters and numbers. ");
+    if (name === "Email") {
+      if (!isEmail(arg)) {
+        errors.push("Email needs to be in a given format - aaa@gmail.com");
+      }
     }
 
-    if (!validator.isLength(this["Username"].value, { max: 30 })) {
-      usernameerrors.push("Input is Too Long");
+    if (name === "Phone Number") {
+      if (!isEmpty(arg)) {
+        if (!isNumeric(arg)) {
+          errors.push("Phone number has to be numeric. No Whitespaces");
+        }
+      }
     }
-    if (validator.isEmpty(this["Email"].value)) {
-      emailerrors.push("Input is Empty");
-    }
-
-    if (!validator.isLength(this["Email"].value, { max: 40 })) {
-      emailerrors.push("Input is Too Long");
-    }
-    if (!validator.isEmail(this["Email"].value)) {
-      emailerrors.push("Email needs to be in a given format - aaa@email.com");
+    if (!isLength(arg, { max: length })) {
+      errors.push("Input is too long");
     }
 
-    if (
-      !validator.isEmpty(this["Phone Number"].value) &&
-      !validator.isMobilePhone(this["Phone Number"].value)
-    ) {
-      phoneerrors.push("Phone Number needs to be numeric");
-    }
-    if (
-      !validator.isEmpty(this["Phone Number"].value) &&
-      !validator.isLength(this["Phone Number"].value)
-    ) {
-      phoneerrors.push("Input is Too Long");
-    }
-
-    if (emailerrors.length > 0) {
-      this.setState({ Email: emailerrors });
+    if (errors.length > 0) {
+      this.setState(prevstate => {
+        prevstate[name] = errors;
+        return prevstate;
+      });
+      return true;
     } else {
-      this.setState({ Email: null });
-    }
-    if (usernameerrors.length > 0) {
-      this.setState({ Username: usernameerrors });
-    } else {
-      this.setState({ Username: null });
-    }
-    if (firstnameerrors.length > 0) {
-      this.setState({ "First Name": firstnameerrors });
-    } else {
-      this.setState({ "First Name": null });
-    }
-    if (lastnameerrors.length > 0) {
-      this.setState({ "Last Name": lastnameerrors });
-    } else {
-      this.setState({ "Last Name": null });
-    }
-    if (phoneerrors.length > 0) {
-      this.setState({ "Phone Number": phoneerrors });
-    } else {
-      this.setState({ "Phone Number": null });
-    }
-    let combinederrors = [
-      ...phoneerrors,
-      ...usernameerrors,
-      ...lastnameerrors,
-      ...firstnameerrors,
-      ...emailerrors
-    ];
-    if (combinederrors.length > 0) {
-      this.setState({ errorsfound: true });
-    } else {
-      this.setState({ errorsfound: false });
+      this.setState(prevstate => {
+        prevstate[name] = null;
+        return prevstate;
+      });
+      return false;
     }
   };
 
   registerbutton = async () => {
-    await this.validatorfunc();
-
-    if (!this.state.errorsfound) {
+    await inputs.map((a, b) => {
+      this.validationfunc(this[a].value, a, inputlengths[b]);
+    });
+    let finderror;
+    finderror = inputs.filter(a => {
+      if (this.state[a]) {
+        return true;
+      }
+    });
+    console.log(finderror);
+    if (finderror.length === 0) {
       console.log("no errors founds");
-      this.props.createfacebookuser({
-        name: this["First Name"].value,
-        lastname: this["Last Name"].value,
-        username: this["Username"].value,
-        email: this["Email"].value,
-        phone:
-          this["Phone Number"].value !== ""
-            ? this["Phone Number"].value
-            : undefined
-      });
+      try {
+        await this.props.createfacebookuser({
+          name: this["First Name"].value,
+          lastname: this["Last Name"].value,
+          username: this["Username"].value,
+          email: this["Email"].value,
+          phone:
+            this["Phone Number"].value !== ""
+              ? this["Phone Number"].value
+              : undefined
+        });
+        this.props.history.push("/");
+      } catch {}
     }
   };
 
@@ -170,25 +136,17 @@ class Facebookform extends Component {
         <div
           style={{
             position: "relative",
-            visibility: this.props.error ? "initial" : "hidden"
+            visibility: this.props.error ? "initial" : "hidden",
+            marginBottom: "1rem"
           }}
-          className="errormessage"
+          className="manageaccounterrormessage"
         >
           {this.props.error}
         </div>
         {this.props.userstate.method === "facebook"
-          ? [
-              "Username",
-              "First Name",
-              "Last Name",
-              "Email",
-              "Phone Number"
-            ].map((a, b) => {
+          ? inputs.map((a, b) => {
               return (
-                <div
-                  style={{ border: this.state[a] ? "1px solid red" : null }}
-                  className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl"
-                >
+                <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
                   <div
                     className="inputenteredtitle"
                     style={{
@@ -206,7 +164,7 @@ class Facebookform extends Component {
                   </div>
                   <input
                     onChange={() => {
-                      this.forceUpdate();
+                      this.validationfunc(this[a].value, a, inputlengths[b]);
                     }}
                     ref={e => (this[a] = e)}
                     className="formfieldinput"

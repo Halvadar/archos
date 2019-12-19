@@ -6,7 +6,8 @@ import {
   changepasswordconfirmation,
   emailtoken,
   deleteuser,
-  deleteuserconfirmation
+  deleteuserconfirmation,
+  logoutuser
 } from "../../Actions/Actions";
 import leftarrow from "../Authenticate/left-arrow.svg";
 import { isEmpty, isEmail, isLength, matches } from "validator";
@@ -24,7 +25,13 @@ class Manageaccount extends Component {
       email: null,
       token: null,
       password: null,
-      showerror: [0, 0, 0, 0, 0, 0]
+      changeemail: null,
+      changetoken: null,
+      changenewpassword: null,
+      showerror: [0, 0, 0, 0, 0, 0],
+      changepassworderror: undefined,
+      changepasswordconfirmationerror: undefined,
+      deleteaccconfirmationerror: undefined
     };
     this.interval = undefined;
   }
@@ -76,21 +83,33 @@ class Manageaccount extends Component {
     };
   };
 
-  changepswproceed = () => {
-    this.props.changepassword({ email: this.changepswemail.value });
+  changepswproceed = async () => {
+    let result = { error: undefined };
+    await this.props.changepassword({
+      email: this.changepswemail.value,
+      result
+    });
+    if (result.error) {
+      this.setState({ changepassworderror: result.error });
+    }
   };
   changepswconfirmationproceed = () => {
     this.props.changepasswordconfirmation({
       token: this.changepswtoken.value,
-      changeemail: this.changepswconfirmationemail.value
+      changepassword: this.changepswconfirmationemail.value
     });
   };
-  changepswconfirmationagree = () => {
-    this.setState({ pswareyousuredisplay: "false" });
-    this.props.changepasswordconfirmation({
-      changeemail: this.changepswconfirmationemail.value,
-      token: this.changepswtoken.value
+  changepswconfirmationagree = async () => {
+    let result = { error: false };
+    this.setState({ pswareyousuredisplay: "none" });
+    await this.props.changepasswordconfirmation({
+      changepassword: this.changepswconfirmationemail.value,
+      token: this.changepswtoken.value,
+      result
     });
+    if (result.error) {
+      this.setState({ changepasswordconfirmationerror: result.error });
+    }
   };
   formwidthsetter = () => {
     let i = window.innerWidth;
@@ -138,7 +157,7 @@ class Manageaccount extends Component {
     }
   };
   deleteuser = async () => {
-    let result = { result: undefined };
+    let result = { result: undefined, error: false };
     if (this.props.currentuser.usertype === "archos") {
       await this.props.deleteuser({
         props: {
@@ -157,6 +176,9 @@ class Manageaccount extends Component {
     if (result.result === true) {
       this.setState({ deletestate: "valid" });
     }
+    if (result.error) {
+      this.setState({ deleteaccerror: result.error });
+    }
   };
   deleteuserconfirmation = async () => {
     const result = { result: false };
@@ -167,6 +189,10 @@ class Manageaccount extends Component {
 
     if (result.result === true) {
       this.setState({ deletestate: "success" });
+      this.props.logout();
+    }
+    if (result.error) {
+      this.setState({ deleteaccconfirmationerror: result.error });
     }
   };
 
@@ -180,7 +206,7 @@ class Manageaccount extends Component {
     if (isEmpty(arg)) {
       errors.push("Input is empty");
     }
-    if (name === "email") {
+    if (name === "email" || name === "changeemail") {
       if (!isEmail(arg)) {
         errors.push("Email needs to be in a given format - aaa@gmail.com");
       }
@@ -196,6 +222,7 @@ class Manageaccount extends Component {
       return true;
     } else {
       this.setState(prevstate => {
+        console.log(name);
         prevstate[name] = null;
         return prevstate;
       });
@@ -290,27 +317,138 @@ class Manageaccount extends Component {
                           <div className="manageaccountmessages">
                             The token was sent to your email address
                           </div>
+                          <div
+                            className="manageaccounterrormessage"
+                            style={{
+                              visibility: this.state
+                                .changepasswordconfirmationerror
+                                ? null
+                                : "hidden"
+                            }}
+                          >
+                            {this.state.changepasswordconfirmationerror}
+                          </div>
                           <div className="changepasswordemailinputcont">
-                            <input
-                              style={{ height: this.inputheightsetter() }}
-                              ref={a => (this.changepswtoken = a)}
-                              placeholder="Token"
+                            <div
                               className="manageaccountinput"
-                              type="text"
-                            ></input>
+                              style={{ height: this.inputheightsetter() }}
+                            >
+                              <input
+                                onChange={() => {
+                                  this.validationfunc(
+                                    this.changepswtoken.value,
+                                    "changetoken",
+                                    1000
+                                  );
+                                }}
+                                ref={a => (this.changepswtoken = a)}
+                                placeholder="Token"
+                                className="manageaccountinputinput"
+                                type="text"
+                              ></input>
+                              <div
+                                style={{
+                                  display: this.state.changetoken
+                                    ? null
+                                    : "none"
+                                }}
+                                className="inputerrorsmark"
+                              >
+                                <img
+                                  onMouseEnter={() => {
+                                    this.setState(prevstate => {
+                                      prevstate.showerror[1] = 1;
+                                      return { showerror: prevstate.showerror };
+                                    });
+                                  }}
+                                  onMouseLeave={() => {
+                                    this.setState({
+                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                    });
+                                  }}
+                                  style={{
+                                    background: "white",
+                                    paddingRight: "2px"
+                                  }}
+                                  src={exclamation}
+                                  width="20px"
+                                ></img>
+                              </div>
+                              <div
+                                style={{
+                                  display: this.state.showerror[1]
+                                    ? "initial"
+                                    : "none"
+                                }}
+                                className="inputerrors"
+                              >
+                                {this.state.changetoken &&
+                                  this.state.changetoken[0]}
+                              </div>
+                            </div>
                           </div>
                           <div
                             style={{ height: this.inputheightsetter() }}
                             className="changepasswordemailinputcont"
                           >
-                            <input
-                              style={{ height: this.inputheightsetter() }}
-                              ref={a => (this.changepswconfirmationemail = a)}
-                              name="asd"
-                              placeholder="New Email"
+                            <div
                               className="manageaccountinput"
-                              type="text"
-                            ></input>
+                              style={{ height: this.inputheightsetter() }}
+                            >
+                              <input
+                                onChange={() => {
+                                  this.validationfunc(
+                                    this.changepswconfirmationemail.value,
+                                    "changenewpassword",
+                                    50
+                                  );
+                                }}
+                                ref={a => (this.changepswconfirmationemail = a)}
+                                name="asd"
+                                placeholder="New Password"
+                                className="manageaccountinputinput"
+                                type="text"
+                              ></input>
+                              <div
+                                style={{
+                                  display: this.state.changenewpassword
+                                    ? null
+                                    : "none"
+                                }}
+                                className="inputerrorsmark"
+                              >
+                                <img
+                                  onMouseEnter={() => {
+                                    this.setState(prevstate => {
+                                      prevstate.showerror[2] = 1;
+                                      return { showerror: prevstate.showerror };
+                                    });
+                                  }}
+                                  onMouseLeave={() => {
+                                    this.setState({
+                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                    });
+                                  }}
+                                  style={{
+                                    background: "white",
+                                    paddingRight: "2px"
+                                  }}
+                                  src={exclamation}
+                                  width="20px"
+                                ></img>
+                              </div>
+                              <div
+                                style={{
+                                  display: this.state.showerror[2]
+                                    ? "initial"
+                                    : "none"
+                                }}
+                                className="inputerrors"
+                              >
+                                {this.state.changenewpassword &&
+                                  this.state.changenewpassword[0]}
+                              </div>
+                            </div>
                           </div>
                           <div
                             onClick={() =>
@@ -362,15 +500,75 @@ class Manageaccount extends Component {
                             Provide Your account's email address to change
                             current password
                           </div>
+                          <div
+                            className="manageaccounterrormessage"
+                            style={{
+                              visibility: this.state.changepassworderror
+                                ? null
+                                : "hidden"
+                            }}
+                          >
+                            {this.state.changepassworderror}
+                          </div>
                           <div className="changepasswordemailinputcont">
-                            <input
-                              style={{ height: this.inputheightsetter() }}
-                              name="qwe"
-                              ref={a => (this.changepswemail = a)}
-                              placeholder="Email"
+                            <div
                               className="manageaccountinput"
-                              type="text"
-                            ></input>
+                              style={{ height: this.inputheightsetter() }}
+                            >
+                              <input
+                                onChange={() => {
+                                  this.validationfunc(
+                                    this.changepswemail.value,
+                                    "changeemail",
+                                    50
+                                  );
+                                }}
+                                name="qwe"
+                                ref={a => (this.changepswemail = a)}
+                                placeholder="Email"
+                                className="manageaccountinputinput"
+                                type="text"
+                              ></input>
+                              <div
+                                style={{
+                                  display: this.state.changeemail
+                                    ? null
+                                    : "none"
+                                }}
+                                className="inputerrorsmark"
+                              >
+                                <img
+                                  onMouseEnter={() => {
+                                    this.setState(prevstate => {
+                                      prevstate.showerror[0] = 1;
+                                      return { showerror: prevstate.showerror };
+                                    });
+                                  }}
+                                  onMouseLeave={() => {
+                                    this.setState({
+                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                    });
+                                  }}
+                                  style={{
+                                    background: "white",
+                                    paddingRight: "2px"
+                                  }}
+                                  src={exclamation}
+                                  width="20px"
+                                ></img>
+                              </div>
+                              <div
+                                style={{
+                                  display: this.state.showerror[0]
+                                    ? "initial"
+                                    : "none"
+                                }}
+                                className="inputerrors"
+                              >
+                                {this.state.changeemail &&
+                                  this.state.changeemail[0]}
+                              </div>
+                            </div>
                           </div>
                           <div
                             onClick={this.changepswproceed}
@@ -423,60 +621,128 @@ class Manageaccount extends Component {
                           : ""}{" "}
                         to delete your account
                       </div>
-                      <div className="deleteaccountemailinputcont">
-                        <input
-                          style={{ height: this.inputheightsetter() }}
-                          ref={a => (this.deleteaccemail = a)}
-                          placeholder="Email"
-                          type="text"
-                          className="manageaccountinput"
-                        ></input>
-                        <div
-                          style={{
-                            display: this.state.email ? "initial" : "none"
-                          }}
-                          className="inputerrorsmark"
-                        >
-                          <img
-                            onMouseEnter={() => {
-                              this.setState(prevstate => {
-                                prevstate.showerror[3] = 1;
-                                return { showerror: prevstate.showerror };
-                              });
+                      <div
+                        className="manageaccounterrormessage"
+                        style={{
+                          visibility: this.state.deleteaccerror
+                            ? null
+                            : "hidden"
+                        }}
+                      >
+                        {this.state.deleteaccerror}
+                      </div>
+                      <div
+                        className="deleteaccountemailinputcont"
+                        style={{
+                          height: this.inputheightsetter()
+                        }}
+                      >
+                        <div className="manageaccountinput">
+                          <input
+                            onChange={() => {
+                              this.validationfunc(
+                                this.deleteaccemail.value,
+                                "email",
+                                50
+                              );
                             }}
-                            onMouseLeave={() => {
-                              this.setState({
-                                showerror: [0, 0, 0, 0, 0, 0, 0]
-                              });
-                            }}
+                            className="manageaccountinputinput"
+                            ref={a => (this.deleteaccemail = a)}
+                            placeholder="Email"
+                            type="text"
+                          ></input>
+                          <div
                             style={{
-                              background: "white",
-                              paddingRight: "2px"
+                              display: this.state.email ? null : "none"
                             }}
-                            src={exclamation}
-                            width="20px"
-                          ></img>
-                        </div>
-                        <div
-                          style={{
-                            display: this.state.showerror[1]
-                              ? "initial"
-                              : "none"
-                          }}
-                          className="inputerrors"
-                        >
-                          {this.state.description && this.state.description[0]}
+                            className="inputerrorsmark"
+                          >
+                            <img
+                              onMouseEnter={() => {
+                                this.setState(prevstate => {
+                                  prevstate.showerror[3] = 1;
+                                  return { showerror: prevstate.showerror };
+                                });
+                              }}
+                              onMouseLeave={() => {
+                                this.setState({
+                                  showerror: [0, 0, 0, 0, 0, 0, 0]
+                                });
+                              }}
+                              style={{
+                                background: "white",
+                                paddingRight: "2px"
+                              }}
+                              src={exclamation}
+                              width="20px"
+                            ></img>
+                          </div>
+                          <div
+                            style={{
+                              display: this.state.showerror[3]
+                                ? "initial"
+                                : "none"
+                            }}
+                            className="inputerrors"
+                          >
+                            {this.state.email && this.state.email[0]}
+                          </div>
                         </div>
                       </div>
                       {this.props.currentuser.usertype === "archos" ? (
                         <div className="deleteaccountpasswordinputcont">
-                          <input
-                            style={{ height: this.inputheightsetter() }}
-                            ref={a => (this.deleteaccpsw = a)}
-                            placeholder="Password"
+                          <div
                             className="manageaccountinput"
-                            type="text"
-                          ></input>
+                            style={{ height: this.inputheightsetter() }}
+                          >
+                            <input
+                              onChange={() => {
+                                this.validationfunc(
+                                  this.deleteaccpsw.value,
+                                  "password",
+                                  50
+                                );
+                              }}
+                              ref={a => (this.deleteaccpsw = a)}
+                              placeholder="Password"
+                              className="manageaccountinputinput"
+                              type="password"
+                            ></input>
+                            <div
+                              style={{
+                                display: this.state.password ? null : "none"
+                              }}
+                              className="inputerrorsmark"
+                            >
+                              <img
+                                onMouseEnter={() => {
+                                  this.setState(prevstate => {
+                                    prevstate.showerror[4] = 1;
+                                    return { showerror: prevstate.showerror };
+                                  });
+                                }}
+                                onMouseLeave={() => {
+                                  this.setState({
+                                    showerror: [0, 0, 0, 0, 0, 0, 0]
+                                  });
+                                }}
+                                style={{
+                                  background: "white",
+                                  paddingRight: "2px"
+                                }}
+                                src={exclamation}
+                                width="20px"
+                              ></img>
+                            </div>
+                            <div
+                              style={{
+                                display: this.state.showerror[4] ? null : "none"
+                              }}
+                              className="inputerrors"
+                            >
+                              {this.state.password && this.state.password[0]}
+                            </div>
+                          </div>
                         </div>
                       ) : null}
                       <div
@@ -493,15 +759,71 @@ class Manageaccount extends Component {
                       <div className="manageaccountmessages">
                         The token was sent to your email address
                       </div>
+                      <div
+                        className="manageaccounterrormessage"
+                        style={{
+                          visibility: this.state.deleteaccconfirmationerror
+                            ? null
+                            : "hidden"
+                        }}
+                      >
+                        {this.state.deleteaccconfirmationerror}
+                      </div>
                       <div className="changepasswordemailinputcont">
-                        <div style={{ width: "100%", height: "100%" }}>
-                          <input
-                            style={{ height: this.inputheightsetter() }}
-                            ref={a => (this.deleteacctoken = a)}
-                            placeholder="Token"
-                            className="manageaccountinput"
-                            type="text"
-                          ></input>
+                        <div
+                          className="manageaccountinput"
+                          style={{ height: this.inputheightsetter() }}
+                        >
+                          <div style={{ width: "100%", height: "100%" }}>
+                            <input
+                              onChange={() => {
+                                this.validationfunc(
+                                  this.deleteacctoken.value,
+                                  "token",
+                                  1000
+                                );
+                              }}
+                              style={{ width: "100%", height: "100%" }}
+                              ref={a => (this.deleteacctoken = a)}
+                              placeholder="Token"
+                              type="text"
+                              className="manageaccountinputinput"
+                            ></input>
+                          </div>
+                          <div
+                            style={{
+                              display: this.state.token ? null : "none"
+                            }}
+                            className="inputerrorsmark"
+                          >
+                            <img
+                              onMouseEnter={() => {
+                                this.setState(prevstate => {
+                                  prevstate.showerror[5] = 1;
+                                  return { showerror: prevstate.showerror };
+                                });
+                              }}
+                              onMouseLeave={() => {
+                                this.setState({
+                                  showerror: [0, 0, 0, 0, 0, 0, 0]
+                                });
+                              }}
+                              style={{
+                                background: "white",
+                                paddingRight: "2px"
+                              }}
+                              src={exclamation}
+                              width="20px"
+                            ></img>
+                          </div>
+                          <div
+                            style={{
+                              display: this.state.showerror[5] ? null : "none"
+                            }}
+                            className="inputerrors"
+                          >
+                            {this.state.token && this.state.token[0]}
+                          </div>
                         </div>
                       </div>
                       <div
@@ -535,7 +857,7 @@ class Manageaccount extends Component {
                             className="manageaccountbutton"
                             onClick={() =>
                               this.setState({
-                                accareyousuresuredisplay: "none"
+                                accareyousuredisplay: "none"
                               })
                             }
                           >
@@ -573,7 +895,8 @@ const mapDispatchToProps = dispatch => ({
   changepassword: e => dispatch(changepassword(e)),
   changepasswordconfirmation: e => dispatch(changepasswordconfirmation(e)),
   deleteuser: e => dispatch(deleteuser(e)),
-  deleteuserconfirmation: e => dispatch(deleteuserconfirmation(e))
+  deleteuserconfirmation: e => dispatch(deleteuserconfirmation(e)),
+  logout: () => dispatch(logoutuser())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Manageaccount);
