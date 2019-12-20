@@ -29,6 +29,7 @@ class Register extends Component {
   }
   componentWillUnmount() {
     this.unmounted = true;
+    this.props.nullifyerrors();
   }
   formrefstylecalc = a => {
     return window.getComputedStyle(this.formref).getPropertyValue(a);
@@ -179,15 +180,18 @@ class Register extends Component {
             <Facebookform
               error={this.props.error.facebookerrormessage}
               left={this.state.swipestate}
+              history={this.props.history}
             />
             <Gmailform
               error={this.props.error.gmailerrormessage}
               left={this.state.swipestate}
+              history={this.props.history}
             />
             <Archosform
               error={this.props.error.archoserrormessage}
               passref={e => (this.formref = e)}
               left={this.state.swipestate}
+              history={this.props.history}
             />
           </div>
         </div>

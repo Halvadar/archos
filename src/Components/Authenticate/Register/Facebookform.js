@@ -16,7 +16,7 @@ import {
   isNumeric
 } from "validator";
 const inputs = ["Username", "First Name", "Last Name", "Email", "Phone Number"];
-const inputlengths = [40, 30, 50, 70, 25];
+const inputlengths = [30, 30, 50, 70, 25];
 class Facebookform extends Component {
   constructor() {
     super();
@@ -27,8 +27,10 @@ class Facebookform extends Component {
       Email: null,
       "Phone Number": null,
       errorsfound: false,
-      showerror: [0, 0, 0, 0, 0]
+      showerror: [0, 0, 0, 0, 0],
+      success: false
     };
+    this.timeout = null;
   }
   callback = response => {
     console.log(response);
@@ -100,7 +102,8 @@ class Facebookform extends Component {
     if (finderror.length === 0) {
       console.log("no errors founds");
       try {
-        await this.props.createfacebookuser({
+        let err;
+        err = await this.props.createfacebookuser({
           name: this["First Name"].value,
           lastname: this["Last Name"].value,
           username: this["Username"].value,
@@ -110,95 +113,120 @@ class Facebookform extends Component {
               ? this["Phone Number"].value
               : undefined
         });
-        this.props.history.push("/");
-      } catch {}
+        if (err) {
+          throw err;
+        }
+        this.setState({ success: true });
+        this.timeout = setTimeout(() => {
+          this.props.history.push("/");
+        }, 3000);
+      } catch (err) {}
     }
   };
-
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
   render() {
     return (
       <div style={{ left: this.props.left + "%" }} className="registerpageform">
-        <FacebookLogin
-          appId={process.env.REACT_APP_FACEBOOK_ID}
-          callback={this.callback}
-          disableMobileRedirect={true}
-          onFailure={response => {
-            console.log(response);
-          }}
-          render={renderProps => {
-            return (
-              <div onClick={renderProps.onClick} className="facebookbutton">
-                Login With Facebook
-              </div>
-            );
-          }}
-        ></FacebookLogin>
-        <div
-          style={{
-            position: "relative",
-            visibility: this.props.error ? "initial" : "hidden",
-            marginBottom: "1rem"
-          }}
-          className="manageaccounterrormessage"
-        >
-          {this.props.error}
-        </div>
-        {this.props.userstate.method === "facebook"
-          ? inputs.map((a, b) => {
-              return (
-                <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
-                  <div
-                    className="inputenteredtitle"
-                    style={{
-                      position: "absolute",
-                      bottom: "100%",
-                      left: "0",
-                      visibility: this[a]
-                        ? this[a].value.length > 0
-                          ? "initial"
-                          : "hidden"
-                        : "hidden"
-                    }}
-                  >
-                    {a}
-                  </div>
-                  <input
-                    onChange={() => {
-                      this.validationfunc(this[a].value, a, inputlengths[b]);
-                    }}
-                    ref={e => (this[a] = e)}
-                    className="formfieldinput"
-                    placeholder={a}
-                  ></input>
-                  {this.state[a] ? (
-                    <div className="inputerrorsmark">
-                      {this.state.showerror[b] === 1 ? (
-                        <div className="inputerrors">{this.state[a][0]}</div>
-                      ) : null}
-                      <img
-                        onMouseEnter={() => {
-                          let showerrorcopy = this.state.showerror;
-                          showerrorcopy[b] = 1;
-                          console.log(showerrorcopy);
-                          this.setState({ showerror: showerrorcopy });
-                        }}
-                        onMouseLeave={() => {
-                          this.setState({ showerror: [0, 0, 0, 0, 0] });
-                        }}
-                        src={exclamation}
-                        width="20px"
-                      ></img>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })
-          : null}
-        {this.props.userstate.method === "facebook" ? (
-          <div onClick={this.registerbutton} className="registerbutton">
-            Register
+        {this.state.success ? (
+          <div
+            style={{ color: "rgb(77, 179, 68)" }}
+            className="manageaccountmessages"
+          >
+            You've Registered Successfully
           </div>
-        ) : null}
+        ) : (
+          <React.Fragment>
+            <FacebookLogin
+              appId={process.env.REACT_APP_FACEBOOK_ID}
+              callback={this.callback}
+              disableMobileRedirect={true}
+              onFailure={response => {
+                console.log(response);
+              }}
+              render={renderProps => {
+                return (
+                  <div onClick={renderProps.onClick} className="facebookbutton">
+                    Login With Facebook
+                  </div>
+                );
+              }}
+            ></FacebookLogin>
+            <div
+              style={{
+                position: "relative",
+                visibility: this.props.error ? "initial" : "hidden",
+                marginBottom: "1rem"
+              }}
+              className="manageaccounterrormessage"
+            >
+              {this.props.error}
+            </div>
+            {this.props.userstate.method === "facebook"
+              ? inputs.map((a, b) => {
+                  return (
+                    <div className="formfield formfieldsm formfieldmd formfieldxl formfieldxl formfieldxxl">
+                      <div
+                        className="inputenteredtitle"
+                        style={{
+                          position: "absolute",
+                          bottom: "100%",
+                          left: "0",
+                          visibility: this[a]
+                            ? this[a].value.length > 0
+                              ? "initial"
+                              : "hidden"
+                            : "hidden"
+                        }}
+                      >
+                        {a}
+                      </div>
+                      <input
+                        onChange={() => {
+                          this.validationfunc(
+                            this[a].value,
+                            a,
+                            inputlengths[b]
+                          );
+                        }}
+                        ref={e => (this[a] = e)}
+                        className="formfieldinput"
+                        placeholder={a}
+                      ></input>
+                      {this.state[a] ? (
+                        <div className="inputerrorsmark">
+                          {this.state.showerror[b] === 1 ? (
+                            <div className="inputerrors">
+                              {this.state[a][0]}
+                            </div>
+                          ) : null}
+                          <img
+                            onMouseEnter={() => {
+                              let showerrorcopy = this.state.showerror;
+                              showerrorcopy[b] = 1;
+                              console.log(showerrorcopy);
+                              this.setState({ showerror: showerrorcopy });
+                            }}
+                            onMouseLeave={() => {
+                              this.setState({ showerror: [0, 0, 0, 0, 0] });
+                            }}
+                            src={exclamation}
+                            width="20px"
+                          ></img>
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })
+              : null}
+            {this.props.userstate.method === "facebook" ? (
+              <div onClick={this.registerbutton} className="registerbutton">
+                Register
+              </div>
+            ) : null}
+          </React.Fragment>
+        )}
       </div>
     );
   }

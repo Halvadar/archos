@@ -282,6 +282,7 @@ export const createfacebookuser = props => {
             type: "REGISTER_FACEBOOK_USER_ERROR"
           })
         );
+        return true;
       });
   };
 };
@@ -324,6 +325,7 @@ export const creategmailuser = props => {
             type: "REGISTER_GMAIL_USER_ERROR"
           })
         );
+        return true;
       });
   };
 };

@@ -60,11 +60,25 @@ class Addservice extends Component {
         style={{
           width: window.innerWidth > 768 ? null : "100%"
         }}
-        className="loggedinusercont"
+        className="loggedinusercont loggedinusercontmd"
       >
         <div style={{ height: "100%" }} className="loggedinuserrelative">
           <div onClick={this.dropdownanimation} className="currentusername">
-            {this.props.currentuser.username}
+            {window.innerWidth <= 768 ? (
+              <div
+                style={{
+                  width: "90%",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden"
+                }}
+              >
+                {this.props.currentuser.username}
+              </div>
+            ) : (
+              this.props.currentuser.username
+            )}
+
             <img width="10px" src={dropdown}></img>
           </div>
 

@@ -73,7 +73,10 @@ class App extends Component {
               path="/categories"
               render={props => <Categoriespage {...props}></Categoriespage>}
             />
-            <Route path="/register" render={props => <Register />}></Route>
+            <Route
+              path="/register"
+              render={props => <Register {...props} />}
+            ></Route>
 
             <Route
               path="/"
