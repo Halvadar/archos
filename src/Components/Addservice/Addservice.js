@@ -7,6 +7,7 @@ class Addservice extends Component {
   constructor() {
     super();
     this.state = {
+      refheight: 0,
       animation: 0,
       animationmotionstate: "shrinking",
       history: "/"
@@ -14,15 +15,26 @@ class Addservice extends Component {
     this.interval = undefined;
   }
   componentDidUpdate() {}
-
+  closemanagefunc = e => {
+    if (
+      e.clientX < this.managecontref.getBoundingClientRect().left ||
+      e.clientX > this.managecontref.getBoundingClientRect().right ||
+      e.clientY < this.managecontref.getBoundingClientRect().top ||
+      e.clientY > this.managecontref.getBoundingClientRect().bottom
+    ) {
+      this.setState({ animationmotionstate: "shrinking", animation: 0 });
+      clearInterval(this.interval);
+      window.removeEventListener("mousedown", this.closemanagefunc);
+    }
+  };
   componentDidMount() {
-    console.log(this.props.history);
     this.setState({
       refheight: window
         .getComputedStyle(this.listitemref)
         .getPropertyValue("height")
     });
   }
+  componentDidUpdate() {}
   dropdownanimation = () => {
     clearInterval(this.interval);
     if (this.state.animationmotionstate === "shrinking") {
@@ -34,12 +46,14 @@ class Addservice extends Component {
             i++;
             this.setState({ animation: i });
           } else {
+            window.addEventListener("mousedown", this.closemanagefunc);
             clearInterval(this.interval);
           }
         }, 5);
       }
     } else {
       this.setState({ animationmotionstate: "shrinking" });
+      window.removeEventListener("mousedown", this.closemanagefunc);
       if (this.state.animation > 0) {
         let i = this.state.animation;
         this.interval = setInterval(() => {
@@ -62,7 +76,25 @@ class Addservice extends Component {
         }}
         className="loggedinusercont loggedinusercontmd"
       >
-        <div style={{ height: "100%" }} className="loggedinuserrelative">
+        <div
+          ref={a => (this.manageref = a)}
+          style={{ height: "100%" }}
+          className="loggedinuserrelative"
+        >
+          <div
+            ref={a => (this.managecontref = a)}
+            style={{
+              position: "absolute",
+              width: "100%",
+              top: 0,
+              zIndex: -100,
+              height:
+                this.state.refheight &&
+                this.state.refheight.slice(0, this.state.refheight.length - 2) *
+                  4 +
+                  "px"
+            }}
+          ></div>
           <div onClick={this.dropdownanimation} className="currentusername">
             {window.innerWidth <= 768 ? (
               <div

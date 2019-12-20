@@ -377,10 +377,7 @@ export const fetchcards = props => {
 export const createcard = props => {
   console.log(props);
   return dispatch => {
-    const formdata = new FormData();
-    formdata.append("image", props.image);
-
-    axiosInstance({
+    return axiosInstance({
       withCredentials: true,
       method: "POST",
       data: {
@@ -394,24 +391,31 @@ export const createcard = props => {
         headers: { "Content-Type": "application/json" }
       }
     })
-      .then(result => {
+      .then(async result => {
         console.log(result.data.data.createCard);
-        formdata.append("_id", result.data.data.createCard._id);
+        let formdata;
 
-        axiosInstance({
-          withCredentials: true,
-          url: process.env.REACT_APP_BACKEND_URL + "/uploadimage",
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data"
-          },
-          data: formdata
-        });
+        if (props.image) {
+          formdata = new FormData();
+          formdata.append("image", props.image);
+          formdata.append("_id", result.data.data.createCard._id);
+          await axiosInstance({
+            withCredentials: true,
+            url: process.env.REACT_APP_BACKEND_URL + "/uploadimage",
+            method: "POST",
+            headers: {
+              "Content-Type": "multipart/form-data"
+            },
+            data: formdata
+          });
+        }
+
+        return result.data.data.createCard._id;
       })
       .then(result => {
-        console.log(result);
+        return result;
       })
-      .catch(err => console.log(err));
+      .catch(err => false);
   };
 };
 
@@ -591,6 +595,7 @@ export const deleteuserconfirmation = ({ props, result }) => {
         }
       })
       .catch(err => {
+        result.error = err.response.data;
         console.log(err);
       });
   };

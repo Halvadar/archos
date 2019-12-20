@@ -31,15 +31,33 @@ class Manageaccount extends Component {
       showerror: [0, 0, 0, 0, 0, 0],
       changepassworderror: undefined,
       changepasswordconfirmationerror: undefined,
-      deleteaccconfirmationerror: undefined
+      deleteaccconfirmationerror: undefined,
+      currentmanageref: null
     };
     this.interval = undefined;
   }
-  componentDidMount() {
-    console.log(this.props.changepassword);
-  }
+  componentDidMount() {}
   componentDidUpdate() {}
+  closemanagefunc = e => {
+    console.log(1);
+    if (
+      e.clientX <
+        this[this.state.currentmanageref].getBoundingClientRect().left ||
+      e.clientX >
+        this[this.state.currentmanageref].getBoundingClientRect().right ||
+      e.clientY <
+        this[this.state.currentmanageref].getBoundingClientRect().top ||
+      e.clientY >
+        this[this.state.currentmanageref].getBoundingClientRect().bottom
+    ) {
+      this.setState({
+        pswareyousuredisplay: "none",
+        accareyousuredisplay: "none"
+      });
 
+      window.removeEventListener("mousedown", this.closemanagefunc);
+    }
+  };
   swipeanimation = e => {
     console.log("passed");
     clearInterval(this.newinterval);
@@ -100,6 +118,7 @@ class Manageaccount extends Component {
     });
   };
   changepswconfirmationagree = async () => {
+    window.removeEventListener("mousedown", this.closemanagefunc);
     let result = { error: false };
     this.setState({ pswareyousuredisplay: "none" });
     await this.props.changepasswordconfirmation({
@@ -197,6 +216,7 @@ class Manageaccount extends Component {
   };
 
   deleteaccountconfirmationagree = () => {
+    window.removeEventListener("mousedown", this.closemanagefunc);
     this.deleteuserconfirmation();
     this.setState({ accareyousuredisplay: "none" });
   };
@@ -451,14 +471,22 @@ class Manageaccount extends Component {
                             </div>
                           </div>
                           <div
-                            onClick={() =>
-                              this.setState({ pswareyousuredisplay: "flex" })
-                            }
+                            onClick={async () => {
+                              await this.setState({
+                                currentmanageref: "areyousureref"
+                              });
+                              window.addEventListener(
+                                "mousedown",
+                                this.closemanagefunc
+                              );
+                              this.setState({ pswareyousuredisplay: "flex" });
+                            }}
                             className="manageaccountbutton"
                           >
                             Proceed
                           </div>
                           <div
+                            ref={a => (this.areyousureref = a)}
                             style={{ display: this.state.pswareyousuredisplay }}
                             className="areyousure"
                           >
@@ -479,11 +507,15 @@ class Manageaccount extends Component {
                               </div>
                               <div
                                 className="manageaccountbutton"
-                                onClick={() =>
+                                onClick={() => {
+                                  window.removeEventListener(
+                                    "mousedown",
+                                    this.closemanagefunc
+                                  );
                                   this.setState({
                                     pswareyousuredisplay: "none"
-                                  })
-                                }
+                                  });
+                                }}
                               >
                                 No
                               </div>
@@ -605,7 +637,6 @@ class Manageaccount extends Component {
               style={{ left: this.state.swipestate + 100 + "%" }}
             >
               {(() => {
-                console.log(this.state.deletestate);
                 if (this.state.deletestate === "invalid") {
                   return (
                     <React.Fragment>
@@ -827,14 +858,22 @@ class Manageaccount extends Component {
                         </div>
                       </div>
                       <div
-                        onClick={() =>
-                          this.setState({ accareyousuredisplay: "flex" })
-                        }
+                        onClick={async () => {
+                          await this.setState({
+                            currentmanageref: "delareyousureref"
+                          });
+                          window.addEventListener(
+                            "mousedown",
+                            this.closemanagefunc
+                          );
+                          this.setState({ accareyousuredisplay: "flex" });
+                        }}
                         className="manageaccountbutton"
                       >
                         Proceed
                       </div>
                       <div
+                        ref={a => (this.delareyousureref = a)}
                         style={{ display: this.state.accareyousuredisplay }}
                         className="areyousure"
                       >
@@ -855,11 +894,15 @@ class Manageaccount extends Component {
                           </div>
                           <div
                             className="manageaccountbutton"
-                            onClick={() =>
+                            onClick={() => {
+                              window.removeEventListener(
+                                "mousedown",
+                                this.closemanagefunc
+                              );
                               this.setState({
                                 accareyousuredisplay: "none"
-                              })
-                            }
+                              });
+                            }}
                           >
                             No
                           </div>

@@ -230,6 +230,7 @@ class Navbar extends Component {
       this.setState({ loginformstate: "none" });
     }
   };
+
   loginwidthsetter = () => {
     let i = window.innerWidth;
 
@@ -274,19 +275,24 @@ class Navbar extends Component {
           <NavLink to="/" className=" mt-2 img-l img-sm img-md">
             <img src={logo} alt="Archos" width="100%" />
           </NavLink>
-          <Login
-            loginformstate={this.state.loginformstate}
-            closeloginform={() => {
-              this.setState({ loginformstate: "none" });
-              window.removeEventListener("mousedown", this.closeloginformevent);
-            }}
-            passref={e => (this.loginformref = e)}
-            style={{
-              left: this.loginleftsetter(),
-              width: this.loginwidthsetter(),
-              display: this.state.loginformstate
-            }}
-          ></Login>
+          {this.state.loginformstate !== "none" && (
+            <Login
+              loginformstate={this.state.loginformstate}
+              closeloginform={() => {
+                this.setState({ loginformstate: "none" });
+                window.removeEventListener(
+                  "mousedown",
+                  this.closeloginformevent
+                );
+              }}
+              passref={e => (this.loginformref = e)}
+              style={{
+                left: this.loginleftsetter(),
+                width: this.loginwidthsetter(),
+                display: this.state.loginformstate
+              }}
+            ></Login>
+          )}
           <div
             style={{
               display: "flex",

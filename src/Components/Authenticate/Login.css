@@ -123,6 +123,9 @@
   justify-content: center;
   margin: 1rem 0 0 0;
 }
+.archosformlogin:hover {
+  cursor: pointer;
+}
 
 .formicons:hover {
   cursor: pointer;

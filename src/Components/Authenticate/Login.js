@@ -24,6 +24,7 @@ class Login extends Component {
     this.unmounted = false;
   }
   componentDidMount() {}
+
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       if (this.props.loginformstate === "none") {
@@ -33,6 +34,7 @@ class Login extends Component {
     }
   }
   componentWillUnmount() {
+    console.log("unmount");
     this.unmounted = true;
   }
 
@@ -84,6 +86,7 @@ class Login extends Component {
   facebookcallback = result => {
     console.log(result);
     this.props.loginfacebook({ id: result.id, token: result.accessToken });
+    this.props.closeloginform();
   };
   gmailcallback = result => {
     console.log(result);
@@ -91,6 +94,7 @@ class Login extends Component {
       id: result.googleId,
       token: result.accessToken
     });
+    this.props.closeloginform();
   };
 
   archoscallback = async () => {
@@ -100,6 +104,7 @@ class Login extends Component {
         email: this.email.value,
         password: this.password.value
       });
+      this.props.closeloginform();
     }
   };
   validatorfun = () => {
@@ -129,7 +134,12 @@ class Login extends Component {
     }
     this.props.loginerror(combinederrors[0]);
   };
-
+  enter = e => {
+    console.log(e.key);
+    if (e.key === "Enter") {
+      this.archoscallback();
+    }
+  };
   render() {
     return (
       <div
@@ -259,6 +269,7 @@ class Login extends Component {
                 ref={a => (this.password = a)}
                 placeholder="Password"
                 className="archoslogininput"
+                onKeyPress={this.enter}
               ></input>
             </div>
 

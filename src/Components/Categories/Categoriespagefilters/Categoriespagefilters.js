@@ -9,15 +9,36 @@ class Categoriespagefilters extends Component {
   constructor() {
     super();
     this.state = {
+      heightref: null,
       animationstate: "not going",
-      animationtopdistance: 0
+      animationtopdistance: 0,
+      sort: null
     };
     this.unmounted = false;
   }
   componentWillUnmount() {
     this.unmounted = true;
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({
+      heightref: window
+        .getComputedStyle(this.sortref)
+        .getPropertyValue("height")
+    });
+  }
+  componentDidUpdate() {}
+  closefilterfunc = e => {
+    if (
+      e.clientX < this.sortcontref.getBoundingClientRect().left ||
+      e.clientX > this.sortcontref.getBoundingClientRect().right ||
+      e.clientY < this.sortcontref.getBoundingClientRect().top ||
+      e.clientY > this.sortcontref.getBoundingClientRect().bottom
+    ) {
+      this.setState({ animationtopdistance: 0 });
+      window.removeEventListener("mousedown", this.closefilterfunc);
+    }
+  };
+
   animation = () => {
     if (this.state.animationstate === "not going") {
       var i = this.state.animationtopdistance;
@@ -29,6 +50,7 @@ class Categoriespagefilters extends Component {
             i++;
             this.setState({ animationtopdistance: i });
           } else {
+            window.addEventListener("mousedown", this.closefilterfunc);
             clearInterval(newinterval);
             this.setState({ animationstate: "not going" });
           }
@@ -42,6 +64,7 @@ class Categoriespagefilters extends Component {
               animationtopdistance: i
             });
           } else {
+            window.removeEventListener("mousedown", this.closefilterfunc);
             clearInterval(newinterval);
             this.setState({ animationstate: "not going" });
           }
@@ -71,6 +94,7 @@ class Categoriespagefilters extends Component {
   };
 
   sortcardsAZ = () => {
+    this.setState({ sort: "A-Z" });
     let sortedcards;
     sortedcards = this.props.cards.cards.sort((a, b) => {
       if (a.title.localeCompare(b.title) < 0) {
@@ -84,6 +108,7 @@ class Categoriespagefilters extends Component {
     this.props.sortcards({ type: "AZ", cards: sortedcards });
   };
   sortcardsZA = () => {
+    this.setState({ sort: "Z-A" });
     let sortedcards;
     sortedcards = this.props.cards.cards.sort((a, b) => {
       if (a.title.localeCompare(b.title) < 0) {
@@ -97,6 +122,7 @@ class Categoriespagefilters extends Component {
     this.props.sortcards({ type: "ZA", cards: sortedcards });
   };
   sortcardsrating = () => {
+    this.setState({ sort: "Rating" });
     let sortedcards;
     sortedcards = this.props.cards.cards.sort((a, b) => {
       if (a.score !== "Not Rated" && b.score === "Not Rated") {
@@ -130,9 +156,23 @@ class Categoriespagefilters extends Component {
   render() {
     return (
       <div className="categoriespagefilters categoriespagefiltersmd  categoriespagefilterslg categoriespagefiltersxl">
-        <div className="sortbyrating">
+        <div className="sortbyrating" ref={a => (this.sortref = a)}>
+          <div
+            ref={a => (this.sortcontref = a)}
+            style={{
+              position: "absolute",
+              width: "100%",
+              top: 0,
+              zIndex: -100,
+              height:
+                this.state.heightref &&
+                this.state.heightref.slice(0, this.state.heightref.length - 2) *
+                  4 +
+                  "px"
+            }}
+          ></div>
           <div onClick={this.animation} className="rating">
-            Sort By
+            Sort By {this.state.sort && `- ${this.state.sort}`}
             <div>
               <img src={dropdown} width="10px"></img>
             </div>
@@ -142,7 +182,9 @@ class Categoriespagefilters extends Component {
             className="sortbydropdown"
             style={{
               top: this.state.animationtopdistance * 1 + "%",
-              zIndex: -1
+              zIndex: -1,
+              background:
+                this.state.sort === "Rating" ? "rgb(209, 246, 255)" : null
             }}
           >
             {" "}
@@ -153,7 +195,9 @@ class Categoriespagefilters extends Component {
             className="sortbydropdown"
             style={{
               zIndex: -2,
-              top: this.state.animationtopdistance * 2 + "%"
+              top: this.state.animationtopdistance * 2 + "%",
+              background:
+                this.state.sort === "A-Z" ? "rgb(209, 246, 255)" : null
             }}
           >
             {" "}
@@ -164,7 +208,9 @@ class Categoriespagefilters extends Component {
             className="sortbydropdown"
             style={{
               top: this.state.animationtopdistance * 3 + "%",
-              zIndex: -3
+              zIndex: -3,
+              background:
+                this.state.sort === "Z-A" ? "rgb(209, 246, 255)" : null
             }}
           >
             {" "}

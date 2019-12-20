@@ -25,7 +25,8 @@ class Categoriespagecard extends Component {
   componentDidUpdate() {}
   componentDidMount() {
     this.setState({ mounted: true });
-    this.props.getcard({ id: this.props.match.params.id }).then(() => {
+    this.props.getcard({ id: this.props.match.params.id }).then(a => {
+      console.log(this.props.card);
       if (this.state.mounted) {
         let maininfowidth = window
           .getComputedStyle(this.imgref)
