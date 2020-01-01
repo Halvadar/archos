@@ -7,36 +7,56 @@ class Categoriespagecomments extends Component {
   constructor() {
     super();
     this.state = {
-      invalidcomment: false
+      invalidcomment: false,
+      errormessagestate: "hidden"
     };
     this.timeout = undefined;
+  }
+
+  componentDidMount() {
+    console.log(this.props.currentuser);
   }
 
   submitcomment = () => {
     clearTimeout(this.timeout);
     this.setState({ invalidcomment: false });
     if (this.commentref.value.length > 0) {
-      this.props.comment({
-        id: this.props.match.params.id,
-        comment: this.commentref.value
-      });
+      if (this.props.currentuser.username) {
+        this.props.comment({
+          id: this.props.match.params.id,
+          comment: this.commentref.value
+        });
+        this.setState({ errormessagestate: "hidden" });
+      } else {
+        this.setState({ errormessagestate: "initial" });
+      }
     } else {
-      this.setState({ invalidcomment: true });
+      this.setState({ invalidcomment: true, errormessagestate: "hidden" });
       this.timeout = setTimeout(() => {
         this.setState({ invalidcomment: false });
       }, 1500);
     }
   };
-  
 
   render() {
     return (
       <div className="cateogriespagecommentscont categoriespagecommentsinputcontmd categoriespagecommentsinputcontlg categoriespagecommentsinputcontxl categoriespagecommentsinputcontxxl">
+        <div
+          style={{
+            color: "rgb(255, 117, 117)",
+            margin: "1rem",
+            fontWeight: 600,
+            visibility: this.state.errormessagestate,
+            alignSelf: "center"
+          }}
+        >
+          You need to be Signed in
+        </div>
         <div className="categoriespagecommentsinputcont ">
           <textarea
+            className="categoriespagecommentsinput"
             placeholder={this.state.invalidcomment ? "Input is empty" : null}
             ref={a => (this.commentref = a)}
-            className="categoriespagecommentsinput"
           ></textarea>
         </div>
 
@@ -104,7 +124,9 @@ class Categoriespagecomments extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  currentuser: state.setcurrentuser
+});
 
 const mapDispatchToProps = dispatch => ({
   comment: e => dispatch(comment(e))
