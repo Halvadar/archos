@@ -26,6 +26,7 @@ class Categoriespagecomments extends Component {
           id: this.props.match.params.id,
           comment: this.commentref.value
         });
+        this.commentref.value = "";
         this.setState({ errormessagestate: "hidden" });
       } else {
         this.setState({ errormessagestate: "initial" });

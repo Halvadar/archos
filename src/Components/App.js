@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./Main/Header/Navbar/Navbar";
 import Sandbox from "./Main/Sandbox";
 import Headerbackground from "./Main/Header/Headerbackground/Headerbackground";

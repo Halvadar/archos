@@ -1,7 +1,7 @@
 {
   "name": "archos",
   "version": "0.1.0",
-  "homepage": "http://Halvadar.github.io/archos",
+  "homepage": "https://pedantic-pike-3593cf.netlify.com",
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
