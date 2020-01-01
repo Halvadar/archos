@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0e808bb786f932df36106e6c8bcba4ac",
+    "revision": "a37deb6722b779369e5fa35dafcd0421",
     "url": "/archos/index.html"
   },
   {
-    "revision": "0f8ff007dd33251a4b66",
+    "revision": "98969a2ee5f2f2137e05",
     "url": "/archos/static/css/2.510409cd.chunk.css"
   },
   {
-    "revision": "9c91c20158c3250aaee7",
-    "url": "/archos/static/css/main.7776d1ce.chunk.css"
+    "revision": "62f4e62b687d25782e58",
+    "url": "/archos/static/css/main.60128428.chunk.css"
   },
   {
-    "revision": "0f8ff007dd33251a4b66",
-    "url": "/archos/static/js/2.cadea8fc.chunk.js"
+    "revision": "98969a2ee5f2f2137e05",
+    "url": "/archos/static/js/2.da574e84.chunk.js"
   },
   {
-    "revision": "9c91c20158c3250aaee7",
-    "url": "/archos/static/js/main.c032a03e.chunk.js"
+    "revision": "62f4e62b687d25782e58",
+    "url": "/archos/static/js/main.4dee3017.chunk.js"
   },
   {
     "revision": "92f5ad2ee1d7e6e0bbf0",
@@ -26,6 +26,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "399c9a8f704a0e14fbab2265879ff87e",
     "url": "/archos/static/media/Desk.399c9a8f.jpg"
+  },
+  {
+    "revision": "5dd779bd3e28c20a0758b200b8d98f67",
+    "url": "/archos/static/media/activestar.5dd779bd.svg"
   },
   {
     "revision": "3384ea3bcf8c5250c2b528d4f9057838",
@@ -70,6 +74,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "c4c3fec786501471c5ac3115d6471be6",
     "url": "/archos/static/media/electro.c4c3fec7.svg"
+  },
+  {
+    "revision": "fbd33943c5eced63b7e566de16f88bc7",
+    "url": "/archos/static/media/exclamation-mark.fbd33943.svg"
   },
   {
     "revision": "47fc995d21309a4c7ea8cf5c1ef515df",
@@ -126,6 +134,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "3bf4485e702c42470a637d3adf2ae840",
     "url": "/archos/static/media/searchicon.3bf4485e.svg"
+  },
+  {
+    "revision": "3781500af8c31bb765fedf2c77638df0",
+    "url": "/archos/static/media/spin.3781500a.gif"
+  },
+  {
+    "revision": "d072b762de234e54b759b3e216a0fb9e",
+    "url": "/archos/static/media/star.d072b762.svg"
   },
   {
     "revision": "5a98780d98f8e4b400ba155f527723ad",
