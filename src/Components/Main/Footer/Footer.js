@@ -39,7 +39,14 @@ class Footer extends Component {
 
           <div className="footergriditem">
             <div className="aboutcont">
-              <div className="aboutitem">Terms</div>
+              <div
+                onClick={() => {
+                  this.props.history.push("/Privacy");
+                }}
+                className="aboutitem"
+              >
+                Privacy Policy
+              </div>
               <div className="aboutitem">Advertise</div>
               <div className="aboutitem">About</div>
             </div>

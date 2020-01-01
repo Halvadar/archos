@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./Main/Header/Navbar/Navbar";
-import Sandbox from "./Main/Sandbox";
+import Privacy from "./Footerlinks/Privacy";
 import Headerbackground from "./Main/Header/Headerbackground/Headerbackground";
 import { connect } from "react-redux";
 import { changescreensize, checklogin } from "../Actions/Actions";
@@ -77,6 +77,7 @@ class App extends Component {
               path="/register"
               render={props => <Register {...props} />}
             ></Route>
+            <Route path="/privacy" render={() => <Privacy></Privacy>}></Route>
 
             <Route
               path="/"
@@ -90,7 +91,7 @@ class App extends Component {
               )}
             ></Route>
           </Switch>
-          <Footer />
+          <Route render={props => <Footer {...props} />}></Route>
         </React.Fragment>
       </Router>
     );

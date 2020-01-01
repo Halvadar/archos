@@ -44,6 +44,9 @@
 .aboutitem {
   padding: 0.5rem 0;
 }
+.aboutitem:hover {
+  cursor: pointer;
+}
 .contactcontact {
   color: rgb(43, 42, 42);
   font-size: 1.2rem;
