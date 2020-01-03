@@ -103,7 +103,13 @@ class Categoriespagecard extends Component {
 
           <div></div>
           {this.props.card.isfetching ? (
-            <div style={{ gridColumn: "span 5", textAlign: "center" }}>
+            <div
+              style={{
+                gridColumn: "span 5",
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
               <img src={spin} width="20px" alt="" />
             </div>
           ) : this.props.card.card ? (
