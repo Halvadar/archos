@@ -107,7 +107,8 @@ class Categoriespagecard extends Component {
               style={{
                 gridColumn: "span 5",
                 display: "flex",
-                justifyContent: "center"
+                justifyContent: "center",
+                width: "100%"
               }}
             >
               <img src={spin} width="20px" alt="" />
