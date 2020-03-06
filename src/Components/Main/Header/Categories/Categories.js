@@ -205,7 +205,7 @@ class Categories extends Component {
                 key={t}
                 onMouseEnter={this.func(d)}
                 onMouseLeave={this.func1(d)}
-                onClick={this.linkevent({ subcategory: t[1] })}
+                onClick={this.linkevent({ category: t[1] })}
               >
                 <img src={t[0]} />
                 {t[1]}

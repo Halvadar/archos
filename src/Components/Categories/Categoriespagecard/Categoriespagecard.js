@@ -110,8 +110,7 @@ class Categoriespagecard extends Component {
                 height="40px"
                 style={{
                   marginTop: "3rem",
-                  marginLeft: "auto",
-                  marginRight: "auto"
+                  marginLeft: "50%"
                 }}
               ></img>
             </div>
