@@ -356,7 +356,7 @@ class Navbar extends Component {
                   onMouseEnter={() => this.onMouseEnterFunc(1)}
                   onMouseLeave={() => this.onMouseLeaveFunc(1)}
                   onClick={() => {
-                    this.props.history.push("register");
+                    this.props.history.push("/register");
                   }}
                 >
                   <div
