@@ -9,7 +9,7 @@ import {
   loginfacebookuser,
   logingmailuser,
   loginarchosuser,
-  loginerror
+  loginerror,
 } from "../../Actions/Actions";
 import { isEmpty, isLength, isEmail } from "validator";
 
@@ -18,7 +18,7 @@ class Login extends Component {
     super();
     this.state = {
       animation: 0,
-      errorsfound: false
+      errorsfound: false,
     };
     this.newinterval = undefined;
     this.unmounted = false;
@@ -38,7 +38,7 @@ class Login extends Component {
     this.unmounted = true;
   }
 
-  slideanimation = e => {
+  slideanimation = (e) => {
     return () => {
       this.props.loginerror(null);
       clearInterval(this.newinterval);
@@ -83,18 +83,25 @@ class Login extends Component {
     this.setState({ animation: 0 });
     this.props.loginerror(null);
   };
-  facebookcallback = result => {
-    console.log(result);
-    this.props.loginfacebook({ id: result.id, token: result.accessToken });
-    this.props.closeloginform();
+  facebookcallback = async (result) => {
+    if (
+      await this.props.loginfacebook({
+        id: result.id,
+        token: result.accessToken,
+      })
+    ) {
+      this.props.closeloginform();
+    }
   };
-  gmailcallback = result => {
-    console.log(result);
-    this.props.logingmail({
-      id: result.googleId,
-      token: result.accessToken
-    });
-    this.props.closeloginform();
+  gmailcallback = async (result) => {
+    if (
+      await this.props.logingmail({
+        id: result.googleId,
+        token: result.accessToken,
+      })
+    ) {
+      this.props.closeloginform();
+    }
   };
 
   archoscallback = async () => {
@@ -102,7 +109,7 @@ class Login extends Component {
     if (!this.state.errorsfound) {
       this.props.loginarchos({
         email: this.email.value,
-        password: this.password.value
+        password: this.password.value,
       });
       this.props.closeloginform();
     }
@@ -134,7 +141,7 @@ class Login extends Component {
     }
     this.props.loginerror(combinederrors[0]);
   };
-  enter = e => {
+  enter = (e) => {
     console.log(e.key);
     if (e.key === "Enter") {
       this.archoscallback();
@@ -143,7 +150,7 @@ class Login extends Component {
   render() {
     return (
       <div
-        ref={e => this.props.passref(e)}
+        ref={(e) => this.props.passref(e)}
         style={this.props.style}
         className="loginfixed loginfixedmd"
       >
@@ -153,7 +160,8 @@ class Login extends Component {
               className="formicons"
               onClick={this.slideanimation("facebookgmail")}
               style={{
-                visibility: this.state.animation === -100 ? "initial" : "hidden"
+                visibility:
+                  this.state.animation === -100 ? "initial" : "hidden",
               }}
             >
               <img src={leftarrow} width="25px"></img>
@@ -176,7 +184,7 @@ class Login extends Component {
               appId={process.env.REACT_APP_FACEBOOK_ID}
               callback={this.facebookcallback}
               disableMobileRedirect={true}
-              render={renderProps => {
+              render={(renderProps) => {
                 return (
                   <div
                     onClick={renderProps.onClick}
@@ -192,7 +200,7 @@ class Login extends Component {
               clientId={process.env.REACT_APP_GOOGLE_ID}
               onSuccess={this.gmailcallback}
               onFailure={this.gmailfailure}
-              render={props => {
+              render={(props) => {
                 return (
                   <div
                     style={{}}
@@ -231,7 +239,7 @@ class Login extends Component {
                     ? this.email.value.length > 0
                       ? "initial"
                       : "hidden"
-                    : "hidden"
+                    : "hidden",
                 }}
               >
                 Email
@@ -240,7 +248,7 @@ class Login extends Component {
                 onChange={() => {
                   this.forceUpdate();
                 }}
-                ref={a => (this.email = a)}
+                ref={(a) => (this.email = a)}
                 placeholder="Email"
                 className="archoslogininput"
               ></input>
@@ -256,7 +264,7 @@ class Login extends Component {
                     ? this.password.value.length > 0
                       ? "initial"
                       : "hidden"
-                    : "hidden"
+                    : "hidden",
                 }}
               >
                 Password
@@ -266,7 +274,7 @@ class Login extends Component {
                   this.forceUpdate();
                 }}
                 type="password"
-                ref={a => (this.password = a)}
+                ref={(a) => (this.password = a)}
                 placeholder="Password"
                 className="archoslogininput"
                 onKeyPress={this.enter}
@@ -282,21 +290,21 @@ class Login extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  userstate: state.setcurrentuser
+const mapStateToProps = (state) => ({
+  userstate: state.setcurrentuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  loginfacebook: e => {
+const mapDispatchToProps = (dispatch) => ({
+  loginfacebook: (e) => {
     dispatch(loginfacebookuser(e));
   },
-  logingmail: e => {
+  logingmail: (e) => {
     dispatch(logingmailuser(e));
   },
-  loginarchos: e => {
+  loginarchos: (e) => {
     dispatch(loginarchosuser(e));
   },
-  loginerror: e => dispatch(loginerror(e))
+  loginerror: (e) => dispatch(loginerror(e)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
