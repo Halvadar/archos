@@ -15,7 +15,7 @@ class Register extends Component {
       activecategory: [1, 0, 0],
       swipestate: 0,
       formheight: undefined,
-      formwidth: undefined
+      formwidth: undefined,
     };
     this.newinterval = undefined;
     this.unmounted = false;
@@ -24,21 +24,21 @@ class Register extends Component {
   componentDidMount() {
     this.setState({
       formheight: this.formrefstylecalc("height"),
-      formwidth: this.formrefstylecalc("width")
+      formwidth: this.formrefstylecalc("width"),
     });
   }
   componentWillUnmount() {
     this.unmounted = true;
     this.props.nullifyerrors();
   }
-  formrefstylecalc = a => {
+  formrefstylecalc = (a) => {
     return window.getComputedStyle(this.formref).getPropertyValue(a);
   };
-  activecategorysetter = e => {
+  activecategorysetter = (e) => {
     return () => {
       this.props.nullifyerrors();
       this.swipeanimation(e);
-      this.setState(prevState => {
+      this.setState((prevState) => {
         prevState.activecategory = [0, 0, 0];
         prevState.activecategory[e] = 1;
         return { activecategory: prevState.activecategory };
@@ -46,14 +46,13 @@ class Register extends Component {
     };
   };
 
-  swipeanimation = e => {
+  swipeanimation = (e) => {
     clearInterval(this.newinterval);
 
     let swipestate = this.state.swipestate;
     if (e === 0) {
       if (this.state.swipestate < 0) {
         this.newinterval = setInterval(() => {
-          console.log(1);
           if (this.unmounted) {
             clearInterval(this.newinterval);
           }
@@ -112,7 +111,7 @@ class Register extends Component {
       <React.Fragment>
         <div
           className="registercont registercontsm registercontmd registercontxl registercontxxl"
-          ref={a => (this.a = a)}
+          ref={(a) => (this.a = a)}
         >
           <div className="registerby">Register By</div>
           <div
@@ -120,7 +119,7 @@ class Register extends Component {
               width: "50%",
               height: "2px",
               background: "gray",
-              marginBottom: "2rem"
+              marginBottom: "2rem",
             }}
           ></div>
           <div className="registerpagecategories">
@@ -135,7 +134,7 @@ class Register extends Component {
                       "linear-gradient(90deg, rgb(195, 221, 252), rgb(15, 122, 245))",
                     color: this.state.activecategory[e]
                       ? "rgb(222, 232, 253)"
-                      : null
+                      : null,
                   }}
                 >
                   {(() => {
@@ -166,7 +165,7 @@ class Register extends Component {
             style={{
               width: "100%",
               height: "2px",
-              background: "gray"
+              background: "gray",
             }}
           ></div>
           <div
@@ -174,7 +173,7 @@ class Register extends Component {
               position: "relative",
               height: this.state.formheight,
               width: "100%",
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
             <Facebookform
@@ -189,7 +188,7 @@ class Register extends Component {
             />
             <Archosform
               error={this.props.error.archoserrormessage}
-              passref={e => (this.formref = e)}
+              passref={(e) => (this.formref = e)}
               left={this.state.swipestate}
               history={this.props.history}
             />
@@ -200,25 +199,25 @@ class Register extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  error: state.createuser
+const mapStateToProps = (state) => ({
+  error: state.createuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  nullifyerrors: e => {
+const mapDispatchToProps = (dispatch) => ({
+  nullifyerrors: (e) => {
     dispatch(
       registererror({ errormessage: null, type: "REGISTER_ARCHOS_USER_ERROR" })
     );
     dispatch(
       registererror({
         errormessage: null,
-        type: "REGISTER_FACEBOOK_USER_ERROR"
+        type: "REGISTER_FACEBOOK_USER_ERROR",
       })
     );
     dispatch(
       registererror({ errormessage: null, type: "REGISTER_GMAIL_USER_ERROR" })
     );
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

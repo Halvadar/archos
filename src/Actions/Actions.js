@@ -1,84 +1,84 @@
 import { axiosInstance } from "../Configs";
 import { Promise } from "q";
 
-export const sortcards = prop => ({
+export const sortcards = (prop) => ({
   type: prop.type,
-  cards: prop.cards
+  cards: prop.cards,
 });
-export const filtercards = prop => ({
+export const filtercards = (prop) => ({
   type: "FILTER_CARDS",
-  prop
+  prop,
 });
-export const focuscards = prop => ({
+export const focuscards = (prop) => ({
   type: "FOCUS_CARDS",
-  prop
+  prop,
 });
 
-export const changescreensize = prop => ({
+export const changescreensize = (prop) => ({
   type: "CHANGE_SCREEN_SIZE",
-  prop
+  prop,
 });
 
-export const scroll = prop => ({
+export const scroll = (prop) => ({
   type: "SCROLL",
-  prop
+  prop,
 });
 
-export const requestcards = prop => ({
+export const requestcards = (prop) => ({
   type: "GET_CARDS",
-  prop
+  prop,
 });
 
-export const setcards = cards => ({
+export const setcards = (cards) => ({
   type: "SET_CARDS",
-  cards
+  cards,
 });
-export const initializefacebookuser = user => ({
+export const initializefacebookuser = (user) => ({
   type: "CREATE_FACEBOOK_USER",
-  user
+  user,
 });
-export const initializegmailuser = user => ({
+export const initializegmailuser = (user) => ({
   type: "CREATE_GMAIL_USER",
-  user
+  user,
 });
-export const setcurrentuser = user => ({
+export const setcurrentuser = (user) => ({
   type: "SET_CURRENT_USER",
-  user
+  user,
 });
-export const getpostedcards = cards => ({
+export const getpostedcards = (cards) => ({
   type: "GET_POSTED_CARDS",
-  cards
+  cards,
 });
-export const setpostedcards = cards => ({
-  type: "SET_POSTED_CARDS"
+export const setpostedcards = (cards) => ({
+  type: "SET_POSTED_CARDS",
 });
-export const emailtoken = prop => ({
+export const emailtoken = (prop) => ({
   type: "EMAIL_TOKEN_STATE",
-  prop
+  prop,
 });
-export const setcurrentcard = prop => ({
+export const setcurrentcard = (prop) => ({
   type: "SET_CURRENT_CARD",
-  prop
+  prop,
 });
 export const getcurrentcard = () => ({
-  type: "GET_CURRENT_CARD"
+  type: "GET_CURRENT_CARD",
 });
-export const setcurrentcardscore = prop => ({
+export const setcurrentcardscore = (prop) => ({
   type: "SET_CURRENT_CARD_SCORE",
-  prop
+  prop,
 });
-export const setcurrentcardcomment = prop => ({
+export const setcurrentcardcomment = (prop) => ({
   type: "SET_CURRENT_CARD_COMMENT",
-  prop
+  prop,
 });
-export const loginerror = prop => ({
+export const loginerror = (prop) => ({
   type: "ERROR",
-  prop
+  prop,
 });
 
-export const registererror = prop => ({
+export const registererror = (prop) => ({
   type: prop.type,
-  errormessage: prop.errormessage
+  errormessage: prop.errormessage,
 });
 
 export const logoutuser = () => {
@@ -94,22 +94,18 @@ export const logoutuser = () => {
           lastname
           usertype
         }
-      }`
-      }
+      }`,
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.logoutUser));
-        console.log(getState().setcurrentuser);
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };
 
-export const loginfacebookuser = props => {
-  return dispatch => {
+export const loginfacebookuser = (props) => {
+  return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -124,22 +120,22 @@ export const loginfacebookuser = props => {
             }
           }
         `,
-        variables: { id: props.id, token: props.token }
-      }
+        variables: { id: props.id, token: props.token },
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.loginFacebook));
+        props.that.props.closeloginform();
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.data) {
           dispatch(loginerror(err.response.data));
         }
       });
   };
 };
-export const logingmailuser = props => {
-  return dispatch => {
+export const logingmailuser = (props) => {
+  return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -154,13 +150,14 @@ export const logingmailuser = props => {
             }
           }
         `,
-        variables: { id: props.id, token: props.token }
-      }
+        variables: { id: props.id, token: props.token },
+      },
     })
-      .then(result => {
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.loginGoogle));
+        props.that.props.closeloginform();
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.data) {
           dispatch(loginerror(err.response.data));
         }
@@ -168,8 +165,8 @@ export const logingmailuser = props => {
   };
 };
 
-export const loginarchosuser = props => {
-  return dispatch => {
+export const loginarchosuser = (props) => {
+  return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -184,15 +181,15 @@ export const loginarchosuser = props => {
             }
           }
       `,
-        variables: { email: props.email, password: props.password }
-      }
+        variables: { email: props.email, password: props.password },
+      },
     })
-      .then(result => {
-        console.log(result, "asdasd");
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.loginArchos));
         dispatch(loginerror(null));
+        props.that.props.closeloginform();
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.data) {
           dispatch(loginerror(err.response.data));
         }
@@ -200,9 +197,8 @@ export const loginarchosuser = props => {
   };
 };
 
-export const createuser = props => {
+export const createuser = (props) => {
   return async (dispatch, getState) => {
-    console.log(getState());
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -222,30 +218,26 @@ export const createuser = props => {
           username: props.username,
           email: props.email,
           password: props.password,
-          repassword: props.repassword
-        }
-      }
+          repassword: props.repassword,
+        },
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.setUser));
       })
-      .catch(err => {
-        console.log(err);
+      .catch((err) => {
         dispatch(
           registererror({
             errormessage: err.response.data,
-            type: "REGISTER_ARCHOS_USER_ERROR"
+            type: "REGISTER_ARCHOS_USER_ERROR",
           })
         );
       });
   };
 };
 
-export const createfacebookuser = props => {
-  console.log(props);
+export const createfacebookuser = (props) => {
   return (dispatch, getState) => {
-    console.log(getState());
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -266,29 +258,26 @@ export const createfacebookuser = props => {
           username: props.username,
           email: props.email,
           token: getState().createuser.token,
-          facebookid: getState().createuser.id
-        }
-      }
+          facebookid: getState().createuser.id,
+        },
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.createFacebookUser));
       })
-      .catch(err => {
-        console.log(err.response);
+      .catch((err) => {
         dispatch(
           registererror({
             errormessage: err.response.data,
-            type: "REGISTER_FACEBOOK_USER_ERROR"
+            type: "REGISTER_FACEBOOK_USER_ERROR",
           })
         );
         return true;
       });
   };
 };
-export const creategmailuser = props => {
+export const creategmailuser = (props) => {
   return (dispatch, getState) => {
-    console.log(getState());
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -309,20 +298,18 @@ export const creategmailuser = props => {
           username: props.username,
           email: getState().createuser.email,
           token: getState().createuser.token,
-          gmailid: getState().createuser.id
-        }
-      }
+          gmailid: getState().createuser.id,
+        },
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(setcurrentuser(result.data.data.createGmailUser));
       })
-      .catch(err => {
-        console.log(err.response);
+      .catch((err) => {
         dispatch(
           registererror({
             errormessage: err.response.data,
-            type: "REGISTER_GMAIL_USER_ERROR"
+            type: "REGISTER_GMAIL_USER_ERROR",
           })
         );
         return true;
@@ -330,9 +317,8 @@ export const creategmailuser = props => {
   };
 };
 
-export const fetchcards = props => {
-  return dispatch => {
-    console.log(props);
+export const fetchcards = (props) => {
+  return (dispatch) => {
     dispatch(requestcards(props));
     return axiosInstance({
       method: "POST",
@@ -346,12 +332,12 @@ export const fetchcards = props => {
               score{score}
               _id   
      }}`,
-        variables: { category: props.category, subcategory: props.subcategory }
+        variables: { category: props.category, subcategory: props.subcategory },
       },
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     })
-      .then(result => {
-        let cards = result.data.data.getCards.map(a => {
+      .then((result) => {
+        let cards = result.data.data.getCards.map((a) => {
           if (a.score.length > 0) {
             let score = 0;
             let i = 0;
@@ -370,13 +356,12 @@ export const fetchcards = props => {
 
         dispatch(setcards(cards));
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 };
 
-export const createcard = props => {
-  console.log(props);
-  return dispatch => {
+export const createcard = (props) => {
+  return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -388,11 +373,10 @@ export const createcard = props => {
           }}
         `,
         variables: { ...props },
-        headers: { "Content-Type": "application/json" }
-      }
+        headers: { "Content-Type": "application/json" },
+      },
     })
-      .then(async result => {
-        console.log(result.data.data.createCard);
+      .then(async (result) => {
         let formdata;
 
         if (props.image) {
@@ -404,40 +388,37 @@ export const createcard = props => {
             url: process.env.REACT_APP_BACKEND_URL + "/uploadimage",
             method: "POST",
             headers: {
-              "Content-Type": "multipart/form-data"
+              "Content-Type": "multipart/form-data",
             },
-            data: formdata
+            data: formdata,
           });
         }
 
         return result.data.data.createCard._id;
       })
-      .then(result => {
+      .then((result) => {
         return result;
       })
-      .catch(err => false);
+      .catch((err) => false);
   };
 };
 
-export const checklogin = props => {
-  return dispatch => {
+export const checklogin = (props) => {
+  return (dispatch) => {
     axiosInstance({
       method: "GET",
       withCredentials: true,
-      url: process.env.REACT_APP_BACKEND_URL + "/checklogin"
+      url: process.env.REACT_APP_BACKEND_URL + "/checklogin",
     })
-      .then(result => {
-        console.log(result.data);
+      .then((result) => {
         dispatch(setcurrentuser(result.data));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };
 
-export const postedcards = props => {
-  return dispatch => {
+export const postedcards = (props) => {
+  return (dispatch) => {
     dispatch(setpostedcards());
     axiosInstance({
       withCredentials: true,
@@ -454,11 +435,11 @@ export const postedcards = props => {
             _id
           }
         }
-      `
-      }
+      `,
+      },
     })
-      .then(result => {
-        let cards = result.data.data.getPostedCards.map(a => {
+      .then((result) => {
+        let cards = result.data.data.getPostedCards.map((a) => {
           if (a.score.length > 0) {
             let score = 0;
             let i = 0;
@@ -474,18 +455,14 @@ export const postedcards = props => {
             return { ...a, score: "Not Rated" };
           }
         });
-        console.log(cards);
         dispatch(getpostedcards(cards));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };
 
-export const changepassword = props => {
-  console.log(props);
-  return async dispatch => {
+export const changepassword = (props) => {
+  return async (dispatch) => {
     await axiosInstance({
       withCredentials: true,
       method: "POST",
@@ -496,22 +473,21 @@ export const changepassword = props => {
             result
           }
         }`,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(result => {
-        console.log(result.data.data.changePassword);
+      .then((result) => {
         if (result.data.data.changePassword.result) {
           dispatch(emailtoken("valid"));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         props.result.error = err.response.data;
       });
   };
 };
-export const changepasswordconfirmation = props => {
-  return async dispatch => {
+export const changepasswordconfirmation = (props) => {
+  return async (dispatch) => {
     await axiosInstance({
       method: "POST",
       withCredentials: true,
@@ -524,10 +500,10 @@ export const changepasswordconfirmation = props => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(result => {
+      .then((result) => {
         dispatch(emailtoken("successful"));
       })
       .then(() => {
@@ -535,15 +511,14 @@ export const changepasswordconfirmation = props => {
           dispatch(emailtoken("invalid"));
         }, 5000);
       })
-      .catch(err => {
-        console.log(err.response);
+      .catch((err) => {
         props.result.error = err.response.data;
       });
   };
 };
 
 export const deleteuser = ({ props, result }) => {
-  return async dispatch => {
+  return async (dispatch) => {
     await axiosInstance({
       method: "POST",
       withCredentials: true,
@@ -556,23 +531,22 @@ export const deleteuser = ({ props, result }) => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(deleteresult => {
+      .then((deleteresult) => {
         if (deleteresult.data.data.deleteUser.result) {
-          console.log(deleteresult);
           result.result = deleteresult.data.data.deleteUser.result;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         result.error = err.response.data;
       });
   };
 };
 
 export const deleteuserconfirmation = ({ props, result }) => {
-  return async dispatch => {
+  return async (dispatch) => {
     await axiosInstance({
       method: "POST",
       withCredentials: true,
@@ -585,25 +559,23 @@ export const deleteuserconfirmation = ({ props, result }) => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(confirmationresult => {
+      .then((confirmationresult) => {
         if (confirmationresult.data.data.deleteUserConfirmation.result) {
           result.result =
             confirmationresult.data.data.deleteUserConfirmation.result;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         result.error = err.response.data;
-        console.log(err);
       });
   };
 };
 
-export const getcard = props => {
-  console.log(props);
-  return async dispatch => {
+export const getcard = (props) => {
+  return async (dispatch) => {
     dispatch(getcurrentcard());
     await axiosInstance({
       method: "POST",
@@ -627,25 +599,22 @@ export const getcard = props => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         dispatch(
           setcurrentcard({
             ...result.data.data.getCard,
-            comments: result.data.data.getCard.comments.reverse()
+            comments: result.data.data.getCard.comments.reverse(),
           })
         );
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };
 
-export const ratecard = props => {
+export const ratecard = (props) => {
   return async (dispatch, getState) => {
     await axiosInstance({
       method: "POST",
@@ -659,24 +628,20 @@ export const ratecard = props => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(result => {
-        console.log(result, getState().setcurrentcard.card);
+      .then((result) => {
         if (getState().setcurrentcard.card) {
-          console.log("asd");
           dispatch(setcurrentcardscore(result.data.data.rateCard.score));
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };
 
-export const comment = props => {
-  return dispatch => {
+export const comment = (props) => {
+  return (dispatch) => {
     axiosInstance({
       method: "POST",
       withCredentials: true,
@@ -691,15 +656,12 @@ export const comment = props => {
           }
         }
       `,
-        variables: { ...props }
-      }
+        variables: { ...props },
+      },
     })
-      .then(res => {
-        console.log(res);
+      .then((res) => {
         dispatch(setcurrentcardcomment(res.data.data.comment.reverse()));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };

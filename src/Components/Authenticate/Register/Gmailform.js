@@ -9,7 +9,7 @@ import {
   isLength,
   isAlphanumeric,
   blacklist,
-  isNumeric
+  isNumeric,
 } from "validator";
 
 const inputs = ["Username", "First Name", "Last Name", "Phone Number"];
@@ -24,20 +24,17 @@ class Gmailform extends Component {
       "Phone Number": null,
       errorsfound: false,
       showerror: [0, 0, 0, 0],
-      success: false
+      success: false,
     };
     this.timeout = null;
   }
-  onsuccess = result => {
-    console.log(result);
+  onsuccess = (result) => {
     let token = result.accessToken;
     let id = result.googleId;
     let email = result.profileObj.email;
     this.props.initializegmailuser({ token, id, email, method: "gmail" });
   };
-  onfailure = result => {
-    console.log(result);
-  };
+  onfailure = (result) => {};
   validationfunc = (arg, name, length) => {
     let errors = [];
     if (name !== "Phone Number") {
@@ -61,13 +58,13 @@ class Gmailform extends Component {
     }
 
     if (errors.length > 0) {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = errors;
         return prevstate;
       });
       return true;
     } else {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = null;
         return prevstate;
       });
@@ -79,7 +76,7 @@ class Gmailform extends Component {
       this.validationfunc(this[a].value, a, inputlengths[b]);
     });
     let finderror;
-    finderror = inputs.filter(a => {
+    finderror = inputs.filter((a) => {
       if (this.state[a]) {
         return true;
       }
@@ -95,7 +92,7 @@ class Gmailform extends Component {
           phone:
             this["Phone Number"].value !== ""
               ? this["Phone Number"].value
-              : undefined
+              : undefined,
         });
         if (err) {
           throw err;
@@ -130,7 +127,7 @@ class Gmailform extends Component {
               clientId={process.env.REACT_APP_GOOGLE_ID}
               onSuccess={this.onsuccess}
               onFailure={this.onfailure}
-              render={renderProps => {
+              render={(renderProps) => {
                 return (
                   <div onClick={renderProps.onClick} className="googlebutton">
                     Login With Google
@@ -142,7 +139,7 @@ class Gmailform extends Component {
               style={{
                 marginBottom: "1rem",
                 position: "relative",
-                visibility: this.props.error ? "initial" : "hidden"
+                visibility: this.props.error ? "initial" : "hidden",
               }}
               className="manageaccounterrormessage"
             >
@@ -162,7 +159,7 @@ class Gmailform extends Component {
                             ? this[a].value.length > 0
                               ? "initial"
                               : "hidden"
-                            : "hidden"
+                            : "hidden",
                         }}
                       >
                         {a}
@@ -175,7 +172,7 @@ class Gmailform extends Component {
                             inputlengths[b]
                           );
                         }}
-                        ref={e => (this[a] = e)}
+                        ref={(e) => (this[a] = e)}
                         className="formfieldinput"
                         placeholder={a}
                       ></input>
@@ -190,7 +187,6 @@ class Gmailform extends Component {
                             onMouseEnter={() => {
                               let showerrorcopy = this.state.showerror;
                               showerrorcopy[b] = 1;
-                              console.log(showerrorcopy);
                               this.setState({ showerror: showerrorcopy });
                             }}
                             onMouseLeave={() => {
@@ -218,15 +214,15 @@ class Gmailform extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  userstate: state.createuser
+const mapStateToProps = (state) => ({
+  userstate: state.createuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  initializegmailuser: e => {
+const mapDispatchToProps = (dispatch) => ({
+  initializegmailuser: (e) => {
     dispatch(initializegmailuser(e));
   },
-  creategmailuser: e => dispatch(creategmailuser(e))
+  creategmailuser: (e) => dispatch(creategmailuser(e)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gmailform);

@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 const cr = (categname, ...args) => {
   return {
     name: categname,
-    children: args
+    children: args,
   };
 };
 export const services = [
@@ -58,7 +58,7 @@ export const services = [
   cr("Moving"),
   cr("Garage Building"),
   cr("House Sitting", "Pet Sitting"),
-  cr("IT", "Computer Network Wiring", "Troubleshooting")
+  cr("IT", "Computer Network Wiring", "Troubleshooting"),
 ];
 
 const intervalsetter = () =>
@@ -70,7 +70,7 @@ const car = () =>
     return {
       animationstate: "closing",
       animationtopdistance: 0,
-      subcategoryextensionheight: undefined
+      subcategoryextensionheight: undefined,
     };
   });
 
@@ -86,22 +86,20 @@ class Categoriespagecategories extends Component {
       currentcategoryindex: null,
       currentsubcategory: null,
       subcatanimationstate: "closing",
-      subcattopdistance: 0
+      subcattopdistance: 0,
     };
     this.newinterval = intervalsetter();
     this.smcateginterval = undefined;
     this.smsubcateinterval = undefined;
   }
   componentDidMount() {
-    console.log(services[0].children);
-    console.log(this.props.cardsstate);
     if (
       this.props.cardsstate.category !== "all" &&
       this.props.cardsstate.category !== undefined
     ) {
       this.setState({
         currentcategory: this.props.cardsstate.category,
-        currentcategoryindex: this.props.cardsstate.index
+        currentcategoryindex: this.props.cardsstate.index,
       });
     }
     this.subcategoryextensionheightsetter();
@@ -173,7 +171,7 @@ class Categoriespagecategories extends Component {
     this.smsubcateinterval = undefined;
   }
 
-  collapseanimation = d => {
+  collapseanimation = (d) => {
     clearInterval(this.newinterval[d].interval);
 
     let animationcopy = [...this.state.animation];
@@ -188,10 +186,10 @@ class Categoriespagecategories extends Component {
     }
   };
 
-  categoryheight = arg => {
+  categoryheight = (arg) => {
     return this.state.heightreference * services[arg].children.length;
   };
-  categoryheightadder = arg => {
+  categoryheightadder = (arg) => {
     return this.categoryheight(arg) / 100;
   };
 
@@ -202,7 +200,7 @@ class Categoriespagecategories extends Component {
   };
 
   subcategoryextensionheightsetter = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       for (var i = 0; i < prevState.animation.length; i++) {
         if (prevState.animation[i].animationtopdistance === 0) {
           prevState.animation[i].subcategoryextensionheight = parseFloat(
@@ -229,7 +227,7 @@ class Categoriespagecategories extends Component {
             0,
             this.categoryitemheight().length - 2
           )
-        )
+        ),
       };
     });
   };
@@ -296,7 +294,7 @@ class Categoriespagecategories extends Component {
   };
 
   componentDidUpdate() {}
-  subgetcards = e => {
+  subgetcards = (e) => {
     return () => {
       this.props.getcards({ ...e })();
       this.setState({ currentsubcategory: e.subcategory });
@@ -311,7 +309,7 @@ class Categoriespagecategories extends Component {
               ? "cardpagecategoriesxxl cardpagecategoriesxl cardpagecategorieslg cardpagecategoriesmd categoriespagecategories"
               : "categoriespagecategories categoriespagecategoriesmd categoriespagecategorieslg categoriespagecategoriesxl"
           }
-          ref={e => (this.categ = e)}
+          ref={(e) => (this.categ = e)}
         >
           {services.map((a, b, arr) => {
             return (
@@ -319,7 +317,7 @@ class Categoriespagecategories extends Component {
                 className="categoriescont"
                 style={{
                   height:
-                    this.state.animation[b].subcategoryextensionheight + "px"
+                    this.state.animation[b].subcategoryextensionheight + "px",
                 }}
               >
                 <div className="subcategories" style={{}}>
@@ -333,12 +331,12 @@ class Categoriespagecategories extends Component {
                         background:
                           this.state.currentcategory === a.name
                             ? "rgb(155, 223, 255)"
-                            : null
+                            : null,
                       })
                     }
                     className="subcategoriesname"
                     onClick={this.subcatanimation(b, a)}
-                    ref={b === 0 ? e => (this.subcatheightref = e) : null}
+                    ref={b === 0 ? (e) => (this.subcatheightref = e) : null}
                   >
                     {a.name}
                   </div>
@@ -356,11 +354,11 @@ class Categoriespagecategories extends Component {
                             "not going"
                               ? "1px solid rgb(218, 247, 247)"
                               : "1px solid rgb(181, 245, 245) ",
-                          borderWidth: "1px 0 1px 0"
+                          borderWidth: "1px 0 1px 0",
                         }}
                         onClick={this.subgetcards({
                           subcategory: c,
-                          category: a.name
+                          category: a.name,
                         })}
                         className="subsubcategories"
                       >
@@ -393,7 +391,7 @@ class Categoriespagecategories extends Component {
                 clearInterval(this.subcatinterval);
                 this.setState({
                   subcattopdistance: 0,
-                  subcatanimationstate: "closing"
+                  subcatanimationstate: "closing",
                 });
               }}
               className="categoriespagecategoriescategories"
@@ -413,7 +411,7 @@ class Categoriespagecategories extends Component {
                     height:
                       this.state.animation[b].subcategoryextensionheight + "px",
                     zIndex: -1 - b,
-                    top: this.state.dropdowntopdistance * (b + 1) + "%"
+                    top: this.state.dropdowntopdistance * (b + 1) + "%",
                   }}
                 >
                   <div className="subcategories">
@@ -426,13 +424,13 @@ class Categoriespagecategories extends Component {
                         this.setState({
                           currentcategoryindex: b,
                           currentcategory: a.name,
-                          currentsubcategory: null
+                          currentsubcategory: null,
                         });
                         this.props.getcards({ category: a.name, index: b })();
                         this.categoriesdropdown();
                       }}
                       className="subcategoriesname"
-                      ref={b === 0 ? e => (this.subcatheightref = e) : null}
+                      ref={b === 0 ? (e) => (this.subcatheightref = e) : null}
                     >
                       {a.name}
                     </div>
@@ -451,7 +449,7 @@ class Categoriespagecategories extends Component {
                 clearInterval(this.smcateginterval);
                 this.setState({
                   dropdowntopdistance: 0,
-                  dropdownanimationstate: "not going"
+                  dropdownanimationstate: "not going",
                 });
               }}
               className="categoriespagecategoriescategories"
@@ -483,14 +481,14 @@ class Categoriespagecategories extends Component {
                             category:
                               services[this.state.currentcategoryindex].name,
                             subcategory: a,
-                            index: this.state.currentcategoryindex
+                            index: this.state.currentcategoryindex,
                           })();
                         }}
                         className="categoriescontsm"
                         style={{
                           top: this.state.subcattopdistance * (b + 1) + "%",
                           zIndex: -1 - b,
-                          height: this.state.heightreference + "px"
+                          height: this.state.heightreference + "px",
                         }}
                       >
                         <div className="subcategoriesname">{a}</div>
@@ -505,14 +503,14 @@ class Categoriespagecategories extends Component {
     }
   }
 }
-const mapDispatchToProps = dispatch => ({
-  getcards: e => {
+const mapDispatchToProps = (dispatch) => ({
+  getcards: (e) => {
     return () => dispatch(fetchcards(e));
-  }
+  },
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   cardsstate: state.getcards,
-  screensize: state.screen
+  screensize: state.screen,
 });
 export default connect(
   mapStateToProps,

@@ -8,14 +8,12 @@ class Categoriespagecomments extends Component {
     super();
     this.state = {
       invalidcomment: false,
-      errormessagestate: "hidden"
+      errormessagestate: "hidden",
     };
     this.timeout = undefined;
   }
 
-  componentDidMount() {
-    console.log(this.props.currentuser);
-  }
+  componentDidMount() {}
 
   submitcomment = () => {
     clearTimeout(this.timeout);
@@ -24,7 +22,7 @@ class Categoriespagecomments extends Component {
       if (this.props.currentuser.username) {
         this.props.comment({
           id: this.props.match.params.id,
-          comment: this.commentref.value
+          comment: this.commentref.value,
         });
         this.commentref.value = "";
         this.setState({ errormessagestate: "hidden" });
@@ -48,7 +46,7 @@ class Categoriespagecomments extends Component {
             margin: "1rem",
             fontWeight: 600,
             visibility: this.state.errormessagestate,
-            alignSelf: "center"
+            alignSelf: "center",
           }}
         >
           You need to be Signed in
@@ -57,7 +55,7 @@ class Categoriespagecomments extends Component {
           <textarea
             className="categoriespagecommentsinput"
             placeholder={this.state.invalidcomment ? "Input is empty" : null}
-            ref={a => (this.commentref = a)}
+            ref={(a) => (this.commentref = a)}
           ></textarea>
         </div>
 
@@ -72,14 +70,14 @@ class Categoriespagecomments extends Component {
             width: "100%",
             background: "rgb(206, 206, 206)",
             height: "1px",
-            marginBottom: "1rem"
+            marginBottom: "1rem",
           }}
         ></div>
         <div className="categoriepagecommentscommentscont">
           {(() => {
             if (this.props.comments) {
               if (this.props.comments.length > 0) {
-                return this.props.comments.map(comment => {
+                return this.props.comments.map((comment) => {
                   return (
                     <div className="categoriespagecommentscomment">
                       <div className="categoriespagecommentauthor">
@@ -89,7 +87,7 @@ class Categoriespagecomments extends Component {
                       <div
                         style={{
                           textAlign: "end",
-                          color: "rgb(147, 212, 255)"
+                          color: "rgb(147, 212, 255)",
                         }}
                       >
                         {new Date(parseInt(comment.date)).toDateString()}
@@ -103,7 +101,7 @@ class Categoriespagecomments extends Component {
                     style={{
                       width: "100%",
                       color: "green",
-                      textAlign: "center"
+                      textAlign: "center",
                     }}
                   >
                     Be The first to comment!
@@ -125,12 +123,12 @@ class Categoriespagecomments extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  currentuser: state.setcurrentuser
+const mapStateToProps = (state) => ({
+  currentuser: state.setcurrentuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  comment: e => dispatch(comment(e))
+const mapDispatchToProps = (dispatch) => ({
+  comment: (e) => dispatch(comment(e)),
 });
 export default connect(
   mapStateToProps,

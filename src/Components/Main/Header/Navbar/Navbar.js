@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import {
   setcurrentuser,
   logoutuser,
-  loginerror
+  loginerror,
 } from "../../../../Actions/Actions";
 import Login from "../../../Authenticate/Login";
 import Addservice from "../../../Addservice/Addservice";
@@ -34,14 +34,14 @@ class Navbar extends Component {
       sm: null,
       hamburgerimagewidth: undefined,
       loginformstate: "none",
-      history: undefined
+      history: undefined,
     };
     this.hamburgerref = React.createRef(this.hamburgerref);
     this.r = React.createRef(this.r);
     this.hambimgref = React.createRef(this.hambimgref);
   }
 
-  aaa = q => {
+  aaa = (q) => {
     this.hamburgerref = q;
     this.props.refref(q);
   };
@@ -49,7 +49,7 @@ class Navbar extends Component {
   componentDidUpdate() {}
   componentDidMount() {
     this.setState({ history: this.props.history.location.pathname });
-    this.props.history.listen(location => {
+    this.props.history.listen((location) => {
       this.setState({ history: this.props.history.location.pathname });
     });
     window.addEventListener("resize", this.resizefunc);
@@ -57,7 +57,8 @@ class Navbar extends Component {
     if (this.state.sm) {
       this.setState({
         hamburgerimagewidth:
-          window.getComputedStyle(this.hambimgref).getPropertyValue("width") * 2
+          window.getComputedStyle(this.hambimgref).getPropertyValue("width") *
+          2,
       });
     }
   }
@@ -68,7 +69,7 @@ class Navbar extends Component {
       this.setState({ sm: false });
     }
   };
-  onMouseEnterFunc = arg => {
+  onMouseEnterFunc = (arg) => {
     if (arg === 0) {
       this.setState({ loginOnMouseEnter: true });
 
@@ -81,7 +82,7 @@ class Navbar extends Component {
       this.onmouseenteranimation2();
     }
   };
-  onMouseLeaveFunc = arg => {
+  onMouseLeaveFunc = (arg) => {
     if (arg === 0) {
       this.setState({ loginOnMouseEnter: false });
     } else if (arg === 1) {
@@ -113,7 +114,6 @@ class Navbar extends Component {
       if (bot < 10 && this.state.registerOnMouseEnter === true) {
         bot++;
         this.setState({ registerAnimation: bot });
-        console.log(this.state.registerOnMouseEnter);
       } else if (bot > 0 && this.state.registerOnMouseEnter === false) {
         bot = bot - 1;
         this.setState({ registerAnimation: bot });
@@ -129,7 +129,6 @@ class Navbar extends Component {
       if (bot < 10 && this.state.categoriesOnMouseEnter === true) {
         bot++;
         this.setState({ categoriesAnimation: bot });
-        console.log(this.state.categoriesOnMouseEnter);
       } else if (bot > 0 && this.state.categoriesOnMouseEnter === false) {
         bot = bot - 1;
         this.setState({ categoriesAnimation: bot });
@@ -140,23 +139,19 @@ class Navbar extends Component {
     }, 10);
   };
 
-  hamburgerclick = e => {
+  hamburgerclick = (e) => {
     e.preventDefault();
-    console.log("event triggered!");
     if (!this.state.hamburgeranimationstatus) {
-      console.log("went thourgh status");
       if (this.state.hamburgeranimationstate === "notexpanded") {
-        console.log("went through state!");
         var a = this.state.hamburgerwidth;
         var b = this.state.hamburgerheight;
         var interval = setInterval(() => {
-          console.log("aaa");
           if (a < 100) {
             a++;
             this.setState({
               hamburgerwidth: a,
               hamburgeranimationindex: a,
-              hamburgeranimationstatus: true
+              hamburgeranimationstatus: true,
             });
           } else if (a === 100 && b < 100) {
             b++;
@@ -165,12 +160,12 @@ class Navbar extends Component {
               registertop: b * 2,
               usertop: b * 3,
               hamburgerheight: b,
-              hamburgeranimationstatus: true
+              hamburgeranimationstatus: true,
             });
           } else {
             this.setState({
               hamburgeranimationstate: "expanded",
-              hamburgeranimationstatus: false
+              hamburgeranimationstatus: false,
             });
             clearInterval(interval);
           }
@@ -190,19 +185,19 @@ class Navbar extends Component {
               registertop: b * 2,
               usertop: b * 3,
               hamburgeranimationindex: a,
-              hamburgeranimationstatus: true
+              hamburgeranimationstatus: true,
             });
           } else if (b === 0 && a > 0) {
             a = a - 1;
             this.setState({
               hamburgerwidth: a,
               hamburgeranimationindex: a,
-              hamburgeranimationstatus: true
+              hamburgeranimationstatus: true,
             });
           } else {
             this.setState({
               hamburgeranimationstate: "notexpanded",
-              hamburgeranimationstatus: false
+              hamburgeranimationstatus: false,
             });
             clearInterval(interval);
           }
@@ -218,7 +213,7 @@ class Navbar extends Component {
     this.setState({ loginformstate: "initial" });
     window.addEventListener("mousedown", this.closeloginformevent);
   };
-  closeloginformevent = e => {
+  closeloginformevent = (e) => {
     if (
       e.clientX < this.loginformref.getBoundingClientRect().left ||
       e.clientX > this.loginformref.getBoundingClientRect().right ||
@@ -285,11 +280,11 @@ class Navbar extends Component {
                   this.closeloginformevent
                 );
               }}
-              passref={e => (this.loginformref = e)}
+              passref={(e) => (this.loginformref = e)}
               style={{
                 left: this.loginleftsetter(),
                 width: this.loginwidthsetter(),
-                display: this.state.loginformstate
+                display: this.state.loginformstate,
               }}
             ></Login>
           )}
@@ -298,7 +293,7 @@ class Navbar extends Component {
               display: "flex",
               justifyContent: "flex-end",
               flexGrow: "1",
-              marginRight: "2rem"
+              marginRight: "2rem",
             }}
           ></div>
           <div className="row links rounded-left">
@@ -313,7 +308,7 @@ class Navbar extends Component {
               <div
                 style={{
                   position: "relative",
-                  bottom: this.state.categoriesAnimation + "%"
+                  bottom: this.state.categoriesAnimation + "%",
                 }}
                 className="custnavitem"
               >
@@ -322,7 +317,7 @@ class Navbar extends Component {
               <div
                 className="shadow"
                 style={{
-                  width: `${this.state.categoriesAnimation * 10}%`
+                  width: `${this.state.categoriesAnimation * 10}%`,
                 }}
               ></div>
             </div>
@@ -338,7 +333,7 @@ class Navbar extends Component {
                   <div
                     style={{
                       position: "relative",
-                      bottom: this.state.loginAnimation + "%"
+                      bottom: this.state.loginAnimation + "%",
                     }}
                     className="custnavitem"
                   >
@@ -347,7 +342,7 @@ class Navbar extends Component {
                   <div
                     className="shadow"
                     style={{
-                      width: `${this.state.loginAnimation * 10}%`
+                      width: `${this.state.loginAnimation * 10}%`,
                     }}
                   ></div>
                 </div>
@@ -362,7 +357,7 @@ class Navbar extends Component {
                   <div
                     style={{
                       position: "relative",
-                      bottom: this.state.registerAnimation + "%"
+                      bottom: this.state.registerAnimation + "%",
                     }}
                     className=" custnavitem"
                   >
@@ -371,7 +366,7 @@ class Navbar extends Component {
                   <div
                     className="shadow"
                     style={{
-                      width: `${this.state.registerAnimation * 10}%`
+                      width: `${this.state.registerAnimation * 10}%`,
                     }}
                   ></div>
                 </div>
@@ -391,7 +386,7 @@ class Navbar extends Component {
                   <div
                     style={{
                       position: "relative",
-                      bottom: this.state.registerAnimation + "%"
+                      bottom: this.state.registerAnimation + "%",
                     }}
                     className=" custnavitem"
                   >
@@ -400,7 +395,7 @@ class Navbar extends Component {
                   <div
                     className="shadow"
                     style={{
-                      width: `${this.state.registerAnimation * 10}%`
+                      width: `${this.state.registerAnimation * 10}%`,
                     }}
                   ></div>
                 </div>
@@ -427,11 +422,11 @@ class Navbar extends Component {
                   this.closeloginformevent
                 );
               }}
-              passref={e => (this.loginformref = e)}
+              passref={(e) => (this.loginformref = e)}
               style={{
                 left: this.loginleftsetter(),
                 width: this.loginwidthsetter(),
-                display: this.state.loginformstate
+                display: this.state.loginformstate,
               }}
             ></Login>
             {this.props.currentuser.username === undefined ||
@@ -442,44 +437,44 @@ class Navbar extends Component {
                   width: "25%",
                   position: "relative",
                   display: "flex",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <div
-                  ref={q => this.aaa(q)}
+                  ref={(q) => this.aaa(q)}
                   style={{
                     position: "absolute",
                     zIndex: 102,
                     right: "0px",
                     width: this.state.hamburgerwidth + "%",
                     height: this.state.hamburgerheight + "%",
-                    top: this.state.hamburgertop + "%"
+                    top: this.state.hamburgertop + "%",
                   }}
                 >
                   <div
                     style={{
                       position: "relative",
                       zIndex: 100,
-                      background: "white"
+                      background: "white",
                     }}
                   >
                     <div
-                      onClick={e => this.hamburgerclick(e)}
+                      onClick={(e) => this.hamburgerclick(e)}
                       style={{
                         zIndex: 1,
                         position: "relative",
-                        background: "white"
+                        background: "white",
                       }}
                     >
                       <img
-                        ref={a => (this.hambimgref = a)}
+                        ref={(a) => (this.hambimgref = a)}
                         src={hamburger}
                         style={{
                           width: `${
                             this.state.hamburgerimagewidth
                               ? this.state.hamburgerimagewidth
                               : null
-                          }+px`
+                          }+px`,
                         }}
                       ></img>
                     </div>
@@ -488,7 +483,7 @@ class Navbar extends Component {
                       className="hamburgeritems"
                       style={{
                         zIndex: -1,
-                        top: this.state.logintop + "%"
+                        top: this.state.logintop + "%",
                       }}
                     >
                       {this.state.hamburgerwidth < 100 ? "" : "Log in"}
@@ -500,7 +495,7 @@ class Navbar extends Component {
                       className="hamburgeritems"
                       style={{
                         zIndex: -2,
-                        top: this.state.registertop + "%"
+                        top: this.state.registertop + "%",
                       }}
                     >
                       {this.state.hamburgerwidth < 100 ? "" : "Register"}
@@ -515,44 +510,44 @@ class Navbar extends Component {
                   width: window.innerWidth > 500 ? "30%" : "60%",
                   position: "relative",
                   display: "flex",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <div
-                  ref={q => this.aaa(q)}
+                  ref={(q) => this.aaa(q)}
                   style={{
                     position: "absolute",
                     zIndex: 102,
                     right: "0px",
                     width: this.state.hamburgerwidth + "%",
                     height: this.state.hamburgerheight + "%",
-                    top: this.state.hamburgertop + "%"
+                    top: this.state.hamburgertop + "%",
                   }}
                 >
                   <div
                     style={{
                       position: "relative",
                       zIndex: 100,
-                      background: "white"
+                      background: "white",
                     }}
                   >
                     <div
-                      onClick={e => this.hamburgerclick(e)}
+                      onClick={(e) => this.hamburgerclick(e)}
                       style={{
                         zIndex: 1,
                         position: "relative",
-                        background: "white"
+                        background: "white",
                       }}
                     >
                       <img
-                        ref={a => (this.hambimgref = a)}
+                        ref={(a) => (this.hambimgref = a)}
                         src={hamburger}
                         style={{
                           width: `${
                             this.state.hamburgerimagewidth
                               ? this.state.hamburgerimagewidth
                               : null
-                          }+px`
+                          }+px`,
                         }}
                       ></img>
                     </div>
@@ -561,7 +556,7 @@ class Navbar extends Component {
                       className="hamburgeritems"
                       style={{
                         zIndex: -1,
-                        top: this.state.logintop + "%"
+                        top: this.state.logintop + "%",
                       }}
                     >
                       {this.state.hamburgerwidth < 100 ? "" : "Log Out"}
@@ -573,7 +568,7 @@ class Navbar extends Component {
                       className="hamburgeritems"
                       style={{
                         zIndex: -2,
-                        top: this.state.registertop + "%"
+                        top: this.state.registertop + "%",
                       }}
                     >
                       {this.state.hamburgerwidth < 100 ? "" : "Categories"}
@@ -581,7 +576,7 @@ class Navbar extends Component {
                     <div
                       style={{
                         zIndex: -2,
-                        top: this.state.usertop + "%"
+                        top: this.state.usertop + "%",
                       }}
                       className="hamburgeritems"
                     >
@@ -604,12 +599,12 @@ class Navbar extends Component {
     }
   }
 }
-const mapStateToProps = state => ({
-  currentuser: state.setcurrentuser
+const mapStateToProps = (state) => ({
+  currentuser: state.setcurrentuser,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logoutuser()),
-  loginerror: () => dispatch(loginerror(null))
+  loginerror: () => dispatch(loginerror(null)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

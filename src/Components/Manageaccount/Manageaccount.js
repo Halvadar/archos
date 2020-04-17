@@ -7,7 +7,7 @@ import {
   emailtoken,
   deleteuser,
   deleteuserconfirmation,
-  logoutuser
+  logoutuser,
 } from "../../Actions/Actions";
 import leftarrow from "../Authenticate/left-arrow.svg";
 import { isEmpty, isEmail, isLength, matches } from "validator";
@@ -32,14 +32,13 @@ class Manageaccount extends Component {
       changepassworderror: undefined,
       changepasswordconfirmationerror: undefined,
       deleteaccconfirmationerror: undefined,
-      currentmanageref: null
+      currentmanageref: null,
     };
     this.interval = undefined;
   }
   componentDidMount() {}
   componentDidUpdate() {}
-  closemanagefunc = e => {
-    console.log(1);
+  closemanagefunc = (e) => {
     if (
       e.clientX <
         this[this.state.currentmanageref].getBoundingClientRect().left ||
@@ -52,14 +51,13 @@ class Manageaccount extends Component {
     ) {
       this.setState({
         pswareyousuredisplay: "none",
-        accareyousuredisplay: "none"
+        accareyousuredisplay: "none",
       });
 
       window.removeEventListener("mousedown", this.closemanagefunc);
     }
   };
-  swipeanimation = e => {
-    console.log("passed");
+  swipeanimation = (e) => {
     clearInterval(this.newinterval);
 
     let swipestate = this.state.swipestate;
@@ -87,14 +85,14 @@ class Manageaccount extends Component {
       }
     }
   };
-  switcheroosetter = e => {
+  switcheroosetter = (e) => {
     if (this.state.switcheroostate === 0 && e === 1) {
       this.setState({ switcheroostate: 1 });
     } else if (this.state.switcheroostate === 1 && e === 0) {
       this.setState({ switcheroostate: 0 });
     }
   };
-  combinefunc = e => {
+  combinefunc = (e) => {
     return () => {
       this.switcheroosetter(e);
       this.swipeanimation(e);
@@ -105,7 +103,7 @@ class Manageaccount extends Component {
     let result = { error: undefined };
     await this.props.changepassword({
       email: this.changepswemail.value,
-      result
+      result,
     });
     if (result.error) {
       this.setState({ changepassworderror: result.error });
@@ -114,7 +112,7 @@ class Manageaccount extends Component {
   changepswconfirmationproceed = () => {
     this.props.changepasswordconfirmation({
       token: this.changepswtoken.value,
-      changepassword: this.changepswconfirmationemail.value
+      changepassword: this.changepswconfirmationemail.value,
     });
   };
   changepswconfirmationagree = async () => {
@@ -124,7 +122,7 @@ class Manageaccount extends Component {
     await this.props.changepasswordconfirmation({
       changepassword: this.changepswconfirmationemail.value,
       token: this.changepswtoken.value,
-      result
+      result,
     });
     if (result.error) {
       this.setState({ changepasswordconfirmationerror: result.error });
@@ -181,17 +179,16 @@ class Manageaccount extends Component {
       await this.props.deleteuser({
         props: {
           email: this.deleteaccemail.value,
-          password: this.deleteaccpsw.value
+          password: this.deleteaccpsw.value,
         },
-        result: result
+        result: result,
       });
     } else {
       await this.props.deleteuser({
         props: { email: this.deleteaccemail.value },
-        result: result
+        result: result,
       });
     }
-    console.log(result);
     if (result.result === true) {
       this.setState({ deletestate: "valid" });
     }
@@ -203,7 +200,7 @@ class Manageaccount extends Component {
     const result = { result: false };
     await this.props.deleteuserconfirmation({
       props: { token: this.deleteacctoken.value },
-      result: result
+      result: result,
     });
 
     if (result.result === true) {
@@ -235,14 +232,13 @@ class Manageaccount extends Component {
       errors.push("Input is too long");
     }
     if (errors.length > 0) {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = errors;
         return prevstate;
       });
       return true;
     } else {
-      this.setState(prevstate => {
-        console.log(name);
+      this.setState((prevstate) => {
         prevstate[name] = null;
         return prevstate;
       });
@@ -270,12 +266,12 @@ class Manageaccount extends Component {
           <div
             className="manageaccountswitcheroo"
             style={{
-              width: this.formwidthsetter()
+              width: this.formwidthsetter(),
             }}
           >
             <div
               style={{
-                background: this.state.switcheroostate === 0 ? "cyan" : null
+                background: this.state.switcheroostate === 0 ? "cyan" : null,
               }}
               className="changeaccountpasswordswitcheroo"
               onClick={this.combinefunc(0)}
@@ -285,7 +281,7 @@ class Manageaccount extends Component {
 
             <div
               style={{
-                background: this.state.switcheroostate === 1 ? "cyan" : null
+                background: this.state.switcheroostate === 1 ? "cyan" : null,
               }}
               className="deleteaccountswitcheroo"
               onClick={this.combinefunc(1)}
@@ -296,7 +292,7 @@ class Manageaccount extends Component {
           <div
             className="manageaccountslideroo"
             style={{
-              width: this.formwidthsetter()
+              width: this.formwidthsetter(),
             }}
           >
             <div
@@ -314,7 +310,7 @@ class Manageaccount extends Component {
                             height: "100%",
                             display: "flex",
                             flexDirection: "column",
-                            alignItems: "center"
+                            alignItems: "center",
                           }}
                         >
                           <div
@@ -322,7 +318,7 @@ class Manageaccount extends Component {
                               display: "flex",
                               justifyContent: "flex-start",
                               padding: "0.5rem",
-                              width: "100%"
+                              width: "100%",
                             }}
                           >
                             <div
@@ -343,7 +339,7 @@ class Manageaccount extends Component {
                               visibility: this.state
                                 .changepasswordconfirmationerror
                                 ? null
-                                : "hidden"
+                                : "hidden",
                             }}
                           >
                             {this.state.changepasswordconfirmationerror}
@@ -361,7 +357,7 @@ class Manageaccount extends Component {
                                     1000
                                   );
                                 }}
-                                ref={a => (this.changepswtoken = a)}
+                                ref={(a) => (this.changepswtoken = a)}
                                 placeholder="Token"
                                 className="manageaccountinputinput"
                                 type="text"
@@ -370,25 +366,25 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.changetoken
                                     ? null
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrorsmark"
                               >
                                 <img
                                   onMouseEnter={() => {
-                                    this.setState(prevstate => {
+                                    this.setState((prevstate) => {
                                       prevstate.showerror[1] = 1;
                                       return { showerror: prevstate.showerror };
                                     });
                                   }}
                                   onMouseLeave={() => {
                                     this.setState({
-                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                      showerror: [0, 0, 0, 0, 0, 0, 0],
                                     });
                                   }}
                                   style={{
                                     background: "white",
-                                    paddingRight: "2px"
+                                    paddingRight: "2px",
                                   }}
                                   src={exclamation}
                                   width="20px"
@@ -398,7 +394,7 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.showerror[1]
                                     ? "initial"
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrors"
                               >
@@ -423,7 +419,9 @@ class Manageaccount extends Component {
                                     50
                                   );
                                 }}
-                                ref={a => (this.changepswconfirmationemail = a)}
+                                ref={(a) =>
+                                  (this.changepswconfirmationemail = a)
+                                }
                                 name="asd"
                                 placeholder="New Password"
                                 className="manageaccountinputinput"
@@ -433,25 +431,25 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.changenewpassword
                                     ? null
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrorsmark"
                               >
                                 <img
                                   onMouseEnter={() => {
-                                    this.setState(prevstate => {
+                                    this.setState((prevstate) => {
                                       prevstate.showerror[2] = 1;
                                       return { showerror: prevstate.showerror };
                                     });
                                   }}
                                   onMouseLeave={() => {
                                     this.setState({
-                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                      showerror: [0, 0, 0, 0, 0, 0, 0],
                                     });
                                   }}
                                   style={{
                                     background: "white",
-                                    paddingRight: "2px"
+                                    paddingRight: "2px",
                                   }}
                                   src={exclamation}
                                   width="20px"
@@ -461,7 +459,7 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.showerror[2]
                                     ? "initial"
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrors"
                               >
@@ -473,7 +471,7 @@ class Manageaccount extends Component {
                           <div
                             onClick={async () => {
                               await this.setState({
-                                currentmanageref: "areyousureref"
+                                currentmanageref: "areyousureref",
                               });
                               window.addEventListener(
                                 "mousedown",
@@ -486,14 +484,14 @@ class Manageaccount extends Component {
                             Proceed
                           </div>
                           <div
-                            ref={a => (this.areyousureref = a)}
+                            ref={(a) => (this.areyousureref = a)}
                             style={{ display: this.state.pswareyousuredisplay }}
                             className="areyousure"
                           >
                             <div
                               style={{
                                 flexGrow: 1,
-                                color: "rgb(186, 255, 121)"
+                                color: "rgb(186, 255, 121)",
                               }}
                             >
                               Are you sure you want to continue
@@ -513,7 +511,7 @@ class Manageaccount extends Component {
                                     this.closemanagefunc
                                   );
                                   this.setState({
-                                    pswareyousuredisplay: "none"
+                                    pswareyousuredisplay: "none",
                                   });
                                 }}
                               >
@@ -537,7 +535,7 @@ class Manageaccount extends Component {
                             style={{
                               visibility: this.state.changepassworderror
                                 ? null
-                                : "hidden"
+                                : "hidden",
                             }}
                           >
                             {this.state.changepassworderror}
@@ -556,7 +554,7 @@ class Manageaccount extends Component {
                                   );
                                 }}
                                 name="qwe"
-                                ref={a => (this.changepswemail = a)}
+                                ref={(a) => (this.changepswemail = a)}
                                 placeholder="Email"
                                 className="manageaccountinputinput"
                                 type="text"
@@ -565,25 +563,25 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.changeemail
                                     ? null
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrorsmark"
                               >
                                 <img
                                   onMouseEnter={() => {
-                                    this.setState(prevstate => {
+                                    this.setState((prevstate) => {
                                       prevstate.showerror[0] = 1;
                                       return { showerror: prevstate.showerror };
                                     });
                                   }}
                                   onMouseLeave={() => {
                                     this.setState({
-                                      showerror: [0, 0, 0, 0, 0, 0, 0]
+                                      showerror: [0, 0, 0, 0, 0, 0, 0],
                                     });
                                   }}
                                   style={{
                                     background: "white",
-                                    paddingRight: "2px"
+                                    paddingRight: "2px",
                                   }}
                                   src={exclamation}
                                   width="20px"
@@ -593,7 +591,7 @@ class Manageaccount extends Component {
                                 style={{
                                   display: this.state.showerror[0]
                                     ? "initial"
-                                    : "none"
+                                    : "none",
                                 }}
                                 className="inputerrors"
                               >
@@ -623,7 +621,7 @@ class Manageaccount extends Component {
               ) : (
                 <div
                   style={{
-                    color: "rgb(255, 184, 184)"
+                    color: "rgb(255, 184, 184)",
                   }}
                   className="manageaccountmessages"
                 >
@@ -643,7 +641,7 @@ class Manageaccount extends Component {
                       <div
                         className="manageaccountmessages"
                         style={{
-                          color: "rgb(138, 255, 163)"
+                          color: "rgb(138, 255, 163)",
                         }}
                       >
                         Provide Account Email{" "}
@@ -657,7 +655,7 @@ class Manageaccount extends Component {
                         style={{
                           visibility: this.state.deleteaccerror
                             ? null
-                            : "hidden"
+                            : "hidden",
                         }}
                       >
                         {this.state.deleteaccerror}
@@ -665,7 +663,7 @@ class Manageaccount extends Component {
                       <div
                         className="deleteaccountemailinputcont"
                         style={{
-                          height: this.inputheightsetter()
+                          height: this.inputheightsetter(),
                         }}
                       >
                         <div className="manageaccountinput">
@@ -678,31 +676,31 @@ class Manageaccount extends Component {
                               );
                             }}
                             className="manageaccountinputinput"
-                            ref={a => (this.deleteaccemail = a)}
+                            ref={(a) => (this.deleteaccemail = a)}
                             placeholder="Email"
                             type="text"
                           ></input>
                           <div
                             style={{
-                              display: this.state.email ? null : "none"
+                              display: this.state.email ? null : "none",
                             }}
                             className="inputerrorsmark"
                           >
                             <img
                               onMouseEnter={() => {
-                                this.setState(prevstate => {
+                                this.setState((prevstate) => {
                                   prevstate.showerror[3] = 1;
                                   return { showerror: prevstate.showerror };
                                 });
                               }}
                               onMouseLeave={() => {
                                 this.setState({
-                                  showerror: [0, 0, 0, 0, 0, 0, 0]
+                                  showerror: [0, 0, 0, 0, 0, 0, 0],
                                 });
                               }}
                               style={{
                                 background: "white",
-                                paddingRight: "2px"
+                                paddingRight: "2px",
                               }}
                               src={exclamation}
                               width="20px"
@@ -712,7 +710,7 @@ class Manageaccount extends Component {
                             style={{
                               display: this.state.showerror[3]
                                 ? "initial"
-                                : "none"
+                                : "none",
                             }}
                             className="inputerrors"
                           >
@@ -734,32 +732,32 @@ class Manageaccount extends Component {
                                   50
                                 );
                               }}
-                              ref={a => (this.deleteaccpsw = a)}
+                              ref={(a) => (this.deleteaccpsw = a)}
                               placeholder="Password"
                               className="manageaccountinputinput"
                               type="password"
                             ></input>
                             <div
                               style={{
-                                display: this.state.password ? null : "none"
+                                display: this.state.password ? null : "none",
                               }}
                               className="inputerrorsmark"
                             >
                               <img
                                 onMouseEnter={() => {
-                                  this.setState(prevstate => {
+                                  this.setState((prevstate) => {
                                     prevstate.showerror[4] = 1;
                                     return { showerror: prevstate.showerror };
                                   });
                                 }}
                                 onMouseLeave={() => {
                                   this.setState({
-                                    showerror: [0, 0, 0, 0, 0, 0, 0]
+                                    showerror: [0, 0, 0, 0, 0, 0, 0],
                                   });
                                 }}
                                 style={{
                                   background: "white",
-                                  paddingRight: "2px"
+                                  paddingRight: "2px",
                                 }}
                                 src={exclamation}
                                 width="20px"
@@ -767,7 +765,9 @@ class Manageaccount extends Component {
                             </div>
                             <div
                               style={{
-                                display: this.state.showerror[4] ? null : "none"
+                                display: this.state.showerror[4]
+                                  ? null
+                                  : "none",
                               }}
                               className="inputerrors"
                             >
@@ -795,7 +795,7 @@ class Manageaccount extends Component {
                         style={{
                           visibility: this.state.deleteaccconfirmationerror
                             ? null
-                            : "hidden"
+                            : "hidden",
                         }}
                       >
                         {this.state.deleteaccconfirmationerror}
@@ -815,7 +815,7 @@ class Manageaccount extends Component {
                                 );
                               }}
                               style={{ width: "100%", height: "100%" }}
-                              ref={a => (this.deleteacctoken = a)}
+                              ref={(a) => (this.deleteacctoken = a)}
                               placeholder="Token"
                               type="text"
                               className="manageaccountinputinput"
@@ -823,25 +823,25 @@ class Manageaccount extends Component {
                           </div>
                           <div
                             style={{
-                              display: this.state.token ? null : "none"
+                              display: this.state.token ? null : "none",
                             }}
                             className="inputerrorsmark"
                           >
                             <img
                               onMouseEnter={() => {
-                                this.setState(prevstate => {
+                                this.setState((prevstate) => {
                                   prevstate.showerror[5] = 1;
                                   return { showerror: prevstate.showerror };
                                 });
                               }}
                               onMouseLeave={() => {
                                 this.setState({
-                                  showerror: [0, 0, 0, 0, 0, 0, 0]
+                                  showerror: [0, 0, 0, 0, 0, 0, 0],
                                 });
                               }}
                               style={{
                                 background: "white",
-                                paddingRight: "2px"
+                                paddingRight: "2px",
                               }}
                               src={exclamation}
                               width="20px"
@@ -849,7 +849,7 @@ class Manageaccount extends Component {
                           </div>
                           <div
                             style={{
-                              display: this.state.showerror[5] ? null : "none"
+                              display: this.state.showerror[5] ? null : "none",
                             }}
                             className="inputerrors"
                           >
@@ -860,7 +860,7 @@ class Manageaccount extends Component {
                       <div
                         onClick={async () => {
                           await this.setState({
-                            currentmanageref: "delareyousureref"
+                            currentmanageref: "delareyousureref",
                           });
                           window.addEventListener(
                             "mousedown",
@@ -873,14 +873,14 @@ class Manageaccount extends Component {
                         Proceed
                       </div>
                       <div
-                        ref={a => (this.delareyousureref = a)}
+                        ref={(a) => (this.delareyousureref = a)}
                         style={{ display: this.state.accareyousuredisplay }}
                         className="areyousure"
                       >
                         <div
                           style={{
                             flexGrow: 1,
-                            color: "rgb(186, 255, 121)"
+                            color: "rgb(186, 255, 121)",
                           }}
                         >
                           Are you sure you want to continue
@@ -900,7 +900,7 @@ class Manageaccount extends Component {
                                 this.closemanagefunc
                               );
                               this.setState({
-                                accareyousuredisplay: "none"
+                                accareyousuredisplay: "none",
                               });
                             }}
                           >
@@ -928,18 +928,18 @@ class Manageaccount extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currentuser: state.setcurrentuser,
-  emailtokenstate: state.setemailtokenstate
+  emailtokenstate: state.setemailtokenstate,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setemailtokenstate: e => dispatch(emailtoken(e)),
-  changepassword: e => dispatch(changepassword(e)),
-  changepasswordconfirmation: e => dispatch(changepasswordconfirmation(e)),
-  deleteuser: e => dispatch(deleteuser(e)),
-  deleteuserconfirmation: e => dispatch(deleteuserconfirmation(e)),
-  logout: () => dispatch(logoutuser())
+const mapDispatchToProps = (dispatch) => ({
+  setemailtokenstate: (e) => dispatch(emailtoken(e)),
+  changepassword: (e) => dispatch(changepassword(e)),
+  changepasswordconfirmation: (e) => dispatch(changepasswordconfirmation(e)),
+  deleteuser: (e) => dispatch(deleteuser(e)),
+  deleteuserconfirmation: (e) => dispatch(deleteuserconfirmation(e)),
+  logout: () => dispatch(logoutuser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Manageaccount);

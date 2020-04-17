@@ -10,7 +10,7 @@ import {
   matches,
   isAlphanumeric,
   blacklist,
-  isNumeric
+  isNumeric,
 } from "validator";
 const inputs = [
   "Username",
@@ -19,7 +19,7 @@ const inputs = [
   "Email",
   "Password",
   "Repeat Password",
-  "Phone Number"
+  "Phone Number",
 ];
 const inputlengths = [30, 50, 30, 70, 100, 100, 25];
 
@@ -36,7 +36,7 @@ class Archosform extends Component {
       "Phone Number": null,
       errorsfound: false,
       showerror: [0, 0, 0, 0, 0, 0, 0],
-      success: false
+      success: false,
     };
     this.timeout = null;
   }
@@ -82,13 +82,13 @@ class Archosform extends Component {
     }
 
     if (errors.length > 0) {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = errors;
         return prevstate;
       });
       return true;
     } else {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = null;
         return prevstate;
       });
@@ -101,7 +101,7 @@ class Archosform extends Component {
       this.validationfunc(this[a].value, a, inputlengths[b]);
     });
     let finderror;
-    finderror = inputs.filter(a => {
+    finderror = inputs.filter((a) => {
       if (this.state[a]) {
         return true;
       }
@@ -120,7 +120,7 @@ class Archosform extends Component {
           phone:
             this["Phone Number"].value !== ""
               ? this["Phone Number"].value
-              : undefined
+              : undefined,
         });
         if (err) {
           throw err;
@@ -155,7 +155,7 @@ class Archosform extends Component {
               style={{
                 position: "relative",
                 visibility: this.props.error ? "initial" : "hidden",
-                marginBottom: "1rem"
+                marginBottom: "1rem",
               }}
               className="manageaccounterrormessage"
             >
@@ -174,7 +174,7 @@ class Archosform extends Component {
                         ? this[a].value.length > 0
                           ? "initial"
                           : "hidden"
-                        : "hidden"
+                        : "hidden",
                     }}
                   >
                     {a}
@@ -183,7 +183,7 @@ class Archosform extends Component {
                     onChange={() => {
                       this.validationfunc(this[a].value, a, inputlengths[b]);
                     }}
-                    ref={e => (this[a] = e)}
+                    ref={(e) => (this[a] = e)}
                     className="formfieldinput"
                     placeholder={a}
                     type={
@@ -201,7 +201,6 @@ class Archosform extends Component {
                         onMouseEnter={() => {
                           let showerrorcopy = this.state.showerror;
                           showerrorcopy[b] = 1;
-                          console.log(showerrorcopy);
                           this.setState({ showerror: showerrorcopy });
                         }}
                         onMouseLeave={() => {
@@ -225,14 +224,14 @@ class Archosform extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({
-  createuser: e => dispatch(createuser(e)),
-  nullifyerror: e =>
+const mapDispatchToProps = (dispatch) => ({
+  createuser: (e) => dispatch(createuser(e)),
+  nullifyerror: (e) =>
     dispatch(
       registererror({ errormessage: null, type: "REGISTER_ARCHOS_USER_ERROR" })
-    )
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Archosform);

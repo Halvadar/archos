@@ -3,7 +3,7 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import { connect } from "react-redux";
 import {
   initializefacebookuser,
-  createfacebookuser
+  createfacebookuser,
 } from "../../../Actions/Actions";
 
 import exclamation from "./exclamation-mark.svg";
@@ -13,7 +13,7 @@ import {
   isLength,
   isAlphanumeric,
   blacklist,
-  isNumeric
+  isNumeric,
 } from "validator";
 const inputs = ["Username", "First Name", "Last Name", "Email", "Phone Number"];
 const inputlengths = [30, 30, 50, 70, 25];
@@ -28,17 +28,16 @@ class Facebookform extends Component {
       "Phone Number": null,
       errorsfound: false,
       showerror: [0, 0, 0, 0, 0],
-      success: false
+      success: false,
     };
     this.timeout = null;
   }
-  callback = response => {
-    console.log(response);
+  callback = (response) => {
     let { id, accessToken } = response;
     this.props.initializefacebookuser({
       id,
       token: accessToken,
-      method: "facebook"
+      method: "facebook",
     });
   };
   componentDidUpdate() {}
@@ -74,13 +73,13 @@ class Facebookform extends Component {
     }
 
     if (errors.length > 0) {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = errors;
         return prevstate;
       });
       return true;
     } else {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = null;
         return prevstate;
       });
@@ -93,14 +92,12 @@ class Facebookform extends Component {
       this.validationfunc(this[a].value, a, inputlengths[b]);
     });
     let finderror;
-    finderror = inputs.filter(a => {
+    finderror = inputs.filter((a) => {
       if (this.state[a]) {
         return true;
       }
     });
-    console.log(finderror);
     if (finderror.length === 0) {
-      console.log("no errors founds");
       try {
         let err;
         err = await this.props.createfacebookuser({
@@ -111,7 +108,7 @@ class Facebookform extends Component {
           phone:
             this["Phone Number"].value !== ""
               ? this["Phone Number"].value
-              : undefined
+              : undefined,
         });
         if (err) {
           throw err;
@@ -142,10 +139,8 @@ class Facebookform extends Component {
               appId={process.env.REACT_APP_FACEBOOK_ID}
               callback={this.callback}
               disableMobileRedirect={true}
-              onFailure={response => {
-                console.log(response);
-              }}
-              render={renderProps => {
+              onFailure={(response) => {}}
+              render={(renderProps) => {
                 return (
                   <div onClick={renderProps.onClick} className="facebookbutton">
                     Login With Facebook
@@ -157,7 +152,7 @@ class Facebookform extends Component {
               style={{
                 position: "relative",
                 visibility: this.props.error ? "initial" : "hidden",
-                marginBottom: "1rem"
+                marginBottom: "1rem",
               }}
               className="manageaccounterrormessage"
             >
@@ -177,7 +172,7 @@ class Facebookform extends Component {
                             ? this[a].value.length > 0
                               ? "initial"
                               : "hidden"
-                            : "hidden"
+                            : "hidden",
                         }}
                       >
                         {a}
@@ -190,7 +185,7 @@ class Facebookform extends Component {
                             inputlengths[b]
                           );
                         }}
-                        ref={e => (this[a] = e)}
+                        ref={(e) => (this[a] = e)}
                         className="formfieldinput"
                         placeholder={a}
                       ></input>
@@ -205,7 +200,6 @@ class Facebookform extends Component {
                             onMouseEnter={() => {
                               let showerrorcopy = this.state.showerror;
                               showerrorcopy[b] = 1;
-                              console.log(showerrorcopy);
                               this.setState({ showerror: showerrorcopy });
                             }}
                             onMouseLeave={() => {
@@ -232,15 +226,15 @@ class Facebookform extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  userstate: state.createuser
+const mapStateToProps = (state) => ({
+  userstate: state.createuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  createfacebookuser: e => dispatch(createfacebookuser(e)),
-  initializefacebookuser: e => {
+const mapDispatchToProps = (dispatch) => ({
+  createfacebookuser: (e) => dispatch(createfacebookuser(e)),
+  initializefacebookuser: (e) => {
     dispatch(initializefacebookuser(e));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Facebookform);

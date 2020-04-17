@@ -34,7 +34,6 @@ class Login extends Component {
     }
   }
   componentWillUnmount() {
-    console.log("unmount");
     this.unmounted = true;
   }
 
@@ -84,24 +83,18 @@ class Login extends Component {
     this.props.loginerror(null);
   };
   facebookcallback = async (result) => {
-    if (
-      await this.props.loginfacebook({
-        id: result.id,
-        token: result.accessToken,
-      })
-    ) {
-      this.props.closeloginform();
-    }
+    await this.props.loginfacebook({
+      id: result.id,
+      token: result.accessToken,
+      that: this,
+    });
   };
   gmailcallback = async (result) => {
-    if (
-      await this.props.logingmail({
-        id: result.googleId,
-        token: result.accessToken,
-      })
-    ) {
-      this.props.closeloginform();
-    }
+    await this.props.logingmail({
+      id: result.googleId,
+      token: result.accessToken,
+      that: this,
+    });
   };
 
   archoscallback = async () => {
@@ -110,8 +103,8 @@ class Login extends Component {
       this.props.loginarchos({
         email: this.email.value,
         password: this.password.value,
+        that: this,
       });
-      this.props.closeloginform();
     }
   };
   validatorfun = () => {
@@ -142,7 +135,6 @@ class Login extends Component {
     this.props.loginerror(combinederrors[0]);
   };
   enter = (e) => {
-    console.log(e.key);
     if (e.key === "Enter") {
       this.archoscallback();
     }

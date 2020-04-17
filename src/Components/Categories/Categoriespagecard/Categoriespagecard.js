@@ -18,22 +18,21 @@ class Categoriespagecard extends Component {
       votesent: false,
       maininfowidth: null,
       showemail: false,
-      showphone: false
+      showphone: false,
     };
     this.timeout = undefined;
   }
   componentDidUpdate() {}
   componentDidMount() {
     this.setState({ mounted: true });
-    this.props.getcard({ id: this.props.match.params.id }).then(a => {
-      console.log(this.props.card);
+    this.props.getcard({ id: this.props.match.params.id }).then((a) => {
       if (this.state.mounted) {
         let maininfowidth = window
           .getComputedStyle(this.imgref)
           .getPropertyValue("width");
 
         this.setState({
-          maininfowidth: maininfowidth
+          maininfowidth: maininfowidth,
         });
         window.addEventListener("resize", this.resizefunc);
       }
@@ -47,10 +46,10 @@ class Categoriespagecard extends Component {
     this.setState({
       maininfowidth: window
         .getComputedStyle(this.imgref)
-        .getPropertyValue("width")
+        .getPropertyValue("width"),
     });
   };
-  onmousenterevent = i => {
+  onmousenterevent = (i) => {
     return () => {
       if (this.state.clicked === false) {
         this.setState({ starstate: i });
@@ -64,7 +63,7 @@ class Categoriespagecard extends Component {
       }
     };
   };
-  onclickevent = i => {
+  onclickevent = (i) => {
     return () => {
       clearTimeout(this.timeout);
       if (this.props.currentuser.username) {
@@ -85,7 +84,7 @@ class Categoriespagecard extends Component {
       this.setState({ starstate: i, clicked: true });
     };
   };
-  starbackgroundsetter = i => {
+  starbackgroundsetter = (i) => {
     if (i <= this.state.starstate) {
       return true;
     }
@@ -110,7 +109,7 @@ class Categoriespagecard extends Component {
                 height="40px"
                 style={{
                   marginTop: "3rem",
-                  marginLeft: "50%"
+                  marginLeft: "50%",
                 }}
               ></img>
             </div>
@@ -129,9 +128,9 @@ class Categoriespagecard extends Component {
                           3) /
                           4 +
                         "px"
-                      : null
+                      : null,
                   }}
-                  ref={a => (this.imgref = a)}
+                  ref={(a) => (this.imgref = a)}
                 ></div>
                 <div
                   style={{ width: this.state.maininfowidth }}
@@ -170,7 +169,7 @@ class Categoriespagecard extends Component {
               <div className="cardpagecardinfo cardpagecardinfomd">
                 <div className="cardpagecardemail cardpagedisplayflexcolumn">
                   <div className="cardpagedisplayflexcolumnchild">Email</div>
-                  <div ref={a => (this.emailref = a)}>
+                  <div ref={(a) => (this.emailref = a)}>
                     {this.props.card.card.email ? (
                       <div
                         className="clicktoseestyle"
@@ -189,7 +188,7 @@ class Categoriespagecard extends Component {
                   </div>
                   <div
                     style={{
-                      display: this.state.showemail ? "initial" : "none"
+                      display: this.state.showemail ? "initial" : "none",
                     }}
                     className="clicktoseetext"
                   >
@@ -198,7 +197,7 @@ class Categoriespagecard extends Component {
                 </div>
                 <div className="cardpagecardphone cardpagedisplayflexcolumn">
                   <div className="cardpagedisplayflexcolumnchild">Phone</div>
-                  <div ref={a => (this.phoneref = a)}>
+                  <div ref={(a) => (this.phoneref = a)}>
                     {this.props.card.card.phone ? (
                       <div
                         className="clicktoseestyle"
@@ -217,7 +216,7 @@ class Categoriespagecard extends Component {
                   </div>
                   <div
                     style={{
-                      display: this.state.showphone ? "initial" : "none"
+                      display: this.state.showphone ? "initial" : "none",
                     }}
                     className="clicktoseetext"
                   >
@@ -292,7 +291,7 @@ class Categoriespagecard extends Component {
                   <div
                     style={{
                       color: "red",
-                      display: this.state.votesentfailed ? "flex" : "none"
+                      display: this.state.votesentfailed ? "flex" : "none",
                     }}
                     className="cardpagecardratehimrate"
                   >
@@ -312,7 +311,7 @@ class Categoriespagecard extends Component {
               background: "rgb(196, 196, 196)",
               width: "90%",
 
-              margin: "3rem"
+              margin: "3rem",
             }}
           ></div>
           <Categoriespagecomments
@@ -331,14 +330,14 @@ class Categoriespagecard extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   card: state.setcurrentcard,
-  currentuser: state.setcurrentuser
+  currentuser: state.setcurrentuser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getcard: e => dispatch(getcard(e)),
-  ratecard: e => dispatch(ratecard(e))
+const mapDispatchToProps = (dispatch) => ({
+  getcard: (e) => dispatch(getcard(e)),
+  ratecard: (e) => dispatch(ratecard(e)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categoriespagecard);

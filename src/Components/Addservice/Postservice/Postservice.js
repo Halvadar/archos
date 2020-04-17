@@ -11,7 +11,7 @@ import {
   isInt,
   blacklist,
   trim,
-  matches
+  matches,
 } from "validator";
 import exclamation from "../../Authenticate/Register/exclamation-mark.svg";
 import { format } from "path";
@@ -34,7 +34,7 @@ class Postservice extends Component {
       showerror: [0, 0, 0, 0, 0, 0, 0],
       closecategrefheight: 0,
       currentlyexpanded: null,
-      success: null
+      success: null,
     };
     this.redirecttimeout = null;
   }
@@ -48,14 +48,14 @@ class Postservice extends Component {
     this.setState({
       closecategrefheight:
         parseFloat(categname.slice(0, categname.length - 2)) +
-        parseFloat(categcateg.slice(0, categcateg.length - 2))
+        parseFloat(categcateg.slice(0, categcateg.length - 2)),
     });
   }
   componentWillUnmount() {
     clearTimeout(this.redirecttimeout);
   }
   componentDidUpdate() {}
-  closecategfunc = e => {
+  closecategfunc = (e) => {
     if (
       e.clientX <
         this[this.state.currentlyexpanded].getBoundingClientRect().left ||
@@ -68,18 +68,17 @@ class Postservice extends Component {
     ) {
       this.setState({
         categorydisplay: "hidden",
-        subcategorydisplay: "hidden"
+        subcategorydisplay: "hidden",
       });
       window.removeEventListener("mousedown", this.closecategfunc);
     }
   };
   categorydisplaysetter = () => {
-    console.log(this.state.closecategrefheight);
     this.setState({ subcategorydisplay: "hidden" });
     if (this.state.categorydisplay === "hidden") {
       this.setState({
         categorydisplay: "initial",
-        currentlyexpanded: "closecategref"
+        currentlyexpanded: "closecategref",
       });
       window.addEventListener("mousedown", this.closecategfunc);
     } else {
@@ -92,7 +91,7 @@ class Postservice extends Component {
     if (this.state.subcategorydisplay === "hidden") {
       this.setState({
         subcategorydisplay: "initial",
-        currentlyexpanded: "closesubcategref"
+        currentlyexpanded: "closesubcategref",
       });
       window.addEventListener("mousedown", this.closecategfunc);
     } else {
@@ -105,21 +104,21 @@ class Postservice extends Component {
     return () => {
       this.setState({
         currentlyselectedcategory: a,
-        currentlyselectedcategoryindex: b
+        currentlyselectedcategoryindex: b,
       });
       this.setState({
         categorydisplay: "hidden",
-        currentlyselectedsubcategory: "Not Selected"
+        currentlyselectedsubcategory: "Not Selected",
       });
       window.removeEventListener("mousedown", this.closecategfunc);
     };
   };
 
-  currentlyselectedsubcategorysetter = a => {
+  currentlyselectedsubcategorysetter = (a) => {
     return () => {
       this.setState({
         currentlyselectedsubcategory: a,
-        subcategorydisplay: "hidden"
+        subcategorydisplay: "hidden",
       });
       window.removeEventListener("mousedown", this.closecategfunc);
     };
@@ -129,7 +128,7 @@ class Postservice extends Component {
     if (this.titleref.value.length > 0) {
       return {
         title: trim(this.titleref.value),
-        description: trim(this.descriptionref.value)
+        description: trim(this.descriptionref.value),
       };
     }
     return null;
@@ -158,9 +157,8 @@ class Postservice extends Component {
         ...this.currentphone(),
         category: this.state.currentlyselectedcategory,
         subcategory: this.state.currentlyselectedsubcategory,
-        image: this.imageref.files[0]
+        image: this.imageref.files[0],
       });
-      console.log(res);
       if (res) {
         this.setState({ success: true });
         this.redirecttimeout = setTimeout(() => {
@@ -188,7 +186,7 @@ class Postservice extends Component {
     return "100%";
   };
 
-  validationfuncext = args => {
+  validationfuncext = (args) => {
     let { arg, name, length } = args;
 
     let errors = [];
@@ -237,14 +235,14 @@ class Postservice extends Component {
       }
     }
     if (errors.length > 0) {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = errors;
 
         return prevstate;
       });
       return true;
     } else {
-      this.setState(prevstate => {
+      this.setState((prevstate) => {
         prevstate[name] = null;
         return prevstate;
       });
@@ -253,7 +251,6 @@ class Postservice extends Component {
   };
 
   validationfunc = (...args) => {
-    console.log(this.imageref.files);
     let imageerrors = [];
     let errorexists = false;
     args.forEach((a, b) => {
@@ -322,7 +319,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -342,16 +339,16 @@ class Postservice extends Component {
                         this.validationfuncext({
                           arg: this.titleref.value,
                           name: "title",
-                          length: 100
+                          length: 100,
                         });
                       }}
                       style={{ width: "100%", border: 0, height: "100%" }}
-                      ref={a => (this.titleref = a)}
+                      ref={(a) => (this.titleref = a)}
                     ></input>
                     <div className="inputerrorsmark">
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[0] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -362,7 +359,7 @@ class Postservice extends Component {
                         style={{
                           background: "white",
                           paddingRight: "2px",
-                          display: this.state.title ? "initial" : "none"
+                          display: this.state.title ? "initial" : "none",
                         }}
                         src={exclamation}
                         width="20px"
@@ -370,7 +367,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[0] ? "initial" : "none"
+                        display: this.state.showerror[0] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -383,7 +380,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -403,26 +400,26 @@ class Postservice extends Component {
                         this.validationfuncext({
                           arg: this.descriptionref.value,
                           name: "description",
-                          length: 2000
+                          length: 2000,
                         });
                       }}
                       style={{
                         width: "100%",
                         border: 0,
                         height: "100%",
-                        resize: "none"
+                        resize: "none",
                       }}
-                      ref={a => (this.descriptionref = a)}
+                      ref={(a) => (this.descriptionref = a)}
                     ></textarea>
                     <div
                       style={{
-                        display: this.state.description ? "initial" : "none"
+                        display: this.state.description ? "initial" : "none",
                       }}
                       className="inputerrorsmark"
                     >
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[1] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -432,7 +429,7 @@ class Postservice extends Component {
                         }}
                         style={{
                           background: "white",
-                          paddingRight: "2px"
+                          paddingRight: "2px",
                         }}
                         src={exclamation}
                         width="20px"
@@ -440,7 +437,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[1] ? "initial" : "none"
+                        display: this.state.showerror[1] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -454,7 +451,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -474,20 +471,20 @@ class Postservice extends Component {
                         width: "100%",
                         top: 0,
                         zIndex: -100,
-                        height: this.state.closecategrefheight + "px"
+                        height: this.state.closecategrefheight + "px",
                       }}
-                      ref={a => (this.closecategref = a)}
+                      ref={(a) => (this.closecategref = a)}
                     ></div>
                     <div style={{ width: "100%", border: 0, height: "100%" }}>
                       <div
-                        ref={a => (this.selectcategnameref = a)}
+                        ref={(a) => (this.selectcategnameref = a)}
                         onClick={this.categorydisplaysetter}
                         className="postserviceselectcatname"
                       >
                         {this.state.currentlyselectedcategory}
                       </div>
                       <div
-                        ref={a => (this.selectcategcategref = a)}
+                        ref={(a) => (this.selectcategcategref = a)}
                         style={{ visibility: this.state.categorydisplay }}
                         className="postserviceselectcatcatcont"
                       >
@@ -511,12 +508,12 @@ class Postservice extends Component {
                       style={{
                         background: "rgb(0, 183, 255)",
                         border: 0,
-                        display: this.state.category ? "initial" : "none"
+                        display: this.state.category ? "initial" : "none",
                       }}
                     >
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[2] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -526,7 +523,7 @@ class Postservice extends Component {
                         }}
                         style={{
                           paddingRight: "2px",
-                          display: this.state.title ? "initial" : "none"
+                          display: this.state.title ? "initial" : "none",
                         }}
                         src={exclamation}
                         width="20px"
@@ -534,7 +531,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[2] ? "initial" : "none"
+                        display: this.state.showerror[2] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -548,7 +545,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -568,9 +565,9 @@ class Postservice extends Component {
                         width: "100%",
                         top: 0,
                         zIndex: -100,
-                        height: this.state.closecategrefheight + "px"
+                        height: this.state.closecategrefheight + "px",
                       }}
-                      ref={a => (this.closesubcategref = a)}
+                      ref={(a) => (this.closesubcategref = a)}
                     ></div>
                     <div style={{ width: "100%", border: 0, height: "100%" }}>
                       <div
@@ -613,7 +610,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -633,16 +630,16 @@ class Postservice extends Component {
                         this.validationfuncext({
                           arg: this.emailref.value,
                           name: "email",
-                          length: 50
+                          length: 50,
                         });
                         this.validationfuncext({
                           arg: this.phoneref.value,
                           name: "phone",
-                          length: 20
+                          length: 20,
                         });
                       }}
                       style={{ width: "100%", border: 0, height: "100%" }}
-                      ref={a => (this.emailref = a)}
+                      ref={(a) => (this.emailref = a)}
                     ></input>
 
                     <div
@@ -651,7 +648,7 @@ class Postservice extends Component {
                     >
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[4] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -661,7 +658,7 @@ class Postservice extends Component {
                         }}
                         style={{
                           background: "white",
-                          paddingRight: "2px"
+                          paddingRight: "2px",
                         }}
                         src={exclamation}
                         width="20px"
@@ -669,7 +666,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[4] ? "initial" : "none"
+                        display: this.state.showerror[4] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -682,7 +679,7 @@ class Postservice extends Component {
                     window.innerWidth <= 500
                       ? {
                           height: "fit-content",
-                          flexDirection: "column"
+                          flexDirection: "column",
                         }
                       : {}
                   }
@@ -702,16 +699,16 @@ class Postservice extends Component {
                         this.validationfuncext({
                           arg: this.emailref.value,
                           name: "email",
-                          length: 50
+                          length: 50,
                         });
                         this.validationfuncext({
                           arg: this.phoneref.value,
                           name: "phone",
-                          length: 20
+                          length: 20,
                         });
                       }}
                       style={{ width: "100%", border: 0, height: "100%" }}
-                      ref={a => (this.phoneref = a)}
+                      ref={(a) => (this.phoneref = a)}
                     ></input>
                     <div
                       className="inputerrorsmark"
@@ -719,7 +716,7 @@ class Postservice extends Component {
                     >
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[5] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -729,7 +726,7 @@ class Postservice extends Component {
                         }}
                         style={{
                           background: "white",
-                          paddingRight: "2px"
+                          paddingRight: "2px",
                         }}
                         src={exclamation}
                         width="20px"
@@ -737,7 +734,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[5] ? "initial" : "none"
+                        display: this.state.showerror[5] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -750,7 +747,7 @@ class Postservice extends Component {
                   <div className="postserviceinputimgcont">
                     <input
                       className="postserviceinputimg"
-                      ref={a => (this.imageref = a)}
+                      ref={(a) => (this.imageref = a)}
                       name="image"
                       type="file"
                     ></input>
@@ -758,12 +755,12 @@ class Postservice extends Component {
                       className="inputerrorsmark"
                       style={{
                         display: this.state.image ? "initial" : "none",
-                        background: "rgb(194, 241, 255)"
+                        background: "rgb(194, 241, 255)",
                       }}
                     >
                       <img
                         onMouseEnter={() => {
-                          this.setState(prevstate => {
+                          this.setState((prevstate) => {
                             prevstate.showerror[6] = 1;
                             return { showerror: prevstate.showerror };
                           });
@@ -772,7 +769,7 @@ class Postservice extends Component {
                           this.setState({ showerror: [0, 0, 0, 0, 0, 0, 0] });
                         }}
                         style={{
-                          paddingRight: "2px"
+                          paddingRight: "2px",
                         }}
                         src={exclamation}
                         width="20px"
@@ -780,7 +777,7 @@ class Postservice extends Component {
                     </div>
                     <div
                       style={{
-                        display: this.state.showerror[6] ? "initial" : "none"
+                        display: this.state.showerror[6] ? "initial" : "none",
                       }}
                       className="inputerrors"
                     >
@@ -814,8 +811,8 @@ class Postservice extends Component {
 }
 
 const mapStateToProps = () => {};
-const mapDispatchToProps = dispatch => ({
-  createcard: e => dispatch(createcard(e))
+const mapDispatchToProps = (dispatch) => ({
+  createcard: (e) => dispatch(createcard(e)),
 });
 
 export default connect(null, mapDispatchToProps)(Postservice);

@@ -45,43 +45,43 @@ class App extends Component {
       <Router>
         <React.Fragment>
           <Route
-            render={props => (
-              <Navbar {...props} refref={q => (this.burgerref = q)} click1 />
+            render={(props) => (
+              <Navbar {...props} refref={(q) => (this.burgerref = q)} click1 />
             )}
           ></Route>
 
           <Switch>
             <Route
               path="/cardinfo/:id"
-              render={props => (
+              render={(props) => (
                 <Categoriespagecard {...props}></Categoriespagecard>
               )}
             ></Route>
             <Route
               path="/manageaccount"
-              render={props => <Manageaccount {...props}></Manageaccount>}
+              render={(props) => <Manageaccount {...props}></Manageaccount>}
             ></Route>
             <Route
               path="/postedservices"
-              render={props => <Postedservices {...props}></Postedservices>}
+              render={(props) => <Postedservices {...props}></Postedservices>}
             ></Route>
             <Route
               path="/postservice"
-              render={props => <Postservice {...props}></Postservice>}
+              render={(props) => <Postservice {...props}></Postservice>}
             ></Route>
             <Route
               path="/categories"
-              render={props => <Categoriespage {...props}></Categoriespage>}
+              render={(props) => <Categoriespage {...props}></Categoriespage>}
             />
             <Route
               path="/register"
-              render={props => <Register {...props} />}
+              render={(props) => <Register {...props} />}
             ></Route>
             <Route path="/privacy" render={() => <Privacy></Privacy>}></Route>
 
             <Route
               path="/"
-              render={props => (
+              render={(props) => (
                 <React.Fragment>
                   <Headerbackground {...props} />
                   <Categories {...props} />
@@ -91,31 +91,29 @@ class App extends Component {
               )}
             ></Route>
           </Switch>
-          <Route render={props => <Footer {...props} />}></Route>
+          <Route render={(props) => <Footer {...props} />}></Route>
         </React.Fragment>
       </Router>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  changescreensize: e => {
-    console.log(e());
+const mapDispatchToProps = (dispatch) => ({
+  changescreensize: (e) => {
     return () => {
-      console.log(e());
       dispatch(changescreensize(e()));
     };
   },
-  scrollprop: e => {
+  scrollprop: (e) => {
     return () => {
       dispatch(scroll(e()));
     };
   },
-  checklogin: e => dispatch(checklogin())
+  checklogin: (e) => dispatch(checklogin()),
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   screensize: state,
-  currentuser: state.setcurrentuser
+  currentuser: state.setcurrentuser,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
