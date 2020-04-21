@@ -1,12 +1,24 @@
 import React, { Component } from "react";
+import "./Privacy.css";
 
 export default class Privacy extends Component {
   render() {
     return (
       <div
-        style={{ padding: "5rem", display: "flex", justifyContent: "center" }}
+        style={{
+          boxSizing: "content-box",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
       >
-        <div style={{ width: "70%" }}>
+        <div
+          className="PrivacyInnerDiv"
+          style={{
+            width: window.innerWidth > 700 ? "70%" : "100%",
+            margin: window.innerWidth > 700 ? "5rem" : "2rem",
+          }}
+        >
           <h2>Privacy Policy</h2>
           <p>
             Your privacy is important to us. It is Archos' policy to respect

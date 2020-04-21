@@ -10,17 +10,18 @@ class Addservice extends Component {
       refheight: 0,
       animation: 0,
       animationmotionstate: "shrinking",
-      history: "/"
+      history: "/",
     };
     this.interval = undefined;
   }
   componentDidUpdate() {}
-  closemanagefunc = e => {
+  closemanagefunc = (e) => {
     if (
-      e.clientX < this.managecontref.getBoundingClientRect().left ||
-      e.clientX > this.managecontref.getBoundingClientRect().right ||
-      e.clientY < this.managecontref.getBoundingClientRect().top ||
-      e.clientY > this.managecontref.getBoundingClientRect().bottom
+      this.managecontref &&
+      (e.clientX < this.managecontref.getBoundingClientRect().left ||
+        e.clientX > this.managecontref.getBoundingClientRect().right ||
+        e.clientY < this.managecontref.getBoundingClientRect().top ||
+        e.clientY > this.managecontref.getBoundingClientRect().bottom)
     ) {
       this.setState({ animationmotionstate: "shrinking", animation: 0 });
       clearInterval(this.interval);
@@ -31,7 +32,7 @@ class Addservice extends Component {
     this.setState({
       refheight: window
         .getComputedStyle(this.listitemref)
-        .getPropertyValue("height")
+        .getPropertyValue("height"),
     });
   }
   componentDidUpdate() {}
@@ -72,17 +73,17 @@ class Addservice extends Component {
     return (
       <div
         style={{
-          width: window.innerWidth > 768 ? null : "100%"
+          width: window.innerWidth > 768 ? null : "100%",
         }}
         className="loggedinusercont loggedinusercontmd"
       >
         <div
-          ref={a => (this.manageref = a)}
+          ref={(a) => (this.manageref = a)}
           style={{ height: "100%" }}
           className="loggedinuserrelative"
         >
           <div
-            ref={a => (this.managecontref = a)}
+            ref={(a) => (this.managecontref = a)}
             style={{
               position: "absolute",
               width: "100%",
@@ -92,7 +93,7 @@ class Addservice extends Component {
                 this.state.refheight &&
                 this.state.refheight.slice(0, this.state.refheight.length - 2) *
                   4 +
-                  "px"
+                  "px",
             }}
           ></div>
           <div onClick={this.dropdownanimation} className="currentusername">
@@ -102,7 +103,7 @@ class Addservice extends Component {
                   width: "90%",
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
               >
                 {this.props.currentuser.username}
@@ -113,7 +114,6 @@ class Addservice extends Component {
 
             <img width="10px" src={dropdown}></img>
           </div>
-
           <div
             onClick={() => this.props.history.push("/postservice")}
             style={{
@@ -121,11 +121,11 @@ class Addservice extends Component {
               background:
                 this.props.historystate === "/postservice"
                   ? "rgb(54, 158, 255)"
-                  : "rgb(54, 232, 255)"
+                  : "rgb(54, 232, 255)",
             }}
             className="loggedinuserlistitem"
           >
-            Post a Service
+            <span className="loggedinuserlistitemtext">Post a Service</span>
           </div>
 
           <div
@@ -134,14 +134,13 @@ class Addservice extends Component {
               background:
                 this.props.historystate === "/postedservices"
                   ? "rgb(54, 158, 255)"
-                  : "rgb(54, 232, 255)"
+                  : "rgb(54, 232, 255)",
             }}
-            ref={a => (this.listitemref = a)}
+            ref={(a) => (this.listitemref = a)}
             className="loggedinuserlistitem"
             onClick={() => this.props.history.push("/postedservices")}
           >
-            {" "}
-            Posted Services
+            <span className="loggedinuserlistitemtext"> Posted Services</span>
           </div>
           <div
             onClick={() => this.props.history.push("/manageaccount")}
@@ -150,11 +149,11 @@ class Addservice extends Component {
               background:
                 this.props.historystate === "/manageaccount"
                   ? "rgb(54, 158, 255)"
-                  : "rgb(54, 232, 255)"
+                  : "rgb(54, 232, 255)",
             }}
             className="loggedinuserlistitem"
           >
-            Manage Account
+            <span className="loggedinuserlistitemtext">Manage Account</span>
           </div>
         </div>
       </div>
@@ -162,8 +161,8 @@ class Addservice extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  currentuser: state.setcurrentuser
+const mapStateToProps = (state) => ({
+  currentuser: state.setcurrentuser,
 });
 
 export default connect(mapStateToProps)(Addservice);

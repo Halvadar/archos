@@ -12,7 +12,8 @@ class Categoriespagefilters extends Component {
       heightref: null,
       animationstate: "not going",
       animationtopdistance: 0,
-      sort: null
+      sort: null,
+      searchboxwidth: null,
     };
     this.unmounted = false;
   }
@@ -20,14 +21,16 @@ class Categoriespagefilters extends Component {
     this.unmounted = true;
   }
   componentDidMount() {
+    this.searchboxwidthsetter();
+    window.addEventListener("resize", this.searchboxwidthsetter);
     this.setState({
       heightref: window
         .getComputedStyle(this.sortref)
-        .getPropertyValue("height")
+        .getPropertyValue("height"),
     });
   }
   componentDidUpdate() {}
-  closefilterfunc = e => {
+  closefilterfunc = (e) => {
     if (
       e.clientX < this.sortcontref.getBoundingClientRect().left ||
       e.clientX > this.sortcontref.getBoundingClientRect().right ||
@@ -61,7 +64,7 @@ class Categoriespagefilters extends Component {
           if (i > 0) {
             i = i - 1;
             this.setState({
-              animationtopdistance: i
+              animationtopdistance: i,
             });
           } else {
             window.removeEventListener("mousedown", this.closefilterfunc);
@@ -78,19 +81,19 @@ class Categoriespagefilters extends Component {
     let i = window.innerWidth;
 
     if (i >= 1920) {
-      return "20%";
+      this.setState({ searchboxwidth: "20%" });
     } else if (i >= 1660) {
-      return "25%";
+      this.setState({ searchboxwidth: "25%" });
     } else if (i >= 1440) {
-      return "30%";
+      this.setState({ searchboxwidth: "30%" });
     } else if (i >= 1024) {
-      return "35%";
+      this.setState({ searchboxwidth: "35%" });
     } else if (i >= 768) {
-      return "50%";
+      this.setState({ searchboxwidth: "50%" });
     } else if (i >= 500) {
-      return "40%";
+      this.setState({ searchboxwidth: "40%" });
     }
-    return "200px";
+    this.setState({ searchboxwidth: "200px" });
   };
 
   sortcardsAZ = () => {
@@ -156,9 +159,9 @@ class Categoriespagefilters extends Component {
   render() {
     return (
       <div className="categoriespagefilters categoriespagefiltersmd  categoriespagefilterslg categoriespagefiltersxl">
-        <div className="sortbyrating" ref={a => (this.sortref = a)}>
+        <div className="sortbyrating" ref={(a) => (this.sortref = a)}>
           <div
-            ref={a => (this.sortcontref = a)}
+            ref={(a) => (this.sortcontref = a)}
             style={{
               position: "absolute",
               width: "100%",
@@ -168,7 +171,7 @@ class Categoriespagefilters extends Component {
                 this.state.heightref &&
                 this.state.heightref.slice(0, this.state.heightref.length - 2) *
                   4 +
-                  "px"
+                  "px",
             }}
           ></div>
           <div onClick={this.animation} className="rating">
@@ -184,7 +187,7 @@ class Categoriespagefilters extends Component {
               top: this.state.animationtopdistance * 1 + "%",
               zIndex: -1,
               background:
-                this.state.sort === "Rating" ? "rgb(209, 246, 255)" : null
+                this.state.sort === "Rating" ? "rgb(209, 246, 255)" : null,
             }}
           >
             {" "}
@@ -197,7 +200,7 @@ class Categoriespagefilters extends Component {
               zIndex: -2,
               top: this.state.animationtopdistance * 2 + "%",
               background:
-                this.state.sort === "A-Z" ? "rgb(209, 246, 255)" : null
+                this.state.sort === "A-Z" ? "rgb(209, 246, 255)" : null,
             }}
           >
             {" "}
@@ -210,7 +213,7 @@ class Categoriespagefilters extends Component {
               top: this.state.animationtopdistance * 3 + "%",
               zIndex: -3,
               background:
-                this.state.sort === "Z-A" ? "rgb(209, 246, 255)" : null
+                this.state.sort === "Z-A" ? "rgb(209, 246, 255)" : null,
             }}
           >
             {" "}
@@ -219,12 +222,15 @@ class Categoriespagefilters extends Component {
         </div>
         <div
           className="categoriespagesearchbox"
-          style={{ width: this.searchboxwidthsetter() }}
+          style={{
+            width: this.state.searchboxwidth,
+            zIndex: this.state.animationtopdistance > 0 ? 0 : 150,
+          }}
         >
           <div className="categoriespagesearchboxinputcont">
             <input
               onChange={this.inputfilter}
-              ref={a => (this.inputref = a)}
+              ref={(a) => (this.inputref = a)}
               className="categoriespagesearchboxinput"
               type="text"
             ></input>
@@ -241,14 +247,14 @@ class Categoriespagefilters extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cards: state.getcards
+const mapStateToProps = (state) => ({
+  cards: state.getcards,
 });
 
-const mapDispatchToProps = dispatch => ({
-  focuscards: e => dispatch(focuscards(e)),
-  sortcards: e => dispatch(sortcards(e)),
-  filtercards: e => dispatch(filtercards(e))
+const mapDispatchToProps = (dispatch) => ({
+  focuscards: (e) => dispatch(focuscards(e)),
+  sortcards: (e) => dispatch(sortcards(e)),
+  filtercards: (e) => dispatch(filtercards(e)),
 });
 
 export default connect(

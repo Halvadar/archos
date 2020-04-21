@@ -219,6 +219,8 @@ class Categoriespagecategories extends Component {
             ) *
             (services[i].children.length + 1);
         }
+        prevState.animation[i].animationstate = "closing";
+        prevState.animation[i].animationtopdistance = 0;
       }
       return {
         animation: prevState.animation,

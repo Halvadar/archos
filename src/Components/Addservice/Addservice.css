@@ -3,6 +3,8 @@
   display: flex;
   align-items: center;
   font-size: 1rem;
+  z-index: 201;
+  position: relative;
 }
 
 .loggedinuserrelative {
@@ -14,13 +16,19 @@
   position: absolute;
   width: 100%;
   background: rgb(54, 232, 255);
-  z-index: 100;
+  z-index: 201;
   color: rgb(255, 255, 255);
   font-weight: 600;
   padding: 0 1rem 0 0.5rem;
   height: 100%;
   display: flex;
+
   align-items: center;
+}
+.loggedinuserlistitemtext {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .loggedinuserlistitem:hover {
@@ -31,7 +39,7 @@
   background: rgb(59, 183, 255);
   position: relative;
   color: rgb(236, 236, 236);
-  z-index: 200;
+  z-index: 202;
   width: 100%;
   display: flex;
 

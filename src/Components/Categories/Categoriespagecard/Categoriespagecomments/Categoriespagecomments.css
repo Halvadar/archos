@@ -4,6 +4,7 @@
   align-items: flex-end;
   margin: 0 auto;
   padding: 1rem;
+  width: 100%;
 }
 
 /* .categoriespagecommentsinputcont {
@@ -47,6 +48,8 @@
   color: rgb(83, 83, 83);
   font-weight: 580;
   font-family: "Roboto", sans-serif;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 .categoriepagecommentscommentscont {
   display: flex;

@@ -24,7 +24,7 @@ class Navbar extends Component {
       categoriesAnimation: 0,
       hamburgerheight: 0,
       hamburgerwidth: 0,
-      hamburgertop: 30,
+      hamburgertop: 20,
       registertop: 0,
       logintop: 0,
       usertop: 0,
@@ -506,7 +506,7 @@ class Navbar extends Component {
             ) : (
               <div
                 style={{
-                  marginRight: "5%",
+                  marginRight: "10%",
                   width: window.innerWidth > 500 ? "30%" : "60%",
                   position: "relative",
                   display: "flex",
@@ -575,7 +575,7 @@ class Navbar extends Component {
                     </div>
                     <div
                       style={{
-                        zIndex: -2,
+                        zIndex: -3,
                         top: this.state.usertop + "%",
                       }}
                       className="hamburgeritems"

@@ -23,6 +23,7 @@
   color: rgb(201, 193, 183);
   width: 30%;
   border-bottom: 1px solid white;
+  font-size: 0.6rem;
 }
 .categories div img:not(.dots) {
   height: 40px;
@@ -32,6 +33,11 @@
 }
 .categchildren:hover {
   cursor: pointer;
+}
+@media only screen and (min-width: 300px) {
+  .categchildren {
+    font-size: 1rem;
+  }
 }
 @media only screen and (min-width: 500px) {
   .categchildrensmall {
