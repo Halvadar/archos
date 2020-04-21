@@ -99,6 +99,9 @@
   padding: 0.5rem 5%;
   height: 20rem;
 }
+.categoriespagecommentsinputcontmd {
+  width: 100%;
+}
 
 @media only screen and (min-width: 768px) {
   .clicktoseetext {

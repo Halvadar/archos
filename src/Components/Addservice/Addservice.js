@@ -74,6 +74,7 @@ class Addservice extends Component {
       <div
         style={{
           width: window.innerWidth > 768 ? null : "100%",
+          zIndex: this.state.animation > 0 ? "201" : 0,
         }}
         className="loggedinusercont loggedinusercontmd"
       >

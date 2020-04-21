@@ -4,15 +4,8 @@
   align-items: flex-end;
   margin: 0 auto;
   padding: 1rem;
-  width: 100%;
 }
 
-/* .categoriespagecommentsinputcont {
-  display: flex;
-  height: 10rem;
-  width: 100%;
-  background: rgb(206, 206, 206);
-} */
 .categoriespagecommentsinput {
   width: 100%;
   height: 100%;
