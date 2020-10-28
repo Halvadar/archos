@@ -413,7 +413,9 @@ export const checklogin = (props) => {
       .then((result) => {
         dispatch(setcurrentuser(result.data));
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err)
+      });
   };
 };
 
