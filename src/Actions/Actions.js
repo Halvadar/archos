@@ -408,6 +408,7 @@ export const checklogin = (props) => {
     axiosInstance({
       method: "GET",
       withCredentials: true,
+      headers:{'Authorization':'Basic'},
       url: process.env.REACT_APP_BACKEND_URL + "/checklogin",
     })
       .then((result) => {
