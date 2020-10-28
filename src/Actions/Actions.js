@@ -108,7 +108,7 @@ export const loginfacebookuser = (props) => {
   return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
-      credentials:include,
+      credentials:'include',
       method: "POST",
       data: {
         query: `
@@ -139,7 +139,7 @@ export const logingmailuser = (props) => {
   return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
-      credentials:include,
+      credentials:'include',
       method: "POST",
       data: {
         query: `
@@ -171,7 +171,7 @@ export const loginarchosuser = (props) => {
   return (dispatch) => {
     return axiosInstance({
       withCredentials: true,
-      credentials:include,
+      credentials:'include',
       method: "POST",
       data: {
         query: `
