@@ -156,6 +156,7 @@ export const logingmailuser = (props) => {
       },
     })
       .then((result) => {
+        console.log(result)
         dispatch(setcurrentuser(result.data.data.loginGoogle));
         props.that.props.closeloginform();
       })
