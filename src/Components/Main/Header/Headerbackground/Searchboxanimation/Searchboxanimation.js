@@ -17,6 +17,7 @@ class Searchboxanimation extends Component {
       searchboxbottomdistance: 0,
       searchboxwidth: 0,
       searchinputborder: null,
+      searchboxinputpadding:null,
       searchboxposition: "absolute",
       searchboxfromtop: undefined,
       fixedsearchboxfromtop: undefined,
@@ -184,7 +185,7 @@ class Searchboxanimation extends Component {
             width = width + 0.3;
             this.setState({ searchboxwidth: width });
           } else {
-            this.setState({ animationstate: "stretchended" });
+            this.setState({ animationstate: "stretchended",searchboxinputpadding:'1px' });
             clearInterval(a);
             resolve();
           }
@@ -304,7 +305,7 @@ class Searchboxanimation extends Component {
               ref={(a) => (this.inputref = a)}
               className="searchboxinput"
               type="text"
-              style={{ border: this.state.searchinputborder }}
+              style={{ border: this.state.searchinputborder,padding:this.state.searchboxinputpadding }}
             />
           </div>
 
