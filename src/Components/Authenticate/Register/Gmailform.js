@@ -34,7 +34,9 @@ class Gmailform extends Component {
     let email = result.profileObj.email;
     this.props.initializegmailuser({ token, id, email, method: "gmail" });
   };
-  onfailure = (result) => {};
+  onfailure = (result) => {
+    console.log(result);
+  };
   validationfunc = (arg, name, length) => {
     let errors = [];
     if (name !== "Phone Number") {
